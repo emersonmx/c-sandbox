@@ -1,16 +1,16 @@
 cmake_minimum_required(VERSION 3.11)
-project(csb LANGUAGES C)
+project(c_sandbox LANGUAGES C)
 set(CMAKE_CXX_STANDARD 11)
 
-set(csb_VERSION_MAJOR 0)
-set(csb_VERSION_MINOR 1)
-set(csb_VERSION_REVISION 0)
+set(c_sandbox_VERSION_MAJOR 0)
+set(c_sandbox_VERSION_MINOR 1)
+set(c_sandbox_VERSION_REVISION 0)
 
 # Configs
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Options
-option(BUILD_DEFAULT_CSB "Build default sandbox" ON)
+option(BUILD_DEFAULT_SANDBOX "Build default sandbox" ON)
 
 # Compiler settings
 if (NOT CMAKE_BUILD_TYPE)
@@ -40,6 +40,6 @@ include(FindPkgConfig)
 
 # Build settings
 
-if (BUILD_DEFAULT_CSB)
+if (BUILD_DEFAULT_SANDBOX)
     add_subdirectory(default)
 endif()
