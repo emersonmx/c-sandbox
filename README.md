@@ -1,3 +1,3 @@
 # c-sandbox
 
-Repositórios com os meus paranauês na linguagem C :D
+Repositórios com os meus paranauês em C :D
