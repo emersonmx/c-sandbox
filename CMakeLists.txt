@@ -11,6 +11,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Options
 option(BUILD_DEFAULT_SANDBOX "Build default sandbox" ON)
+option(BUILD_SDL2_SANDBOX "Build sdl2 sandbox" ON)
 
 # Compiler settings
 if (NOT CMAKE_BUILD_TYPE)
@@ -42,4 +43,7 @@ include(FindPkgConfig)
 
 if (BUILD_DEFAULT_SANDBOX)
     add_subdirectory(default)
+endif()
+if (BUILD_SDL2_SANDBOX)
+    add_subdirectory(sdl2)
 endif()
