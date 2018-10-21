@@ -1,0 +1,5 @@
+Import('env')
+env = env.Clone()
+env.ParseConfig('pkg-config sdl2 --cflags --libs')
+
+env.Program('time-test.c')
