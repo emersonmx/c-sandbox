@@ -5,7 +5,7 @@
 
 SDL_Window* window = NULL;
 
-bool init()
+bool init(void)
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         return false;
@@ -23,14 +23,14 @@ bool init()
     return true;
 }
 
-void quit()
+void quit(void)
 {
     SDL_DestroyWindow(window);
 
     SDL_Quit();
 }
 
-int main() {
+int main(void) {
     atexit(quit);
     if (!init()) {
         return -1;
