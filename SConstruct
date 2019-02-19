@@ -1,9 +1,22 @@
 import os
 
-VARIANT_BASE_DIR = 'build'
+BUILD_ROOT = 'build'
+DEFAULT_CFLAGS = [
+    '-std=c11',
+]
+DEBUG_CFLAGS = [
+    '-g', '-Wall', '-Wextra', '-Wpedantic',
+    '-Wformat=2', '-Wno-unused-parameter', '-Wshadow',
+    '-Wwrite-strings', '-Wstrict-prototypes', '-Wold-style-definition',
+    '-Wredundant-decls', '-Wnested-externs', '-Wmissing-include-dirs',
+]
 
 env = Environment(
-    CFLAGS='-std=c11'
+    CFLAGS=DEFAULT_CFLAGS
+)
+
+env.Append(
+    CFLAGS=DEBUG_CFLAGS,
 )
 
 dirs = [
@@ -11,10 +24,10 @@ dirs = [
 ]
 
 for subdir in dirs:
-    variant_path = os.path.join(VARIANT_BASE_DIR, subdir)
+    variant_path = os.path.join(BUILD_ROOT, subdir)
     SConscript(
         dirs=subdir,
-        exports=['env'],
+        exports=['env', 'variant_path'],
         variant_dir=variant_path,
         duplicate=0
     )
