@@ -1,4 +1,6 @@
 /build/
 /.tags
 /.sconsign.dblite
+/.sconf_temp/
+*.log
 compile_commands.json

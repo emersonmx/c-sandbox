@@ -20,7 +20,7 @@ env.Append(
 )
 
 dirs = [
-    'default', 'sdl2'
+    'default', 'sdl2', 'games'
 ]
 
 for subdir in dirs:
