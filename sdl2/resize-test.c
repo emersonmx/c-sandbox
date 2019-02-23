@@ -110,7 +110,9 @@ void init(void)
         return;
     }
 
-    engine->renderer = SDL_CreateRenderer(engine->window, -1, SDL_RENDERER_ACCELERATED);
+    engine->renderer = SDL_CreateRenderer(
+        engine->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
+    );
     if (engine->renderer == NULL) {
         SDL_Log("Couldn't create renderer.\n\tError: %s", SDL_GetError());
         return;
@@ -149,7 +151,7 @@ int main(void)
     SDL_Rect window_rect = {0};
     SDL_GetWindowSize(engine->window, &window_rect.w, &window_rect.h);
 
-    SDL_Rect fill_rect = {10, 10, 780, 580};
+    SDL_Rect fill_rect = {5, 5, 790, 590};
 
     Text* text = text_new();
     text_set_value(text, str_format("%dx%d", window_rect.w, window_rect.h));
@@ -168,8 +170,8 @@ int main(void)
                     window_rect.w = event.window.data1;
                     window_rect.h = event.window.data2;
 
-                    fill_rect.w = window_rect.w - 20;
-                    fill_rect.h = window_rect.h - 20;
+                    fill_rect.w = window_rect.w - 10;
+                    fill_rect.h = window_rect.h - 10;
 
                     text_set_value(text, str_format("%dx%d", window_rect.w, window_rect.h));
                     text->offset.x = window_rect.w/2 - text->offset.w/2;
@@ -184,12 +186,7 @@ int main(void)
         SDL_SetRenderDrawColor(engine->renderer, 0x30, 0, 0x30, SDL_ALPHA_OPAQUE);
         SDL_RenderFillRect(engine->renderer, &fill_rect);
 
-        SDL_RenderCopy(
-            engine->renderer,
-            text->texture,
-            NULL,
-            &text->offset
-        );
+        SDL_RenderCopy(engine->renderer, text->texture, NULL, &text->offset);
 
         SDL_RenderPresent(engine->renderer);
     }
