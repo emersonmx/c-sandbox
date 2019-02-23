@@ -12,7 +12,8 @@ DEBUG_CFLAGS = [
 ]
 
 env = Environment(
-    CFLAGS=DEFAULT_CFLAGS
+    CFLAGS=DEFAULT_CFLAGS,
+    CPPPATH=['#']
 )
 
 env.Append(
