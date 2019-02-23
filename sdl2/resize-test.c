@@ -20,6 +20,69 @@ typedef struct Text {
     SDL_Rect offset;
 } Text;
 
+Text* text_new(void);
+void text_free(Text* text);
+void text_set_value(Text* text, char* value);
+void text_clear(Text* text);
+SDL_Texture* text__create_text(const char* text);
+
+void init(void);
+void quit(void);
+
+int main(void)
+{
+    init();
+
+    SDL_Rect window_rect = {0};
+    SDL_GetWindowSize(engine->window, &window_rect.w, &window_rect.h);
+
+    SDL_Rect fill_rect = {5, 5, 790, 590};
+
+    Text* text = text_new();
+    text_set_value(text, str_format("%dx%d", window_rect.w, window_rect.h));
+    text->offset.x = window_rect.w/2 - text->offset.w/2;
+    text->offset.y = window_rect.h/2 - text->offset.h/2;
+
+    bool running = true;
+    while (running) {
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                running = false;
+            }
+            if (event.type == SDL_WINDOWEVENT) {
+                if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
+                    window_rect.w = event.window.data1;
+                    window_rect.h = event.window.data2;
+
+                    fill_rect.w = window_rect.w - 10;
+                    fill_rect.h = window_rect.h - 10;
+
+                    text_set_value(text, str_format("%dx%d", window_rect.w, window_rect.h));
+                    text->offset.x = window_rect.w/2 - text->offset.w/2;
+                    text->offset.y = window_rect.h/2 - text->offset.h/2;
+                }
+            }
+        }
+
+        SDL_SetRenderDrawColor(engine->renderer, 0x1a, 0, 0x1a, SDL_ALPHA_OPAQUE);
+        SDL_RenderClear(engine->renderer);
+
+        SDL_SetRenderDrawColor(engine->renderer, 0x30, 0, 0x30, SDL_ALPHA_OPAQUE);
+        SDL_RenderFillRect(engine->renderer, &fill_rect);
+
+        SDL_RenderCopy(engine->renderer, text->texture, NULL, &text->offset);
+
+        SDL_RenderPresent(engine->renderer);
+    }
+
+    text_free(text);
+
+    quit();
+
+    return 0;
+}
+
 Text* text_new(void)
 {
     Text* text = malloc(sizeof(Text));
@@ -32,6 +95,26 @@ Text* text_new(void)
     return text;
 }
 
+void text_free(Text* text)
+{
+    if (text == NULL) {
+        return;
+    }
+
+    text_clear(text);
+    free(text);
+}
+
+void text_set_value(Text* text, char* value)
+{
+    text_clear(text);
+    text->value = value;
+    text->texture = text__create_text(value);
+    SDL_QueryTexture(
+        text->texture, NULL, NULL, &text->offset.w, &text->offset.h
+    );
+}
+
 void text_clear(Text* text)
 {
     if (text->value != NULL) {
@@ -41,16 +124,6 @@ void text_clear(Text* text)
     if (text->texture != NULL) {
         SDL_DestroyTexture(text->texture);
     }
-}
-
-void text_free(Text* text)
-{
-    if (text == NULL) {
-        return;
-    }
-
-    text_clear(text);
-    free(text);
 }
 
 SDL_Texture* text__create_text(const char* text)
@@ -72,16 +145,6 @@ SDL_Texture* text__create_text(const char* text)
     }
 
     return texture;
-}
-
-void text_set_value(Text* text, char* value)
-{
-    text_clear(text);
-    text->value = value;
-    text->texture = text__create_text(value);
-    SDL_QueryTexture(
-        text->texture, NULL, NULL, &text->offset.w, &text->offset.h
-    );
 }
 
 void init(void)
@@ -142,58 +205,4 @@ void quit(void)
     SDL_Quit();
 
     free(engine);
-}
-
-int main(void)
-{
-    init();
-
-    SDL_Rect window_rect = {0};
-    SDL_GetWindowSize(engine->window, &window_rect.w, &window_rect.h);
-
-    SDL_Rect fill_rect = {5, 5, 790, 590};
-
-    Text* text = text_new();
-    text_set_value(text, str_format("%dx%d", window_rect.w, window_rect.h));
-    text->offset.x = window_rect.w/2 - text->offset.w/2;
-    text->offset.y = window_rect.h/2 - text->offset.h/2;
-
-    bool running = true;
-    while (running) {
-        SDL_Event event;
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                running = false;
-            }
-            if (event.type == SDL_WINDOWEVENT) {
-                if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
-                    window_rect.w = event.window.data1;
-                    window_rect.h = event.window.data2;
-
-                    fill_rect.w = window_rect.w - 10;
-                    fill_rect.h = window_rect.h - 10;
-
-                    text_set_value(text, str_format("%dx%d", window_rect.w, window_rect.h));
-                    text->offset.x = window_rect.w/2 - text->offset.w/2;
-                    text->offset.y = window_rect.h/2 - text->offset.h/2;
-                }
-            }
-        }
-
-        SDL_SetRenderDrawColor(engine->renderer, 0x1a, 0, 0x1a, SDL_ALPHA_OPAQUE);
-        SDL_RenderClear(engine->renderer);
-
-        SDL_SetRenderDrawColor(engine->renderer, 0x30, 0, 0x30, SDL_ALPHA_OPAQUE);
-        SDL_RenderFillRect(engine->renderer, &fill_rect);
-
-        SDL_RenderCopy(engine->renderer, text->texture, NULL, &text->offset);
-
-        SDL_RenderPresent(engine->renderer);
-    }
-
-    text_free(text);
-
-    quit();
-
-    return 0;
 }
