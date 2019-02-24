@@ -3,4 +3,8 @@ env = env.Clone()
 env.ParseConfig('pkg-config sdl2 SDL2_image SDL2_ttf --cflags --libs')
 
 env.Program('time-test.c')
-env.Program('resize-test.c')
+env.Program('resize-test', [
+    'resize-test.c',
+    'sdl2.c',
+    'text.c'
+])

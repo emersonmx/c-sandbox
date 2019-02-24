@@ -2,8 +2,9 @@
 #include <stdbool.h>
 #include <stdarg.h>
 
-#include <SDL.h>
-#include <SDL_ttf.h>
+#include <sdl2/sdl2.h>
+#include <sdl2/macros.h>
+#include <sdl2/text.h>
 #include <utils/str.h>
 
 typedef struct Engine {
@@ -14,20 +15,10 @@ typedef struct Engine {
 
 static Engine* engine = NULL;
 
-typedef struct Text {
-    SDL_Texture* texture;
-    char* value;
-    SDL_Rect offset;
-} Text;
-
-Text* text_new(void);
-void text_free(Text* text);
-void text_set_value(Text* text, char* value);
-void text_clear(Text* text);
-SDL_Texture* text__create_text(const char* text);
-
 void init(void);
 void quit(void);
+void load_assets(void);
+void destroy_assets(void);
 
 int main(void)
 {
@@ -39,7 +30,13 @@ int main(void)
     SDL_Rect fill_rect = {5, 5, 790, 590};
 
     Text* text = text_new();
-    text_set_value(text, str_format("%dx%d", window_rect.w, window_rect.h));
+    text->font = engine->font;
+    text->renderer = engine->renderer;
+    text->color = (SDL_Color){0x7b, 0, 0x7b, SDL_ALPHA_OPAQUE};
+
+    text_clear(text);
+    text->value = str_format("%dx%d", window_rect.w, window_rect.h);
+    text_update_texture(text);
     text->offset.x = window_rect.w/2 - text->offset.w/2;
     text->offset.y = window_rect.h/2 - text->offset.h/2;
 
@@ -58,7 +55,9 @@ int main(void)
                     fill_rect.w = window_rect.w - 10;
                     fill_rect.h = window_rect.h - 10;
 
-                    text_set_value(text, str_format("%dx%d", window_rect.w, window_rect.h));
+                    text_clear(text);
+                    text->value = str_format("%dx%d", window_rect.w, window_rect.h);
+                    text_update_texture(text);
                     text->offset.x = window_rect.w/2 - text->offset.w/2;
                     text->offset.y = window_rect.h/2 - text->offset.h/2;
                 }
@@ -83,126 +82,59 @@ int main(void)
     return 0;
 }
 
-Text* text_new(void)
-{
-    Text* text = malloc(sizeof(Text));
-    if (text == NULL) {
-        return NULL;
-    }
-
-    *text = (const Text){0};
-
-    return text;
-}
-
-void text_free(Text* text)
-{
-    if (text == NULL) {
-        return;
-    }
-
-    text_clear(text);
-    free(text);
-}
-
-void text_set_value(Text* text, char* value)
-{
-    text_clear(text);
-    text->value = value;
-    text->texture = text__create_text(value);
-    SDL_QueryTexture(
-        text->texture, NULL, NULL, &text->offset.w, &text->offset.h
-    );
-}
-
-void text_clear(Text* text)
-{
-    if (text->value != NULL) {
-        free(text->value);
-    }
-
-    if (text->texture != NULL) {
-        SDL_DestroyTexture(text->texture);
-    }
-}
-
-SDL_Texture* text__create_text(const char* text)
-{
-    SDL_Surface* surface = TTF_RenderUTF8_Blended(
-        engine->font,
-        text,
-        (SDL_Color){0x7b, 0, 0x7b, SDL_ALPHA_OPAQUE}
-    );
-    if (surface == NULL) {
-        return NULL;
-    }
-
-    SDL_Texture* texture =
-        SDL_CreateTextureFromSurface(engine->renderer, surface);
-    SDL_FreeSurface(surface);
-    if (texture == NULL) {
-        return NULL;
-    }
-
-    return texture;
-}
-
 void init(void)
 {
     engine = malloc(sizeof(Engine));
-    if (engine == NULL) {
-        SDL_Log("Couldn't create app engine.");
-        return;
-    }
+    RETURN_WITH_LOG_IF_NULL(engine, SDL_Log("Couldn't create app engine."));
 
     *engine = (const Engine){0};
 
-    if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-        SDL_Log("Couldn't start SDL.\n\tError: %s", SDL_GetError());
-        return;
-    }
-
-    engine->window = SDL_CreateWindow(
-        "Resize Test",
-        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        800, 600,
-        SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN
+    RETURN_WITH_LOG_IF_FALSE(initialize_sdl2(),
+        SDL_Log("Couldn't start SDL.\n\tError: %s", SDL_GetError())
     );
-    if (engine->window == NULL) {
-        SDL_Log("Couldn't create window.\n\tError: %s", SDL_GetError());
-        return;
-    }
 
-    engine->renderer = SDL_CreateRenderer(
-        engine->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
+    engine->window = create_sdl2_window_with_flags(
+        "Resize Test", 800, 600, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
     );
-    if (engine->renderer == NULL) {
-        SDL_Log("Couldn't create renderer.\n\tError: %s", SDL_GetError());
-        return;
-    }
+    RETURN_WITH_LOG_IF_NULL(engine->window,
+        SDL_Log("Couldn't create window.\n\tError: %s", SDL_GetError())
+    );
 
-    if (TTF_Init() < 0) {
-        SDL_Log("Couldn't initialize SDL TTF.\n\tError: %s", TTF_GetError());
-        return;
-    }
+    engine->renderer = create_sdl2_renderer(engine->window);
+    RETURN_WITH_LOG_IF_NULL(engine->renderer,
+        SDL_Log("Couldn't create renderer.\n\tError: %s", SDL_GetError())
+    );
 
-    engine->font = TTF_OpenFont("./assets/fonts/Quicksand-Bold.ttf", 40);
-    if (engine->font == NULL) {
-        SDL_Log("Couldn't load font.\n\tError: %s", TTF_GetError());
-        return;
-    }
+    RETURN_WITH_LOG_IF_FALSE(initialize_sdl2_ttf(),
+        SDL_Log("Couldn't initialize SDL TTF.\n\tError: %s", TTF_GetError())
+    );
+
+    load_assets();
 }
 
 void quit(void)
 {
-    if (engine != NULL) {
-        TTF_CloseFont(engine->font);
-        SDL_DestroyRenderer(engine->renderer);
-        SDL_DestroyWindow(engine->window);
-    }
+    destroy_assets();
 
-    TTF_Quit();
-    SDL_Quit();
+    finalize_sdl2_ttf();
+    finalize_sdl2();
 
     free(engine);
+}
+
+void load_assets(void)
+{
+    engine->font = TTF_OpenFont("./assets/fonts/Quicksand-Bold.ttf", 40);
+    RETURN_WITH_LOG_IF_NULL(engine->font,
+        SDL_Log("Couldn't load font.\n\tError: %s", TTF_GetError())
+    );
+}
+
+void destroy_assets(void)
+{
+    RETURN_IF_NULL(engine);
+
+    TTF_CloseFont(engine->font);
+    destroy_sdl2_renderer(engine->renderer);
+    destroy_sdl2_window(engine->window);
 }
