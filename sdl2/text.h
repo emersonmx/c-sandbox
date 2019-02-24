@@ -1,0 +1,30 @@
+#ifndef SDL2_TEXT_H
+#define SDL2_TEXT_H
+
+#include <SDL_render.h>
+#include <SDL_ttf.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef struct Text {
+    char* value;
+    SDL_Color color;
+    TTF_Font* font;
+    SDL_Rect offset;
+    SDL_Renderer* renderer;
+    SDL_Texture* texture;
+} Text;
+
+Text* text_new(void);
+void text_free(Text* text);
+
+void text_update_texture(Text* text);
+void text_clear(Text* text);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* SDL2_TEXT_H */
