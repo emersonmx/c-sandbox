@@ -57,8 +57,7 @@ void renderer_clear(void);
 void renderer_draw_rect(SDL_Rect rect, SDL_Color color);
 void renderer_present(void);
 
-Settings get_game_settings(void);
-void render_player(Player* player);
+void player_render(Player* player);
 
 int main(void)
 {
@@ -77,10 +76,12 @@ int main(void)
         }
 
         renderer_clear();
-        render_player(&game.players[PLAYER1]);
-        render_player(&game.players[PLAYER2]);
+        player_render(&game.players[PLAYER1]);
+        player_render(&game.players[PLAYER2]);
         renderer_present();
     }
+
+    finalize_game();
 
     return 0;
 }
@@ -104,7 +105,7 @@ void initialize_settings(void)
 
 void setup_game(void)
 {
-    float center_y = game.settings.window.height/2;
+    float center_y = game.settings.window.height/2.0f;
     game.players[PLAYER1] = (Player){
         .color = {255, 255, 255, SDL_ALPHA_OPAQUE},
         .shape = {0, 0, 20, 80},
@@ -130,9 +131,10 @@ SDL_Window* create_sdl_window(void)
     return window;
 }
 
-void destroy_sdl_window(SDL_Window* window)
+void destroy_sdl_window(void)
 {
-    SDL_DestroyWindow(window);
+    SDL_DestroyWindow(game.window);
+    game.window = NULL;
 }
 
 SDL_Renderer* create_sdl_renderer(void)
@@ -148,24 +150,29 @@ SDL_Renderer* create_sdl_renderer(void)
     return renderer;
 }
 
-void destroy_sdl_renderer(SDL_Renderer* renderer)
+void destroy_sdl_renderer(void)
 {
-    SDL_DestroyRenderer(renderer);
+    SDL_DestroyRenderer(game.renderer);
+    game.renderer = NULL;
 }
 
 void initialize_game(void)
 {
+    SDL_LogSetAllPriority(SDL_LOG_PRIORITY_INFO);
+
+    game.running = false;
+
     game.window = create_sdl_window();
     if (game.window == NULL) {
-        SDL_Log("Couldn't create SDL Window\n\tError: %s\n", SDL_GetError());
-        game.running = false;
+        SDL_LogError(SDL_LOG_CATEGORY_VIDEO,
+            "Couldn't create SDL Window\n\tError: %s\n", SDL_GetError());
         return;
     }
 
     game.renderer = create_sdl_renderer();
     if (game.renderer == NULL) {
-        SDL_Log("Couldn't create SDL Renderer\n\tError: %s\n", SDL_GetError());
-        game.running = false;
+        SDL_LogError(SDL_LOG_CATEGORY_VIDEO,
+            "Couldn't create SDL Renderer\n\tError: %s\n", SDL_GetError());
         return;
     }
 
@@ -174,8 +181,8 @@ void initialize_game(void)
 
 void finalize_game(void)
 {
-    destroy_sdl_renderer(game.renderer);
-    destroy_sdl_window(game.window);
+    destroy_sdl_renderer();
+    destroy_sdl_window();
 }
 
 void renderer_clear(void)
@@ -196,7 +203,7 @@ void renderer_present(void)
     SDL_RenderPresent(game.renderer);
 }
 
-void render_player(Player* player)
+void player_render(Player* player)
 {
     SDL_Rect rect = player->shape;
     rect.x = player->position[0] - rect.w/2.0f;
