@@ -1,6 +1,6 @@
 Import('env')
 env = env.Clone()
-env.ParseConfig('pkg-config sdl2 gl epoxy --cflags --libs')
+env.ParseConfig('pkg-config sdl2 --cflags --libs')
 
 conf = env.Configure()
 if not conf.CheckLib('m'):
@@ -8,4 +8,6 @@ if not conf.CheckLib('m'):
     Exit(1)
 env = conf.Finish()
 
-env.Program('pong.c')
+env.Program('pong', [
+    'main.c'
+])
