@@ -3,6 +3,8 @@
 
 #include <SDL.h>
 
+#include <cglm/vec3.h>
+
 #include <utils/macros.h>
 
 #define PLAYER1 0
@@ -30,6 +32,7 @@ typedef struct Engine {
 typedef struct Player {
     SDL_Color color;
     SDL_Rect shape;
+    vec3 position;
 } Player;
 
 typedef struct Game {
@@ -101,13 +104,16 @@ void initialize_settings(void)
 
 void setup_game(void)
 {
+    float center_y = game.settings.window.height/2;
     game.players[PLAYER1] = (Player){
         .color = {255, 255, 255, SDL_ALPHA_OPAQUE},
-        .shape = {0, 0, 20, 80}
+        .shape = {0, 0, 20, 80},
+        .position = {15, center_y, 0}
     };
     game.players[PLAYER2] = (Player){
         .color = {255, 255, 255, SDL_ALPHA_OPAQUE},
-        .shape = {200, 0, 20, 80}
+        .shape = {200, 0, 20, 80},
+        .position = {game.settings.window.width - 15, center_y, 0}
     };
 }
 
@@ -192,6 +198,9 @@ void renderer_present(void)
 
 void render_player(Player* player)
 {
+    SDL_Rect rect = player->shape;
+    rect.x = player->position[0] - rect.w/2.0f;
+    rect.y = player->position[1] - rect.h/2.0f;
     SDL_Color color = player->color;
-    renderer_draw_rect(player->shape, color);
+    renderer_draw_rect(rect, color);
 }

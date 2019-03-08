@@ -1,5 +1,6 @@
 Import('env')
 env = env.Clone()
+env.Append(CPPPATH=['#libs/cglm/include'])
 env.ParseConfig('pkg-config sdl2 --cflags --libs')
 
 conf = env.Configure()
