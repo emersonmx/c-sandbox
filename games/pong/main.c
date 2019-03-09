@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#include <sdl2/sdl2.h>
-
 #include <cglm/vec3.h>
 
-#include <sdl2/timer.h>
+#include <sdl2/engine.h>
 #include <utils/macros.h>
 
 #define PLAYER1 0
@@ -25,28 +23,6 @@ typedef enum {
     ACTION_UP, ACTION_DOWN, ACTIONS_SIZE
 } Actions;
 
-typedef struct Settings {
-    struct {
-        const char* title;
-        int width;
-        int height;
-    } window;
-    struct {
-        SDL_Color clear_color;
-        bool vsync;
-    } renderer;
-    struct {
-        double fps;
-    } physics;
-} Settings;
-
-typedef struct Engine {
-    Settings settings;
-    SDL_Window* window;
-    SDL_Renderer* renderer;
-    bool running;
-} Engine;
-
 typedef struct Player {
     SDL_Color color;
     SDL_Rect rect;
@@ -63,147 +39,52 @@ typedef struct Ball {
 } Ball;
 
 typedef struct Game {
-    Settings settings;
-    SDL_Window* window;
-    SDL_Renderer* renderer;
-    bool running;
-    double physics_tick_count;
+    EngineSettings settings;
 
     Player players[2];
     Ball ball;
 } Game;
 
 
-static Game game;
+static Game game = {0};
 
-void initialize_game(void);
-void initialize_settings(void);
-bool setup_window(void);
-bool setup_renderer(void);
-void setup_game(void);
-void finalize_game(void);
-void destroy_renderer(void);
-void destroy_window(void);
+static void initialize(void);
+static void process_events(SDL_Event* event);
+static void fixed_update(double delta);
+static void update(double delta);
+static void render(void);
 
-void process_events(void);
-void process_event(SDL_Event* event);
-void physics_process(void);
-void process(double delta);
-void draw(void);
+static void renderer_draw_rect(SDL_Rect rect, SDL_Color color);
 
-void renderer_clear(void);
-void renderer_draw_rect(SDL_Rect rect, SDL_Color color);
-void renderer_present(void);
+static void player_input(Player* player, SDL_Event* event);
+static void cpu_input(Player* player);
+static void player_fixed_update(Player* player, double delta);
+static void player_update(Player* player, double delta);
 
-void player_input(Player* player, SDL_Event* event);
-void cpu_input(Player* player);
-void player_physics_process(Player* player, double delta);
-void player_process(Player* player, double delta);
+static int window_width(void);
+static int window_height(void);
+static Player* player1(void);
+static Player* player2(void);
+static Ball* ball(void);
 
-int window_width(void);
-int window_height(void);
-SDL_Color clear_color(void);
-double physics_fps(void);
-double physics_delta(void);
-Player* player1(void);
-Player* player2(void);
-Ball* ball(void);
-
-bool in_array(int needle, int* array, size_t size);
+static bool in_array(int needle, int* array, size_t size);
 
 int main(void)
 {
-    atexit(finalize_game);
+    game.settings = engine_default_settings();
+    game.settings.window.title = "Pong";
 
-    initialize_game();
+    engine_set_init_func(initialize);
+    engine_set_process_events_func(process_events);
+    engine_set_fixed_update_func(fixed_update);
+    engine_set_update_func(update);
+    engine_set_render_func(render);
 
-    double last_count = timer_get_ticks_in_seconds();
-    double delta = physics_delta();
-
-    while (game.running) {
-        double now = timer_get_ticks_in_seconds();
-        delta = now - last_count;
-        last_count = now;
-        game.physics_tick_count += delta;
-
-        process_events();
-        physics_process();
-        process(delta);
-        draw();
-    }
-
-    return 0;
+    return engine_main_loop(game.settings);
 }
 
-void initialize_game(void)
+void initialize(void)
 {
-    sdl2_initialize();
-
-    SDL_LogSetAllPriority(SDL_LOG_PRIORITY_INFO);
-
-    initialize_settings();
-
-    game.running = setup_window() && setup_renderer();
-
-    setup_game();
-}
-
-void initialize_settings(void)
-{
-    game.settings = (Settings){
-        .window = {
-            .title = "PONG",
-            .width = 800,
-            .height = 600
-        },
-        .renderer = {
-            .clear_color = {
-                0, 0, 0, SDL_ALPHA_OPAQUE
-            },
-            .vsync = true
-        },
-        .physics = {
-            .fps = 60.0
-        }
-    };
-}
-
-bool setup_window(void)
-{
-    game.window = sdl2_create_window(
-        game.settings.window.title,
-        game.settings.window.width, game.settings.window.height
-    );
-    if (game.window == NULL) {
-        SDL_LogError(SDL_LOG_CATEGORY_VIDEO,
-            "Couldn't create SDL Window\n\tError: %s\n", SDL_GetError());
-        return false;
-    }
-
-    return true;
-}
-
-bool setup_renderer(void)
-{
-    Uint32 flags = SDL_RENDERER_ACCELERATED;
-    if (game.settings.renderer.vsync) {
-        flags |= SDL_RENDERER_PRESENTVSYNC;
-    }
-
-    game.renderer = sdl2_create_renderer_with_flags(game.window, flags);
-    if (game.renderer == NULL) {
-        SDL_LogError(SDL_LOG_CATEGORY_VIDEO,
-            "Couldn't create SDL Renderer\n\tError: %s\n", SDL_GetError());
-        return false;
-    }
-
-    return true;
-}
-
-void setup_game(void)
-{
-    game.physics_tick_count = 0.0;
-
     SDL_Color white = {255, 255, 255, SDL_ALPHA_OPAQUE};
     float center_x = window_width() / 2.0f;
     float center_y = window_height() / 2.0f;
@@ -231,99 +112,50 @@ void setup_game(void)
     };
 }
 
-void finalize_game(void)
-{
-    destroy_renderer();
-    destroy_window();
-
-    sdl2_finalize();
-}
-
-void destroy_renderer(void)
-{
-    sdl2_destroy_renderer(game.renderer);
-    game.renderer = NULL;
-}
-
-void destroy_window(void)
-{
-    sdl2_destroy_window(game.window);
-    game.window = NULL;
-}
-
-void process_events(void)
-{
-    SDL_Event event;
-    while (SDL_PollEvent(&event)) {
-        process_event(&event);
-    }
-}
-
-void process_event(SDL_Event* event)
+void process_events(SDL_Event* event)
 {
     if (event->type == SDL_QUIT) {
-        game.running = false;
+        engine_quit_loop();
     }
 
     if (event->type == SDL_KEYDOWN) {
         if (event->key.keysym.sym == SDLK_ESCAPE) {
-            game.running = false;
+            engine_quit_loop();
         }
     }
 
     player_input(player1(), event);
 }
 
-void physics_process(void)
+void fixed_update(double delta)
 {
-    if (game.physics_tick_count <= physics_delta()) {
-        return;
-    }
-
-    player_physics_process(player1(), physics_delta());
+    player_fixed_update(player1(), delta);
 
     cpu_input(player2());
-    player_physics_process(player2(), physics_delta());
-
-    game.physics_tick_count -= physics_delta();
+    player_fixed_update(player2(), delta);
 }
 
-void process(double delta)
+void update(double delta)
 {
-    player_process(player1(), delta);
+    player_update(player1(), delta);
 }
 
-void player_process(Player* player, double delta)
+void player_update(Player* player, double delta)
 {
 }
 
-void draw(void)
+void render(void)
 {
-    renderer_clear();
-
     object_render(player1());
     object_render(player2());
     object_render(ball());
-
-    renderer_present();
-}
-
-void renderer_clear(void)
-{
-    SDL_Color color = clear_color();
-    SDL_SetRenderDrawColor(game.renderer, color.r, color.g, color.b, color.a);
-    SDL_RenderClear(game.renderer);
 }
 
 void renderer_draw_rect(SDL_Rect rect, SDL_Color color)
 {
-    SDL_SetRenderDrawColor(game.renderer, color.r, color.g, color.b, color.a);
-    SDL_RenderFillRect(game.renderer, &rect);
-}
-
-void renderer_present(void)
-{
-    SDL_RenderPresent(game.renderer);
+    SDL_SetRenderDrawColor(engine_renderer(),
+        color.r, color.g, color.b, color.a);
+    SDL_RenderFillRect(engine_renderer(), &rect);
 }
 
 void player_input(Player* player, SDL_Event* event)
@@ -356,7 +188,7 @@ void cpu_input(Player* player)
 {
 }
 
-void player_physics_process(Player* player, double delta)
+void player_fixed_update(Player* player, double delta)
 {
     vec3 velocity = {0};
     velocity[1] = player->actions[ACTION_DOWN] - player->actions[ACTION_UP];
@@ -376,21 +208,6 @@ int window_width(void)
 int window_height(void)
 {
     return game.settings.window.height;
-}
-
-SDL_Color clear_color(void)
-{
-    return game.settings.renderer.clear_color;
-}
-
-double physics_fps(void)
-{
-    return game.settings.physics.fps;
-}
-
-double physics_delta(void)
-{
-    return 1.0 / physics_fps();
 }
 
 Player* player1(void)
