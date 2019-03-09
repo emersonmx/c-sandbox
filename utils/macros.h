@@ -1,5 +1,5 @@
-#ifndef UTILS_MACROS_H
-#define UTILS_MACROS_H
+#ifndef CSB_UTILS_MACROS_H
+#define CSB_UTILS_MACROS_H
 
 #include <assert.h>
 
@@ -16,4 +16,4 @@
 #define RETURN_IF_NULL(X) RETURN_VALUE_IF_NULL(X,)
 #define ASSERT_VALID_OBJECT(X) assert(X != NULL)
 
-#endif /* UTILS_MACROS_H */
+#endif /* CSB_UTILS_MACROS_H */

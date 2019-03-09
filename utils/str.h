@@ -1,5 +1,5 @@
-#ifndef UTILS_STR_H
-#define UTILS_STR_H
+#ifndef CSB_UTILS_STR_H
+#define CSB_UTILS_STR_H
 
 #include <stdlib.h>
 #include <string.h>
@@ -29,4 +29,4 @@ char* str_format(const char* format, ...)
 }
 #endif
 
-#endif /* UTILS_STR_H */
+#endif /* CSB_UTILS_STR_H */

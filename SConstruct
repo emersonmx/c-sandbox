@@ -4,6 +4,9 @@ BUILD_ROOT = 'build'
 DEFAULT_CFLAGS = [
     '-std=c11',
 ]
+DEFAULT_CXXFLAGS = [
+    '-std=c++17',
+]
 DEBUG_CFLAGS = [
     '-g', '-Wall', '-Wextra', '-Wpedantic',
     '-Wformat=2', '-Wno-unused-parameter', '-Wshadow',
@@ -13,6 +16,7 @@ DEBUG_CFLAGS = [
 
 env = Environment(
     CFLAGS=DEFAULT_CFLAGS,
+    CXXFLAGS=DEFAULT_CXXFLAGS,
     CPPPATH=['#']
 )
 
