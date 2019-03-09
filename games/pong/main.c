@@ -67,6 +67,8 @@ void finalize_game(void);
 void destroy_renderer(void);
 void destroy_window(void);
 
+void physics_process(void);
+
 void renderer_clear(void);
 void renderer_draw_rect(SDL_Rect rect, SDL_Color color);
 void renderer_present(void);
@@ -119,8 +121,7 @@ int main(void)
         cpu_input(player2());
 
         if (a_physics_tick >= physics_delta()) {
-            player_physics_process(player1(), physics_delta());
-            player_physics_process(player2(), physics_delta());
+            physics_process();
             a_physics_tick -= physics_delta();
         }
 
@@ -235,6 +236,12 @@ void destroy_window(void)
 {
     SDL_DestroyWindow(game.window);
     game.window = NULL;
+}
+
+void physics_process(void)
+{
+    player_physics_process(player1(), physics_delta());
+    player_physics_process(player2(), physics_delta());
 }
 
 void renderer_clear(void)
