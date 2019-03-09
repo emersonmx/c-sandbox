@@ -68,6 +68,7 @@ void finalize_game(void);
 void destroy_renderer(void);
 void destroy_window(void);
 
+void process_events(void);
 void process_event(SDL_Event* event);
 void physics_process(void);
 void process(double delta);
@@ -78,8 +79,9 @@ void renderer_draw_rect(SDL_Rect rect, SDL_Color color);
 void renderer_present(void);
 
 void player_input(Player* player, SDL_Event* event);
-void cpu_input(Player* player);
 void player_physics_process(Player* player, double delta);
+void player_process(Player* player, double delta);
+void cpu_process(Player* player, double delta);
 void player_render(Player* player);
 
 int window_width(void);
@@ -107,23 +109,9 @@ int main(void)
         last_count = now;
         game.physics_tick_count += delta;
 
-        SDL_Event event;
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                game.running = false;
-            }
-            if (event.type == SDL_KEYDOWN) {
-                if (event.key.keysym.sym == SDLK_ESCAPE) {
-                    game.running = false;
-                }
-            }
-
-            process_event(&event);
-        }
-
+        process_events();
         physics_process();
         process(delta);
-
         draw();
     }
 
@@ -234,8 +222,26 @@ void destroy_window(void)
     game.window = NULL;
 }
 
+void process_events(void)
+{
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        process_event(&event);
+    }
+}
+
 void process_event(SDL_Event* event)
 {
+    if (event->type == SDL_QUIT) {
+        game.running = false;
+    }
+
+    if (event->type == SDL_KEYDOWN) {
+        if (event->key.keysym.sym == SDLK_ESCAPE) {
+            game.running = false;
+        }
+    }
+
     player_input(player1(), event);
 }
 
@@ -253,7 +259,16 @@ void physics_process(void)
 
 void process(double delta)
 {
-    cpu_input(player2());
+    player_process(player1(), delta);
+    cpu_process(player2(), delta);
+}
+
+void player_process(Player* player, double delta)
+{
+}
+
+void cpu_process(Player* player, double delta)
+{
 }
 
 void draw(void)
@@ -308,10 +323,6 @@ void player_input(Player* player, SDL_Event* event)
             player->actions[ACTION_DOWN] = false;
         }
     }
-}
-
-void cpu_input(Player* player)
-{
 }
 
 void player_physics_process(Player* player, double delta)
