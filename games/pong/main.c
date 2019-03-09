@@ -51,6 +51,7 @@ typedef struct Game {
     SDL_Window* window;
     SDL_Renderer* renderer;
     bool running;
+    double physics_tick_count;
 
     Player players[2];
 } Game;
@@ -97,7 +98,6 @@ int main(void)
 
     initialize_game();
 
-    double a_physics_tick = 0.0;
     double last_count = timer_get_ticks_in_seconds();
     double delta = physics_delta();
 
@@ -105,7 +105,7 @@ int main(void)
         double now = timer_get_ticks_in_seconds();
         delta = now - last_count;
         last_count = now;
-        a_physics_tick += delta;
+        game.physics_tick_count += delta;
 
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -121,11 +121,7 @@ int main(void)
             process_event(&event);
         }
 
-        if (a_physics_tick >= physics_delta()) {
-            physics_process();
-            a_physics_tick -= physics_delta();
-        }
-
+        physics_process();
         process(delta);
 
         draw();
@@ -201,6 +197,8 @@ bool setup_renderer(void)
 
 void setup_game(void)
 {
+    game.physics_tick_count = 0.0;
+
     float center_y = window_height()/2.0f;
     game.players[PLAYER1] = (Player){
         .color = {255, 255, 255, SDL_ALPHA_OPAQUE},
@@ -243,8 +241,14 @@ void process_event(SDL_Event* event)
 
 void physics_process(void)
 {
+    if (game.physics_tick_count <= physics_delta()) {
+        return;
+    }
+
     player_physics_process(player1(), physics_delta());
     player_physics_process(player2(), physics_delta());
+
+    game.physics_tick_count -= physics_delta();
 }
 
 void process(double delta)
