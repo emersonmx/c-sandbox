@@ -11,5 +11,5 @@ env = conf.Finish()
 
 env.Program('pong', [
     'main.c',
-    '#sdl2/sdl2.c'
+    '#sdl2/sdl2.c',
 ])
