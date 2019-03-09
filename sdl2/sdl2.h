@@ -2,6 +2,7 @@
 #define CSB_SDL2_SDL2_H
 
 #include <stdbool.h>
+
 #include <SDL.h>
 
 #ifdef __cplusplus
