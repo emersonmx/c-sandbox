@@ -160,9 +160,9 @@ void renderer_draw_rect(SDL_Rect rect, SDL_Color color)
 
 void player_input(Player* player, SDL_Event* event)
 {
-    int up_keys[2] = {SDLK_UP, SDLK_w};
+    int up_keys[] = {SDLK_UP, SDLK_w};
     int up_keys_size = sizeof(up_keys)/sizeof(int);
-    int down_keys[2] = {SDLK_DOWN, SDLK_s};
+    int down_keys[] = {SDLK_DOWN, SDLK_s};
     int down_keys_size = sizeof(down_keys)/sizeof(int);
 
     if (event->type == SDL_KEYDOWN) {
