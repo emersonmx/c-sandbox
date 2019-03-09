@@ -11,6 +11,15 @@
 #define PLAYER1 0
 #define PLAYER2 1
 #define PLAYER_MAX_SPEED 300
+#define BALL_MAX_SPEED 300
+
+#define render_object(O) { \
+        SDL_Rect rect = (O)->rect; \
+        rect.x = (O)->position[0] - rect.w/2.0f; \
+        rect.y = (O)->position[1] - rect.h/2.0f; \
+        SDL_Color color = (O)->color; \
+        renderer_draw_rect(rect, color); \
+    }
 
 typedef enum {
     ACTION_UP, ACTION_DOWN, ACTIONS_SIZE
@@ -46,6 +55,13 @@ typedef struct Player {
     bool actions[ACTIONS_SIZE];
 } Player;
 
+typedef struct Ball {
+    SDL_Color color;
+    SDL_Rect rect;
+    vec3 position;
+    float speed;
+} Ball;
+
 typedef struct Game {
     Settings settings;
     SDL_Window* window;
@@ -54,6 +70,7 @@ typedef struct Game {
     double physics_tick_count;
 
     Player players[2];
+    Ball ball;
 } Game;
 
 
@@ -82,7 +99,6 @@ void player_input(Player* player, SDL_Event* event);
 void cpu_input(Player* player);
 void player_physics_process(Player* player, double delta);
 void player_process(Player* player, double delta);
-void player_render(Player* player);
 
 int window_width(void);
 int window_height(void);
@@ -91,6 +107,7 @@ double physics_fps(void);
 double physics_delta(void);
 Player* player1(void);
 Player* player2(void);
+Ball* ball(void);
 
 bool in_array(int needle, int* array, size_t size);
 
@@ -187,22 +204,30 @@ void setup_game(void)
 {
     game.physics_tick_count = 0.0;
 
-    SDL_Color black = {255, 255, 255, SDL_ALPHA_OPAQUE};
-    float center_y = window_height()/2.0f;
+    SDL_Color white = {255, 255, 255, SDL_ALPHA_OPAQUE};
+    float center_x = window_width() / 2.0f;
+    float center_y = window_height() / 2.0f;
     int horizontal_margin = 15;
     game.players[PLAYER1] = (Player){
-        .color = black,
+        .color = white,
         .rect = {0, 0, 20, 80},
         .position = {horizontal_margin, center_y, 0},
         .speed = PLAYER_MAX_SPEED,
         .actions = {0}
     };
     game.players[PLAYER2] = (Player){
-        .color = black,
+        .color = white,
         .rect = {200, 0, 20, 80},
         .position = {window_width() - horizontal_margin, center_y, 0},
         .speed = PLAYER_MAX_SPEED,
         .actions = {0}
+    };
+
+    game.ball = (Ball){
+        .color = white,
+        .rect = {center_x, center_y, 10, 10},
+        .position = {center_x, center_y, 0},
+        .speed = BALL_MAX_SPEED
     };
 }
 
@@ -274,8 +299,9 @@ void draw(void)
 {
     renderer_clear();
 
-    player_render(player1());
-    player_render(player2());
+    render_object(player1());
+    render_object(player2());
+    render_object(ball());
 
     renderer_present();
 }
@@ -340,15 +366,6 @@ void player_physics_process(Player* player, double delta)
     glm_vec3_add(player->position, tmp, player->position);
 }
 
-void player_render(Player* player)
-{
-    SDL_Rect rect = player->rect;
-    rect.x = player->position[0] - rect.w/2.0f;
-    rect.y = player->position[1] - rect.h/2.0f;
-    SDL_Color color = player->color;
-    renderer_draw_rect(rect, color);
-}
-
 int window_width(void)
 {
     return game.settings.window.width;
@@ -382,6 +399,11 @@ Player* player1(void)
 Player* player2(void)
 {
     return &game.players[PLAYER2];
+}
+
+Ball* ball(void)
+{
+    return &game.ball;
 }
 
 bool in_array(int needle, int* array, size_t size)
