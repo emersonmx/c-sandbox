@@ -92,7 +92,7 @@ int main(void)
 
     initialize_game();
 
-    double a_second = 0.0;
+    double a_physics_tick = 0.0;
     double last_count = timer_get_ticks_in_seconds();
     double delta = physics_delta();
 
@@ -100,7 +100,7 @@ int main(void)
         double now = timer_get_ticks_in_seconds();
         delta = now - last_count;
         last_count = now;
-        a_second += delta;
+        a_physics_tick += delta;
 
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -118,10 +118,10 @@ int main(void)
 
         cpu_input(player2());
 
-        if (a_second >= physics_delta()) {
+        if (a_physics_tick >= physics_delta()) {
             player_physics_process(player1(), physics_delta());
             player_physics_process(player2(), physics_delta());
-            a_second -= physics_delta();
+            a_physics_tick -= physics_delta();
         }
 
         // process
