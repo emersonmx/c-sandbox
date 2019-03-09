@@ -10,5 +10,6 @@ if not conf.CheckLib('m'):
 env = conf.Finish()
 
 env.Program('pong', [
-    'main.c'
+    'main.c',
+    '#sdl2/sdl2.c'
 ])

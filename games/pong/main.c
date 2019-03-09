@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#include <SDL.h>
+#include <sdl2/sdl2.h>
 
 #include <cglm/vec3.h>
 
@@ -137,6 +137,8 @@ int main(void)
 
 void initialize_game(void)
 {
+    sdl2_initialize();
+
     SDL_LogSetAllPriority(SDL_LOG_PRIORITY_INFO);
 
     initialize_settings();
@@ -168,11 +170,9 @@ void initialize_settings(void)
 
 bool setup_window(void)
 {
-    game.window = SDL_CreateWindow(
+    game.window = sdl2_create_window(
         game.settings.window.title,
-        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        game.settings.window.width, game.settings.window.height,
-        SDL_WINDOW_SHOWN
+        game.settings.window.width, game.settings.window.height
     );
     if (game.window == NULL) {
         SDL_LogError(SDL_LOG_CATEGORY_VIDEO,
@@ -190,7 +190,7 @@ bool setup_renderer(void)
         flags |= SDL_RENDERER_PRESENTVSYNC;
     }
 
-    game.renderer = SDL_CreateRenderer(game.window, -1, flags);
+    game.renderer = sdl2_create_renderer_with_flags(game.window, flags);
     if (game.renderer == NULL) {
         SDL_LogError(SDL_LOG_CATEGORY_VIDEO,
             "Couldn't create SDL Renderer\n\tError: %s\n", SDL_GetError());
@@ -235,17 +235,19 @@ void finalize_game(void)
 {
     destroy_renderer();
     destroy_window();
+
+    sdl2_finalize();
 }
 
 void destroy_renderer(void)
 {
-    SDL_DestroyRenderer(game.renderer);
+    sdl2_destroy_renderer(game.renderer);
     game.renderer = NULL;
 }
 
 void destroy_window(void)
 {
-    SDL_DestroyWindow(game.window);
+    sdl2_destroy_window(game.window);
     game.window = NULL;
 }
 
