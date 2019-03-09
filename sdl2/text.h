@@ -1,5 +1,5 @@
-#ifndef SDL2_TEXT_H
-#define SDL2_TEXT_H
+#ifndef CSB_SDL2_TEXT_H
+#define CSB_SDL2_TEXT_H
 
 #include <SDL_render.h>
 #include <SDL_ttf.h>
@@ -27,4 +27,4 @@ void text_clear(Text* text);
 }
 #endif
 
-#endif /* SDL2_TEXT_H */
+#endif /* CSB_SDL2_TEXT_H */
