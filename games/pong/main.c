@@ -26,6 +26,9 @@ typedef struct Settings {
         SDL_Color clear_color;
         bool vsync;
     } renderer;
+    struct {
+        double fps;
+    } physics;
 } Settings;
 
 typedef struct Engine {
@@ -76,6 +79,8 @@ void player_render(Player* player);
 int window_width(void);
 int window_height(void);
 SDL_Color clear_color(void);
+double physics_fps(void);
+double physics_delta(void);
 Player* player1(void);
 Player* player2(void);
 
@@ -87,11 +92,9 @@ int main(void)
 
     initialize_game();
 
-    double physics_fps = 60.0;
-    double physics_delta = 1.0 / physics_fps;
     double a_second = 0.0;
     double last_count = timer_get_ticks_in_seconds();
-    double delta = physics_delta;
+    double delta = physics_delta();
 
     while (game.running) {
         double now = timer_get_ticks_in_seconds();
@@ -115,11 +118,13 @@ int main(void)
 
         cpu_input(player2());
 
-        if (a_second >= physics_delta) {
-            player_physics_process(player1(), physics_delta);
-            player_physics_process(player2(), physics_delta);
-            a_second -= physics_delta;
+        if (a_second >= physics_delta()) {
+            player_physics_process(player1(), physics_delta());
+            player_physics_process(player2(), physics_delta());
+            a_second -= physics_delta();
         }
+
+        // process
 
         renderer_clear();
         player_render(player1());
@@ -154,6 +159,9 @@ void initialize_settings(void)
                 0, 0, 0, SDL_ALPHA_OPAQUE
             },
             .vsync = true
+        },
+        .physics = {
+            .fps = 60.0
         }
     };
 }
@@ -311,6 +319,16 @@ int window_height(void)
 SDL_Color clear_color(void)
 {
     return game.settings.renderer.clear_color;
+}
+
+double physics_fps(void)
+{
+    return game.settings.physics.fps;
+}
+
+double physics_delta(void)
+{
+    return 1.0 / physics_fps();
 }
 
 Player* player1(void)
