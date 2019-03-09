@@ -1,5 +1,5 @@
-#ifndef SDL2_TIMER_H
-#define SDL2_TIMER_H
+#ifndef CSB_SDL2_TIMER_H
+#define CSB_SDL2_TIMER_H
 
 #include <stdint.h>
 
@@ -23,4 +23,4 @@ uint32_t timer_get_ticks_in_milliseconds(void)
 }
 #endif
 
-#endif /* SDL2_TIMER_H */
+#endif /* CSB_SDL2_TIMER_H */
