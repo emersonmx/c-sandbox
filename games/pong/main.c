@@ -40,7 +40,7 @@ typedef struct Engine {
 
 typedef struct Player {
     SDL_Color color;
-    SDL_Rect shape;
+    SDL_Rect rect;
     vec3 position;
     float speed;
     bool actions[ACTIONS_SIZE];
@@ -187,18 +187,20 @@ void setup_game(void)
 {
     game.physics_tick_count = 0.0;
 
+    SDL_Color black = {255, 255, 255, SDL_ALPHA_OPAQUE};
     float center_y = window_height()/2.0f;
+    int horizontal_margin = 15;
     game.players[PLAYER1] = (Player){
-        .color = {255, 255, 255, SDL_ALPHA_OPAQUE},
-        .shape = {0, 0, 20, 80},
-        .position = {15, center_y, 0},
+        .color = black,
+        .rect = {0, 0, 20, 80},
+        .position = {horizontal_margin, center_y, 0},
         .speed = PLAYER_MAX_SPEED,
         .actions = {0}
     };
     game.players[PLAYER2] = (Player){
-        .color = {255, 255, 255, SDL_ALPHA_OPAQUE},
-        .shape = {200, 0, 20, 80},
-        .position = {window_width() - 15, center_y, 0},
+        .color = black,
+        .rect = {200, 0, 20, 80},
+        .position = {window_width() - horizontal_margin, center_y, 0},
         .speed = PLAYER_MAX_SPEED,
         .actions = {0}
     };
@@ -339,7 +341,7 @@ void player_physics_process(Player* player, double delta)
 
 void player_render(Player* player)
 {
-    SDL_Rect rect = player->shape;
+    SDL_Rect rect = player->rect;
     rect.x = player->position[0] - rect.w/2.0f;
     rect.y = player->position[1] - rect.h/2.0f;
     SDL_Color color = player->color;
