@@ -13,7 +13,7 @@
 #define PLAYER_MAX_SPEED 300
 #define BALL_MAX_SPEED 300
 
-#define render_object(O) { \
+#define object_render(O) { \
         SDL_Rect rect = (O)->rect; \
         rect.x = (O)->position[0] - rect.w/2.0f; \
         rect.y = (O)->position[1] - rect.h/2.0f; \
@@ -301,9 +301,9 @@ void draw(void)
 {
     renderer_clear();
 
-    render_object(player1());
-    render_object(player2());
-    render_object(ball());
+    object_render(player1());
+    object_render(player2());
+    object_render(ball());
 
     renderer_present();
 }
