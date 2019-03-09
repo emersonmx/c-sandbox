@@ -5,10 +5,16 @@
 
 #include <cglm/vec3.h>
 
+#include <sdl2/timer.h>
 #include <utils/macros.h>
 
 #define PLAYER1 0
 #define PLAYER2 1
+#define PLAYER_MAX_SPEED 300
+
+typedef enum {
+    ACTION_UP, ACTION_DOWN, ACTIONS_SIZE
+} Actions;
 
 typedef struct Settings {
     struct {
@@ -33,6 +39,8 @@ typedef struct Player {
     SDL_Color color;
     SDL_Rect shape;
     vec3 position;
+    float speed;
+    bool actions[ACTIONS_SIZE];
 } Player;
 
 typedef struct Game {
@@ -60,11 +68,18 @@ void renderer_clear(void);
 void renderer_draw_rect(SDL_Rect rect, SDL_Color color);
 void renderer_present(void);
 
+void player_input(Player* player, SDL_Event* event);
+void cpu_input(Player* player);
+void player_physics_process(Player* player, double delta);
 void player_render(Player* player);
 
 int window_width(void);
 int window_height(void);
 SDL_Color clear_color(void);
+Player* player1(void);
+Player* player2(void);
+
+bool in_array(int needle, int* array, size_t size);
 
 int main(void)
 {
@@ -72,17 +87,43 @@ int main(void)
 
     initialize_game();
 
+    double physics_fps = 60.0;
+    double physics_delta = 1.0 / physics_fps;
+    double a_second = 0.0;
+    double last_count = timer_get_ticks_in_seconds();
+    double delta = physics_delta;
+
     while (game.running) {
+        double now = timer_get_ticks_in_seconds();
+        delta = now - last_count;
+        last_count = now;
+        a_second += delta;
+
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 game.running = false;
             }
+            if (event.type == SDL_KEYDOWN) {
+                if (event.key.keysym.sym == SDLK_ESCAPE) {
+                    game.running = false;
+                }
+            }
+
+            player_input(player1(), &event);
+        }
+
+        cpu_input(player2());
+
+        if (a_second >= physics_delta) {
+            player_physics_process(player1(), physics_delta);
+            player_physics_process(player2(), physics_delta);
+            a_second -= physics_delta;
         }
 
         renderer_clear();
-        player_render(&game.players[PLAYER1]);
-        player_render(&game.players[PLAYER2]);
+        player_render(player1());
+        player_render(player2());
         renderer_present();
     }
 
@@ -157,12 +198,16 @@ void setup_game(void)
     game.players[PLAYER1] = (Player){
         .color = {255, 255, 255, SDL_ALPHA_OPAQUE},
         .shape = {0, 0, 20, 80},
-        .position = {15, center_y, 0}
+        .position = {15, center_y, 0},
+        .speed = PLAYER_MAX_SPEED,
+        .actions = {0}
     };
     game.players[PLAYER2] = (Player){
         .color = {255, 255, 255, SDL_ALPHA_OPAQUE},
         .shape = {200, 0, 20, 80},
-        .position = {window_width() - 15, center_y, 0}
+        .position = {window_width() - 15, center_y, 0},
+        .speed = PLAYER_MAX_SPEED,
+        .actions = {0}
     };
 }
 
@@ -202,6 +247,48 @@ void renderer_present(void)
     SDL_RenderPresent(game.renderer);
 }
 
+void player_input(Player* player, SDL_Event* event)
+{
+    int up_keys[2] = {SDLK_UP, SDLK_w};
+    int up_keys_size = sizeof(up_keys)/sizeof(int);
+    int down_keys[2] = {SDLK_DOWN, SDLK_s};
+    int down_keys_size = sizeof(down_keys)/sizeof(int);
+
+    if (event->type == SDL_KEYDOWN) {
+        if (in_array(event->key.keysym.sym, up_keys, up_keys_size)) {
+            player->actions[ACTION_UP] = true;
+        }
+        if (in_array(event->key.keysym.sym, down_keys, down_keys_size)) {
+            player->actions[ACTION_DOWN] = true;
+        }
+    }
+
+    if (event->type == SDL_KEYUP) {
+        if (in_array(event->key.keysym.sym, up_keys, up_keys_size)) {
+            player->actions[ACTION_UP] = false;
+        }
+        if (in_array(event->key.keysym.sym, down_keys, down_keys_size)) {
+            player->actions[ACTION_DOWN] = false;
+        }
+    }
+}
+
+void cpu_input(Player* player)
+{
+}
+
+void player_physics_process(Player* player, double delta)
+{
+    vec3 velocity = {0};
+    velocity[1] = player->actions[ACTION_DOWN] - player->actions[ACTION_UP];
+
+    vec3 tmp = {0};
+    glm_vec3_normalize_to(velocity, tmp);
+    glm_vec3_scale(tmp, player->speed * delta, tmp);
+
+    glm_vec3_add(player->position, tmp, player->position);
+}
+
 void player_render(Player* player)
 {
     SDL_Rect rect = player->shape;
@@ -224,4 +311,24 @@ int window_height(void)
 SDL_Color clear_color(void)
 {
     return game.settings.renderer.clear_color;
+}
+
+Player* player1(void)
+{
+    return &game.players[PLAYER1];
+}
+
+Player* player2(void)
+{
+    return &game.players[PLAYER2];
+}
+
+bool in_array(int needle, int* array, size_t size)
+{
+    for (size_t i = 0; i < size; ++i) {
+        if (needle == array[i]) {
+            return true;
+        }
+    }
+    return false;
 }
