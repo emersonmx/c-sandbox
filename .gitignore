@@ -3,4 +3,5 @@
 /.sconsign.dblite
 /.sconf_temp/
 *.log
+*.o
 compile_commands.json
