@@ -3,6 +3,7 @@
 #include <stdarg.h>
 
 #include <sdl2/sdl2.h>
+#include <sdl2/sdl2_ttf.h>
 #include <sdl2/macros.h>
 #include <sdl2/text.h>
 #include <utils/str.h>
@@ -89,23 +90,23 @@ void init(void)
 
     *engine = (const Engine){0};
 
-    RETURN_WITH_LOG_IF_FALSE(initialize_sdl2(),
+    RETURN_WITH_LOG_IF_FALSE(sdl2_initialize(),
         SDL_Log("Couldn't start SDL.\n\tError: %s", SDL_GetError())
     );
 
-    engine->window = create_sdl2_window_with_flags(
+    engine->window = sdl2_create_window_with_flags(
         "Resize Test", 800, 600, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
     );
     RETURN_WITH_LOG_IF_NULL(engine->window,
         SDL_Log("Couldn't create window.\n\tError: %s", SDL_GetError())
     );
 
-    engine->renderer = create_sdl2_renderer(engine->window);
+    engine->renderer = sdl2_create_renderer(engine->window);
     RETURN_WITH_LOG_IF_NULL(engine->renderer,
         SDL_Log("Couldn't create renderer.\n\tError: %s", SDL_GetError())
     );
 
-    RETURN_WITH_LOG_IF_FALSE(initialize_sdl2_ttf(),
+    RETURN_WITH_LOG_IF_FALSE(sdl2_ttf_initialize(),
         SDL_Log("Couldn't initialize SDL TTF.\n\tError: %s", TTF_GetError())
     );
 
@@ -116,8 +117,8 @@ void quit(void)
 {
     destroy_assets();
 
-    finalize_sdl2_ttf();
-    finalize_sdl2();
+    sdl2_ttf_finalize();
+    sdl2_finalize();
 
     free(engine);
 }
@@ -135,6 +136,6 @@ void destroy_assets(void)
     RETURN_IF_NULL(engine);
 
     TTF_CloseFont(engine->font);
-    destroy_sdl2_renderer(engine->renderer);
-    destroy_sdl2_window(engine->window);
+    sdl2_destroy_renderer(engine->renderer);
+    sdl2_destroy_window(engine->window);
 }

@@ -6,5 +6,6 @@ env.Program('time-test.c')
 env.Program('resize-test', [
     'resize-test.c',
     'sdl2.c',
+    'sdl2_ttf.c',
     'text.c'
 ])
