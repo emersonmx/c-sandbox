@@ -67,7 +67,10 @@ void finalize_game(void);
 void destroy_renderer(void);
 void destroy_window(void);
 
+void process_event(SDL_Event* event);
 void physics_process(void);
+void process(double delta);
+void draw(void);
 
 void renderer_clear(void);
 void renderer_draw_rect(SDL_Rect rect, SDL_Color color);
@@ -115,22 +118,17 @@ int main(void)
                 }
             }
 
-            player_input(player1(), &event);
+            process_event(&event);
         }
-
-        cpu_input(player2());
 
         if (a_physics_tick >= physics_delta()) {
             physics_process();
             a_physics_tick -= physics_delta();
         }
 
-        // process
+        process(delta);
 
-        renderer_clear();
-        player_render(player1());
-        player_render(player2());
-        renderer_present();
+        draw();
     }
 
     return 0;
@@ -238,10 +236,30 @@ void destroy_window(void)
     game.window = NULL;
 }
 
+void process_event(SDL_Event* event)
+{
+    player_input(player1(), event);
+}
+
 void physics_process(void)
 {
     player_physics_process(player1(), physics_delta());
     player_physics_process(player2(), physics_delta());
+}
+
+void process(double delta)
+{
+    cpu_input(player2());
+}
+
+void draw(void)
+{
+    renderer_clear();
+
+    player_render(player1());
+    player_render(player2());
+
+    renderer_present();
 }
 
 void renderer_clear(void)
