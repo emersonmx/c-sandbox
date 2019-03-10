@@ -1,5 +1,7 @@
 #include "ball.h"
 
+#include <utils/random.h>
+
 #include "pong.h"
 
 void ball_reset(Ball* ball)
@@ -12,42 +14,26 @@ void ball_reset(Ball* ball)
         0
     }, ball->position);
     ball->speed = BALL_MIN_SPEED;
+    glm_vec3_copy(GLM_VEC3_ZERO, ball->velocity);
+
+    // wait
 
     glm_vec3_copy(GLM_XUP, ball->velocity);
-    glm_vec3_rotate(ball->velocity, GLM_PI_4, GLM_ZUP);
-
-    ball->velocity[0] *= (rand() % 2 == 0) ? -1 : 1;
-
-    printf("%f, %f, %f\n",
-        ball->velocity[0],
-        ball->velocity[1],
-        ball->velocity[2]
+    glm_vec3_rotate(
+        ball->velocity,
+        random_number(-GLM_PI_4, GLM_PI_4),
+        GLM_ZUP
     );
 
-    // position = game_area.size / 2
-    // speed = min_speed
-    // velocity = Vector2()
-
-    // var timer = $timer
-    // timer.start()
-    // yield(timer, 'timeout')
-
-    // randomize()
-    // velocity = Vector2(1, 0)
-    // velocity = velocity.rotated(rand_range(PI/4, -PI/4))
-    // velocity.x *= -1 if randi() % 2 == 0 else 1
-}
-
-void ball_input(Ball* ball, SDL_Event* event)
-{
+    ball->velocity[0] *= random_int(0, 1) == 0 ? -1 : 1;
 }
 
 void ball_fixed_update(Ball* ball, double delta)
 {
-}
-
-void ball_update(Ball* ball, double delta)
-{
+    vec3 tmp;
+    glm_vec3_normalize_to(ball->velocity, tmp);
+    glm_vec3_scale(tmp, ball->speed * delta, tmp);
+    glm_vec3_add(ball->position, tmp, ball->position);
 }
 
 void ball_render(Ball* ball)

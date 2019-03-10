@@ -3,6 +3,6 @@ env = env.Clone()
 
 env.Program('hello-world.c')
 env.Program('random-test', [
-    '#utils/random.cpp',
+    env.Object('default-random', '#utils/random.cpp'),
     'random-test.c',
 ])

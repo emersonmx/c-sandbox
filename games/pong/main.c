@@ -2,6 +2,7 @@
 #include <stdbool.h>
 
 #include <utils/macros.h>
+#include <utils/random.h>
 
 #include "pong.h"
 #include "utils.h"
@@ -22,6 +23,8 @@ static Ball* ball(void);
 
 int main(void)
 {
+    randomize();
+
     game = pong_instance();
 
     game->settings = engine_default_settings();
@@ -128,6 +131,7 @@ void fixed_update(double delta)
 {
     player_fixed_update(player1(), delta);
     player_fixed_update(player2(), delta);
+    ball_fixed_update(ball(), delta);
 }
 
 void update(double delta)

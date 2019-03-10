@@ -25,9 +25,7 @@ typedef struct Ball {
 
 
 void ball_reset(Ball* ball);
-void ball_input(Ball* ball, SDL_Event* event);
 void ball_fixed_update(Ball* ball, double delta);
-void ball_update(Ball* ball, double delta);
 void ball_render(Ball* ball);
 
 #ifdef __cplusplus
