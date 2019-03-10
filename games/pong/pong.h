@@ -22,9 +22,11 @@ typedef struct Pong {
 
     bool actions[ACTIONS_SIZE];
 
-    Player players[2];
+    Player player1;
+    Player player2;
     Ball ball;
-    Wall walls[2];
+    Wall top_wall;
+    Wall bottom_wall;
 } Pong;
 
 

@@ -50,8 +50,8 @@ void initialize(void)
     float center_x = window_width() / 2.0f;
     float center_y = window_height() / 2.0f;
 
-    game->players[PLAYER1] = (Player){
-        .index = PLAYER1,
+    game->player1 = (Player){
+        .id = PLAYER1,
         .color = COLOR_WHITE,
         .rect = {0, 0, 20, 80},
         .position = {15, center_y, 0},
@@ -60,8 +60,8 @@ void initialize(void)
         .damp_force = PLAYER_DEFAULT_DAMP_FORCE,
         .input_velocity_func = player_controls[PLAYER1],
     };
-    game->players[PLAYER2] = (Player){
-        .index = PLAYER2,
+    game->player2 = (Player){
+        .id = PLAYER2,
         .color = COLOR_WHITE,
         .rect = {200, 0, 20, 80},
         .position = {window_width() - 15, center_y, 0},
@@ -79,12 +79,12 @@ void initialize(void)
     ball_reset(ball());
     ball_play(ball());
 
-    game->walls[TOP_WALL] = (Wall){
+    game->top_wall = (Wall){
         .color = COLOR_WHITE,
         .rect = {0, 0, window_width(), 10},
         .position = {center_x, 5},
     };
-    game->walls[BOTTOM_WALL] = (Wall){
+    game->bottom_wall = (Wall){
         .color = COLOR_WHITE,
         .rect = {0, 0, window_width(), 10},
         .position = {center_x, window_height() - 5},
@@ -138,12 +138,12 @@ int window_height(void)
 
 Player* player1(void)
 {
-    return &game->players[PLAYER1];
+    return &game->player1;
 }
 
 Player* player2(void)
 {
-    return &game->players[PLAYER2];
+    return &game->player2;
 }
 
 Ball* ball(void)
@@ -153,10 +153,10 @@ Ball* ball(void)
 
 Wall* top_wall(void)
 {
-    return &game->walls[TOP_WALL];
+    return &game->top_wall;
 }
 
 Wall* bottom_wall(void)
 {
-    return &game->walls[BOTTOM_WALL];
+    return &game->bottom_wall;
 }

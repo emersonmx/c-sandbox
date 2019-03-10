@@ -7,9 +7,6 @@
 
 #include "render.h"
 
-#define TOP_WALL 0
-#define BOTTOM_WALL 1
-
 #ifdef __cplusplus
 extern "C" {
 #endif

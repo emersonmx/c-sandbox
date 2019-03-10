@@ -46,13 +46,13 @@ void ball_fixed_update(Ball* ball, double delta)
 {
     vec3 tmp;
     Pong* game = pong_instance();
-    Player* p1 = &game->players[PLAYER1];
-    Player* p2 = &game->players[PLAYER2];
+    Player* p1 = &game->player1;
+    Player* p2 = &game->player2;
     SDL_Rect br = ball_rect(ball);
     SDL_Rect p1r = player_rect(p1);
     SDL_Rect p2r = player_rect(p2);
-    SDL_Rect twr = wall_rect(&game->walls[TOP_WALL]);
-    SDL_Rect bwr = wall_rect(&game->walls[BOTTOM_WALL]);
+    SDL_Rect twr = wall_rect(&game->top_wall);
+    SDL_Rect bwr = wall_rect(&game->bottom_wall);
 
     if (SDL_HasIntersection(&br, &p1r)) {
         bool is_moving = game->actions[PLAYER1_ACTION_UP]
