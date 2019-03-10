@@ -7,7 +7,8 @@
 
 static void change_direction(Ball* ball, vec3 anchor);
 static void increate_min_speed(Ball* ball, double delta);
-static void decrease_speed(Ball* ball, double delta);
+static void decrease_speed_defaut(Ball* ball, double delta);
+static void decrease_speed(Ball* ball, double slowdown);
 
 SDL_Rect ball_rect(Ball* ball)
 {
@@ -56,7 +57,9 @@ void ball_fixed_update(Ball* ball, double delta)
         bool is_moving = game->actions[PLAYER1_ACTION_UP]
             || game->actions[PLAYER1_ACTION_DOWN];
         if (is_moving) {
-            ball->speed = fmax(p1->speed*2, ball->speed);
+            ball->speed = fmax(p1->speed*p1->hit_force, ball->speed);
+        } else {
+            decrease_speed(ball, ball->speed * p2->damp_force);
         }
 
         glm_vec3_zero(tmp);
@@ -68,7 +71,9 @@ void ball_fixed_update(Ball* ball, double delta)
         bool is_moving = game->actions[PLAYER2_ACTION_UP]
             || game->actions[PLAYER2_ACTION_DOWN];
         if (is_moving) {
-            ball->speed = fmax(p2->speed*2, ball->speed);
+            ball->speed = fmax(p2->speed*p1->hit_force, ball->speed);
+        } else {
+            decrease_speed(ball, ball->speed * p2->damp_force);
         }
 
         glm_vec3_zero(tmp);
@@ -78,16 +83,16 @@ void ball_fixed_update(Ball* ball, double delta)
 
     if (SDL_HasIntersection(&br, &twr)) {
         ball->velocity[1] = fabs(ball->velocity[1]);
-        decrease_speed(ball, delta);
+        decrease_speed_defaut(ball, delta);
     }
 
     if (SDL_HasIntersection(&br, &bwr)) {
         ball->velocity[1] = -fabs(ball->velocity[1]);
-        decrease_speed(ball, delta);
+        decrease_speed_defaut(ball, delta);
     }
 
     increate_min_speed(ball, delta);
-    decrease_speed(ball, delta);
+    decrease_speed_defaut(ball, delta);
 
     glm_vec3_zero(tmp);
     glm_vec3_normalize_to(ball->velocity, tmp);
@@ -109,9 +114,13 @@ void increate_min_speed(Ball* ball, double delta)
     );
 }
 
-void decrease_speed(Ball* ball, double delta)
+void decrease_speed_defaut(Ball* ball, double delta)
 {
-    double slowdown = BALL_SPEED_STEP * BALL_SPEED_STEP_MULTIPLIER * delta;
+    decrease_speed(ball, BALL_SPEED_STEP * delta);
+}
+
+void decrease_speed(Ball* ball, double slowdown)
+{
     ball->speed = fmin(
         fmax(ball->speed - slowdown, ball->min_speed),
         ball->max_speed

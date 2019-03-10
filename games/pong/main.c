@@ -59,6 +59,8 @@ void initialize(void)
         .rect = {0, 0, 20, 80},
         .position = {15, center_y, 0},
         .speed = PLAYER_MAX_SPEED,
+        .hit_force = PLAYER_DEFAULT_HIT_FORCE,
+        .damp_force = PLAYER_DEFAULT_DAMP_FORCE,
         .input_velocity_func = player_controls[PLAYER1],
     };
     game->players[PLAYER2] = (Player){
@@ -67,6 +69,8 @@ void initialize(void)
         .rect = {200, 0, 20, 80},
         .position = {window_width() - 15, center_y, 0},
         .speed = PLAYER_MAX_SPEED,
+        .hit_force = PLAYER_DEFAULT_HIT_FORCE,
+        .damp_force = PLAYER_DEFAULT_DAMP_FORCE,
         .input_velocity_func = player_controls[PLAYER2],
     };
 
@@ -87,39 +91,6 @@ void initialize(void)
         .rect = {0, 0, window_width(), 10},
         .position = {center_x, window_height() - 5},
     };
-}
-
-void pong_process_event(SDL_Event* event)
-{
-    if (event->type == SDL_KEYDOWN) {
-        if (event->key.keysym.sym == SDLK_w) {
-            game->actions[PLAYER1_ACTION_UP] = true;
-        }
-        if (event->key.keysym.sym == SDLK_s) {
-            game->actions[PLAYER1_ACTION_DOWN] = true;
-        }
-        if (event->key.keysym.sym == SDLK_UP) {
-            game->actions[PLAYER2_ACTION_UP] = true;
-        }
-        if (event->key.keysym.sym == SDLK_DOWN) {
-            game->actions[PLAYER2_ACTION_DOWN] = true;
-        }
-    }
-
-    if (event->type == SDL_KEYUP) {
-        if (event->key.keysym.sym == SDLK_w) {
-            game->actions[PLAYER1_ACTION_UP] = false;
-        }
-        if (event->key.keysym.sym == SDLK_s) {
-            game->actions[PLAYER1_ACTION_DOWN] = false;
-        }
-        if (event->key.keysym.sym == SDLK_UP) {
-            game->actions[PLAYER2_ACTION_UP] = false;
-        }
-        if (event->key.keysym.sym == SDLK_DOWN) {
-            game->actions[PLAYER2_ACTION_DOWN] = false;
-        }
-    }
 }
 
 void process_events(SDL_Event* event)

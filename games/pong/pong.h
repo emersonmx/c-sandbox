@@ -29,6 +29,7 @@ typedef struct Pong {
 
 
 Pong* pong_instance(void);
+void pong_process_event(SDL_Event* event);
 
 #ifdef __cplusplus
 }

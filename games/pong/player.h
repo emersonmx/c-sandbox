@@ -10,6 +10,8 @@
 #define PLAYER1 0
 #define PLAYER2 1
 #define PLAYER_MAX_SPEED 300
+#define PLAYER_DEFAULT_HIT_FORCE 2
+#define PLAYER_DEFAULT_DAMP_FORCE 0.2
 
 #ifdef __cplusplus
 extern "C" {
@@ -22,7 +24,9 @@ typedef struct Player {
     SDL_Color color;
     SDL_Rect rect;
     vec3 position;
-    float speed;
+    double speed;
+    double hit_force;
+    double damp_force;
 
     PlayerInputVelocityFunc input_velocity_func;
 } Player;
