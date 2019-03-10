@@ -22,8 +22,6 @@ static Ball* ball(void);
 
 int main(void)
 {
-    srand(time(0));
-
     game = pong_instance();
 
     game->settings = engine_default_settings();
