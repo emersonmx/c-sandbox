@@ -5,7 +5,9 @@
 #include "pong.h"
 #include "object.h"
 
-static void change_direction(Ball* ball, vec3 direction);
+static void change_direction(Ball* ball, vec3 anchor);
+static void increate_min_speed(Ball* ball, double delta);
+static void decrease_speed(Ball* ball, double delta);
 
 SDL_Rect ball_rect(Ball* ball)
 {
@@ -21,7 +23,9 @@ void ball_reset(Ball* ball)
         game->settings.window.height / 2.0f,
         0
     }, ball->position);
-    ball->speed = BALL_MIN_SPEED;
+    ball->speed = BALL_DEFAULT_MIN_SPEED;
+    ball->min_speed = BALL_DEFAULT_MIN_SPEED;
+    ball->max_speed = BALL_DEFAULT_MAX_SPEED;
     glm_vec3_copy(GLM_VEC3_ZERO, ball->velocity);
 
     // wait
@@ -38,9 +42,8 @@ void ball_reset(Ball* ball)
 
 void ball_fixed_update(Ball* ball, double delta)
 {
-    Pong* game = pong_instance();
-
     vec3 tmp;
+    Pong* game = pong_instance();
     Player* p1 = &game->players[PLAYER1];
     Player* p2 = &game->players[PLAYER2];
     SDL_Rect br = ball_rect(ball);
@@ -50,36 +53,68 @@ void ball_fixed_update(Ball* ball, double delta)
     SDL_Rect bwr = wall_rect(&game->walls[BOTTOM_WALL]);
 
     if (SDL_HasIntersection(&br, &p1r)) {
+        bool is_moving = game->actions[PLAYER1_ACTION_UP]
+            || game->actions[PLAYER1_ACTION_DOWN];
+        if (is_moving) {
+            ball->speed = fmax(p1->speed*2, ball->speed);
+        }
+
+        glm_vec3_zero(tmp);
         player_anchor(p1, tmp);
-        glm_vec3_sub(ball->position, tmp, tmp);
         change_direction(ball, tmp);
     }
 
     if (SDL_HasIntersection(&br, &p2r)) {
+        bool is_moving = game->actions[PLAYER2_ACTION_UP]
+            || game->actions[PLAYER2_ACTION_DOWN];
+        if (is_moving) {
+            ball->speed = fmax(p2->speed*2, ball->speed);
+        }
+
+        glm_vec3_zero(tmp);
         player_anchor(p2, tmp);
-        glm_vec3_sub(ball->position, tmp, tmp);
         change_direction(ball, tmp);
     }
 
     if (SDL_HasIntersection(&br, &twr)) {
         ball->velocity[1] = fabs(ball->velocity[1]);
+        decrease_speed(ball, delta);
     }
 
     if (SDL_HasIntersection(&br, &bwr)) {
         ball->velocity[1] = -fabs(ball->velocity[1]);
+        decrease_speed(ball, delta);
     }
 
+    increate_min_speed(ball, delta);
+    decrease_speed(ball, delta);
+
+    glm_vec3_zero(tmp);
     glm_vec3_normalize_to(ball->velocity, tmp);
     glm_vec3_scale(tmp, ball->speed * delta, tmp);
     glm_vec3_add(ball->position, tmp, ball->position);
 }
 
-void change_direction(Ball* ball, vec3 direction)
+void change_direction(Ball* ball, vec3 anchor)
 {
-    glm_vec3_rotate(
-        ball->velocity,
-        glm_vec3_angle(ball->velocity, direction),
-        GLM_ZUP
+    glm_vec3_sub(ball->position, anchor, ball->velocity);
+}
+
+void increate_min_speed(Ball* ball, double delta)
+{
+    float speedup = BALL_SPEED_STEP * delta;
+    ball->min_speed = fmin(
+        ball->min_speed + speedup,
+        ball->max_speed
+    );
+}
+
+void decrease_speed(Ball* ball, double delta)
+{
+    double slowdown = BALL_SPEED_STEP * BALL_SPEED_STEP_MULTIPLIER * delta;
+    ball->speed = fmin(
+        fmax(ball->speed - slowdown, ball->min_speed),
+        ball->max_speed
     );
 }
 

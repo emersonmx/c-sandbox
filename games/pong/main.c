@@ -74,7 +74,6 @@ void initialize(void)
         .color = white,
         .rect = {center_x, center_y, 10, 10},
         .position = {0},
-        .speed = BALL_MAX_SPEED
     };
     ball_reset(ball());
 

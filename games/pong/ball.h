@@ -8,8 +8,9 @@
 #include "render.h"
 
 #define BALL_SPEED_STEP 10
-#define BALL_MIN_SPEED 100
-#define BALL_MAX_SPEED 1000
+#define BALL_SPEED_STEP_MULTIPLIER 30
+#define BALL_DEFAULT_MIN_SPEED 100
+#define BALL_DEFAULT_MAX_SPEED 1000
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,6 +22,8 @@ typedef struct Ball {
     vec3 position;
     vec3 velocity;
     float speed;
+    float min_speed;
+    float max_speed;
 } Ball;
 
 
