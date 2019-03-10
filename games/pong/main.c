@@ -20,6 +20,8 @@ static int window_height(void);
 static Player* player1(void);
 static Player* player2(void);
 static Ball* ball(void);
+static Wall* top_wall(void);
+static Wall* bottom_wall(void);
 
 int main(void)
 {
@@ -50,13 +52,12 @@ void initialize(void)
     SDL_Color white = {255, 255, 255, SDL_ALPHA_OPAQUE};
     float center_x = window_width() / 2.0f;
     float center_y = window_height() / 2.0f;
-    int horizontal_margin = 15;
 
     game->players[PLAYER1] = (Player){
         .index = PLAYER1,
         .color = white,
         .rect = {0, 0, 20, 80},
-        .position = {horizontal_margin, center_y, 0},
+        .position = {15, center_y, 0},
         .speed = PLAYER_MAX_SPEED,
         .input_velocity_func = player_controls[PLAYER1],
     };
@@ -64,7 +65,7 @@ void initialize(void)
         .index = PLAYER2,
         .color = white,
         .rect = {200, 0, 20, 80},
-        .position = {window_width() - horizontal_margin, center_y, 0},
+        .position = {window_width() - 15, center_y, 0},
         .speed = PLAYER_MAX_SPEED,
         .input_velocity_func = player_controls[PLAYER2],
     };
@@ -75,8 +76,18 @@ void initialize(void)
         .position = {0},
         .speed = BALL_MAX_SPEED
     };
-
     ball_reset(ball());
+
+    game->walls[TOP_WALL] = (Wall){
+        .color = white,
+        .rect = {0, 0, window_width(), 10},
+        .position = {center_x, 5},
+    };
+    game->walls[BOTTOM_WALL] = (Wall){
+        .color = white,
+        .rect = {0, 0, window_width(), 10},
+        .position = {center_x, window_height() - 5},
+    };
 }
 
 void pong_process_event(SDL_Event* event)
@@ -144,6 +155,8 @@ void render(void)
     player_render(player1());
     player_render(player2());
     ball_render(ball());
+    wall_render(top_wall());
+    wall_render(bottom_wall());
 }
 
 int window_width(void)
@@ -169,4 +182,14 @@ Player* player2(void)
 Ball* ball(void)
 {
     return &game->ball;
+}
+
+Wall* top_wall(void)
+{
+    return &game->walls[TOP_WALL];
+}
+
+Wall* bottom_wall(void)
+{
+    return &game->walls[BOTTOM_WALL];
 }

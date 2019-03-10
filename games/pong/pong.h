@@ -5,6 +5,7 @@
 
 #include "player.h"
 #include "ball.h"
+#include "wall.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,6 +24,7 @@ typedef struct Pong {
 
     Player players[2];
     Ball ball;
+    Wall walls[2];
 } Pong;
 
 
