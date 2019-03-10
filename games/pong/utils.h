@@ -4,6 +4,11 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+#define COLOR_WHITE \
+    (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE}
+#define COLOR_BLACK \
+    (SDL_Color){0, 0, 0, SDL_ALPHA_OPAQUE}
+
 #ifdef __cplusplus
 extern "C" {
 #endif

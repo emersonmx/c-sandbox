@@ -47,13 +47,12 @@ void initialize(void)
     player_controls[PLAYER1] = player_default_input_velocity_func;
     player_controls[PLAYER2] = player_default_input_velocity_func;
 
-    SDL_Color white = {255, 255, 255, SDL_ALPHA_OPAQUE};
     float center_x = window_width() / 2.0f;
     float center_y = window_height() / 2.0f;
 
     game->players[PLAYER1] = (Player){
         .index = PLAYER1,
-        .color = white,
+        .color = COLOR_WHITE,
         .rect = {0, 0, 20, 80},
         .position = {15, center_y, 0},
         .speed = PLAYER_MAX_SPEED,
@@ -63,7 +62,7 @@ void initialize(void)
     };
     game->players[PLAYER2] = (Player){
         .index = PLAYER2,
-        .color = white,
+        .color = COLOR_WHITE,
         .rect = {200, 0, 20, 80},
         .position = {window_width() - 15, center_y, 0},
         .speed = PLAYER_MAX_SPEED,
@@ -73,7 +72,7 @@ void initialize(void)
     };
 
     game->ball = (Ball){
-        .color = white,
+        .color = COLOR_WHITE,
         .rect = {center_x, center_y, 10, 10},
         .position = {0},
     };
@@ -81,12 +80,12 @@ void initialize(void)
     ball_play(ball());
 
     game->walls[TOP_WALL] = (Wall){
-        .color = white,
+        .color = COLOR_WHITE,
         .rect = {0, 0, window_width(), 10},
         .position = {center_x, 5},
     };
     game->walls[BOTTOM_WALL] = (Wall){
-        .color = white,
+        .color = COLOR_WHITE,
         .rect = {0, 0, window_width(), 10},
         .position = {center_x, window_height() - 5},
     };
