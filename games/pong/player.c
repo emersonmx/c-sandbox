@@ -26,6 +26,8 @@ void player_ia_input_velocity_func(int index, vec3 dest)
 
 void player_fixed_update(Player* player, double delta)
 {
+    Pong* game = pong_instance();
+
     vec3 velocity;
     glm_vec3_zero(velocity);
 
@@ -36,6 +38,18 @@ void player_fixed_update(Player* player, double delta)
     glm_vec3_scale(tmp, player->speed * delta, tmp);
 
     glm_vec3_add(player->position, tmp, player->position);
+
+    SDL_Rect pr = player_rect(player);
+    SDL_Rect twr = wall_rect(&game->walls[TOP_WALL]);
+    SDL_Rect bwr = wall_rect(&game->walls[BOTTOM_WALL]);
+
+    if (SDL_HasIntersection(&pr, &twr)) {
+        player->position[1] = twr.y+twr.h + player->rect.h/2.0f;
+    }
+
+    if (SDL_HasIntersection(&pr, &bwr)) {
+        player->position[1] = bwr.y - player->rect.h/2.0f;
+    }
 }
 
 void player_update(Player* player, double delta)
