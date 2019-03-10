@@ -12,6 +12,16 @@ DEBUG_CFLAGS = [
     '-Wformat=2', '-Wno-unused-parameter', '-Wshadow',
     '-Wwrite-strings', '-Wstrict-prototypes', '-Wold-style-definition',
     '-Wredundant-decls', '-Wnested-externs', '-Wmissing-include-dirs',
+    '-DDEBUG',
+]
+DEBUG_CXXFLAGS = [
+    '-g', '-Wall', '-Wextra', '-Wpedantic',
+    '-Wformat=2', '-Wno-unused-parameter', '-Wshadow',
+    '-Wwrite-strings', '-Wredundant-decls', '-Wmissing-include-dirs',
+    '-DDEBUG',
+]
+RELEASE_CFLAGS = [
+    '-O3', '-DNDEBUG',
 ]
 
 env = Environment(
@@ -20,9 +30,14 @@ env = Environment(
     CPPPATH=['#']
 )
 
-env.Append(
-    CFLAGS=DEBUG_CFLAGS,
-)
+build_type = ARGUMENTS.get('build', 'debug')
+if build_type == 'debug':
+    env.Append(
+        CFLAGS=DEBUG_CFLAGS,
+        CXXFLAGS=DEBUG_CXXFLAGS,
+    )
+elif build_type == 'release':
+    env.Append(CFLAGS=RELEASE_CFLAGS)
 
 dirs = [
     'default', 'sdl2', 'games'

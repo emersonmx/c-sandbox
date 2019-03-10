@@ -99,6 +99,12 @@ void ball_fixed_update(Ball* ball, double delta)
     glm_vec3_normalize_to(ball->velocity, tmp);
     glm_vec3_scale(tmp, ball->speed * delta, tmp);
     glm_vec3_add(ball->position, tmp, ball->position);
+
+#ifdef DEBUG
+    printf("Ball speed: %f <= %f <= %f\n",
+        ball->min_speed, ball->speed, ball->max_speed
+    );
+#endif
 }
 
 void change_direction(Ball* ball, vec3 anchor)

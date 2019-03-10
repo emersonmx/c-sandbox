@@ -101,10 +101,12 @@ void process_events(SDL_Event* event)
         if (event->key.keysym.sym == SDLK_ESCAPE) {
             engine_quit_loop();
         }
+#ifdef DEBUG
         if (event->key.keysym.sym == SDLK_r) {
             ball_reset(ball());
             ball_play(ball());
         }
+#endif
     }
 
     pong_process_event(event);
