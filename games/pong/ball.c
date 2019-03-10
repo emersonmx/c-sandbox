@@ -28,9 +28,10 @@ void ball_reset(Ball* ball)
     ball->min_speed = BALL_DEFAULT_MIN_SPEED;
     ball->max_speed = BALL_DEFAULT_MAX_SPEED;
     glm_vec3_copy(GLM_VEC3_ZERO, ball->velocity);
+}
 
-    // wait
-
+void ball_play(Ball* ball)
+{
     glm_vec3_copy(GLM_XUP, ball->velocity);
     glm_vec3_rotate(
         ball->velocity,

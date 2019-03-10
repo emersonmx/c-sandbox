@@ -80,6 +80,7 @@ void initialize(void)
         .position = {0},
     };
     ball_reset(ball());
+    ball_play(ball());
 
     game->walls[TOP_WALL] = (Wall){
         .color = white,
@@ -102,6 +103,10 @@ void process_events(SDL_Event* event)
     if (event->type == SDL_KEYDOWN) {
         if (event->key.keysym.sym == SDLK_ESCAPE) {
             engine_quit_loop();
+        }
+        if (event->key.keysym.sym == SDLK_r) {
+            ball_reset(ball());
+            ball_play(ball());
         }
     }
 
