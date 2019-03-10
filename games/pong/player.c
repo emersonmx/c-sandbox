@@ -18,15 +18,15 @@ void player_anchor(Player* player, vec3 dest)
     int direction = player->index == PLAYER1 ? -1 : 1;
     double offset = calc_height(
         player->rect.h,
-        glm_rad(DEFAULT_ANGLE)
-    ) * direction;
+        DEFAULT_ANGLE
+    );
     glm_vec3_copy(player->position, dest);
-    dest[0] += offset + (player->rect.w/2.0)*(-direction);
+    dest[0] += (player->rect.w/2.0) + offset*direction;
 }
 
 double calc_height(double base, double angle)
 {
-    return (base/2.0) * tan(angle);
+    return (base/2.0) * tan(glm_rad(angle));
 }
 
 void player_default_input_velocity_func(int index, vec3 dest)
