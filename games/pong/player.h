@@ -39,7 +39,6 @@ void player_default_input_velocity_func(int index, vec3 dest);
 void player_ia_input_velocity_func(int index, vec3 dest);
 
 void player_fixed_update(Player* player, double delta);
-void player_update(Player* player, double delta);
 void player_render(Player* player);
 
 #ifdef __cplusplus

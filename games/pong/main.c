@@ -12,7 +12,6 @@ static Pong* game = NULL;
 static void initialize(void);
 static void process_events(SDL_Event* event);
 static void fixed_update(double delta);
-static void update(double delta);
 static void render(void);
 
 static int window_width(void);
@@ -35,7 +34,6 @@ int main(void)
     engine_set_init_func(initialize);
     engine_set_process_events_func(process_events);
     engine_set_fixed_update_func(fixed_update);
-    engine_set_update_func(update);
     engine_set_render_func(render);
 
     return engine_main_loop(game->settings);
@@ -118,11 +116,6 @@ void fixed_update(double delta)
     player_fixed_update(player1(), delta);
     player_fixed_update(player2(), delta);
     ball_fixed_update(ball(), delta);
-}
-
-void update(double delta)
-{
-    player_update(player1(), delta);
 }
 
 void render(void)
