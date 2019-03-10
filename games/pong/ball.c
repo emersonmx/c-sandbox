@@ -5,6 +5,8 @@
 #include "pong.h"
 #include "object.h"
 
+static void change_direction(Ball* ball, vec3 direction);
+
 SDL_Rect ball_rect(Ball* ball)
 {
     return object_rect(ball);
@@ -38,18 +40,25 @@ void ball_fixed_update(Ball* ball, double delta)
 {
     Pong* game = pong_instance();
 
+    vec3 tmp;
+    Player* p1 = &game->players[PLAYER1];
+    Player* p2 = &game->players[PLAYER2];
     SDL_Rect br = ball_rect(ball);
-    SDL_Rect p1r = player_rect(&game->players[PLAYER1]);
-    SDL_Rect p2r = player_rect(&game->players[PLAYER2]);
+    SDL_Rect p1r = player_rect(p1);
+    SDL_Rect p2r = player_rect(p2);
     SDL_Rect twr = wall_rect(&game->walls[TOP_WALL]);
     SDL_Rect bwr = wall_rect(&game->walls[BOTTOM_WALL]);
 
     if (SDL_HasIntersection(&br, &p1r)) {
-        ball->velocity[0] = fabs(ball->velocity[0]);
+        player_anchor(p1, tmp);
+        glm_vec3_sub(ball->position, tmp, tmp);
+        change_direction(ball, tmp);
     }
 
     if (SDL_HasIntersection(&br, &p2r)) {
-        ball->velocity[0] = -fabs(ball->velocity[0]);
+        player_anchor(p2, tmp);
+        glm_vec3_sub(ball->position, tmp, tmp);
+        change_direction(ball, tmp);
     }
 
     if (SDL_HasIntersection(&br, &twr)) {
@@ -60,10 +69,18 @@ void ball_fixed_update(Ball* ball, double delta)
         ball->velocity[1] = -fabs(ball->velocity[1]);
     }
 
-    vec3 tmp;
     glm_vec3_normalize_to(ball->velocity, tmp);
     glm_vec3_scale(tmp, ball->speed * delta, tmp);
     glm_vec3_add(ball->position, tmp, ball->position);
+}
+
+void change_direction(Ball* ball, vec3 direction)
+{
+    glm_vec3_rotate(
+        ball->velocity,
+        glm_vec3_angle(ball->velocity, direction),
+        GLM_ZUP
+    );
 }
 
 void ball_render(Ball* ball)
