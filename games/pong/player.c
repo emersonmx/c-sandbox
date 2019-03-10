@@ -2,6 +2,12 @@
 
 #include "pong.h"
 #include "utils.h"
+#include "object.h"
+
+SDL_Rect player_rect(Player* player)
+{
+    return object_rect(player);
+}
 
 void player_default_input_velocity_func(int index, vec3 dest)
 {

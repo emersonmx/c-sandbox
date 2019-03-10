@@ -24,6 +24,8 @@ typedef struct Ball {
 } Ball;
 
 
+SDL_Rect ball_rect(Ball* ball);
+
 void ball_reset(Ball* ball);
 void ball_fixed_update(Ball* ball, double delta);
 void ball_render(Ball* ball);

@@ -20,10 +20,12 @@ typedef struct Wall {
     vec3 position;
 } Wall;
 
+
+SDL_Rect wall_rect(Wall* wall);
+void wall_render(Wall* wall);
+
 #ifdef __cplusplus
 }
 #endif
-
-void wall_render(Wall* wall);
 
 #endif /* CSB_GAMES_PONG_WALL_H */
