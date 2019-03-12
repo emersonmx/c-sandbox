@@ -40,7 +40,7 @@ elif build_type == 'release':
     env.Append(CFLAGS=RELEASE_CFLAGS)
 
 dirs = [
-    'default', 'sdl2', 'games'
+    'default', 'sdl2', 'pong'
 ]
 
 for subdir in dirs:
