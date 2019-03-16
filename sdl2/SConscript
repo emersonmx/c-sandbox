@@ -9,3 +9,7 @@ env.Program('resize-test', [
     'sdl2_ttf.c',
     'text.c'
 ])
+env.Program('events', [
+    'events.c',
+    env.Object('events_sdl2', 'sdl2.c'),
+])
