@@ -20,7 +20,6 @@ typedef struct Pong {
     EngineSettings settings;
 
     Uint32 event_id;
-    bool actions[ACTIONS_SIZE];
 
     Player player1;
     Player player2;

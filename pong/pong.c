@@ -23,8 +23,6 @@ void pong_initialize(void)
         return;
     }
 
-    SDL_zero(game.actions);
-
     PlayerInputVelocityFunc player_controls[2];
     player_controls[PLAYER1] = player_default_input_velocity_func;
     player_controls[PLAYER2] = player_default_input_velocity_func;
