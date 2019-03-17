@@ -28,6 +28,8 @@ typedef struct Player {
     double hit_force;
     double damp_force;
 
+    int score;
+
     PlayerInputVelocityFunc input_velocity_func;
 } Player;
 

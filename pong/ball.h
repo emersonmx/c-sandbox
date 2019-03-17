@@ -23,6 +23,7 @@ typedef struct Ball {
     double speed;
     double min_speed;
     double max_speed;
+    Uint32 play_delay;
 } Ball;
 
 
@@ -30,6 +31,7 @@ SDL_Rect ball_rect(Ball* ball);
 
 void ball_reset(Ball* ball);
 void ball_play(Ball* ball);
+void ball_play_with_delay(Ball* ball);
 void ball_fixed_update(Ball* ball, double delta);
 void ball_render(Ball* ball);
 
