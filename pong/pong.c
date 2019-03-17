@@ -70,6 +70,12 @@ void pong_initialize(void)
         .position = {WINDOW_CENTER_X, WINDOW_HEIGHT - 5},
     };
 
+    game.midfield = (MidField){
+        .color = COLOR_WHITE,
+        .rect = {0, 0, 4, 4},
+        .position = {WINDOW_CENTER_X, WINDOW_CENTER_Y},
+    };
+
     game.play_area = (SDL_Rect){0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
 }
 
@@ -132,6 +138,7 @@ void pong_fixed_update(double delta)
 
 void pong_render(void)
 {
+    midfield_render(&game.midfield);
     player_render(&game.player1);
     player_render(&game.player2);
     ball_render(&game.ball);

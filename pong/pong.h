@@ -7,6 +7,7 @@
 #include "player.h"
 #include "ball.h"
 #include "wall.h"
+#include "midfield.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,6 +27,8 @@ typedef struct Pong {
     Ball ball;
     Wall top_wall;
     Wall bottom_wall;
+    MidField midfield;
+
     SDL_Rect play_area;
 } Pong;
 

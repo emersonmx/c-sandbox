@@ -21,4 +21,5 @@ env.Program('pong', [
     'player.c',
     'ball.c',
     'wall.c',
+    'midfield.c',
 ])
