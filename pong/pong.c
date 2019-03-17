@@ -81,24 +81,10 @@ void pong_process_event(SDL_Event* event)
         engine_quit_loop();
     }
 
-    if (event->type == game.event_id) {
-        if (event->user.code == PLAY_BALL_SIGNAL) {
-            ball_reset(&game.ball);
-            ball_play(&game.ball);
-        }
-    }
-
     if (event->type == SDL_KEYDOWN) {
         if (event->key.keysym.sym == SDLK_ESCAPE) {
             engine_quit_loop();
         }
-#ifdef DEBUG
-        if (event->key.keysym.sym == SDLK_r) {
-            ball_reset(&game.ball);
-            ball_play(&game.ball);
-        }
-#endif
-
         if (event->key.keysym.sym == SDLK_w) {
             game.actions[PLAYER1_ACTION_UP] = true;
         }
@@ -126,6 +112,13 @@ void pong_process_event(SDL_Event* event)
         if (event->key.keysym.sym == SDLK_DOWN) {
             game.actions[PLAYER2_ACTION_DOWN] = false;
         }
+
+#ifdef DEBUG
+        if (event->key.keysym.sym == SDLK_r) {
+            ball_reset(&game.ball);
+            ball_play(&game.ball);
+        }
+#endif
     }
 
     if (event->type == game.event_id) {
