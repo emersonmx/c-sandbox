@@ -15,6 +15,7 @@ env.Program('pong', [
     env.Object('pong-sdl2-engine', '#sdl2/engine.c'),
     'main.c',
     'pong.c',
+    'action.c',
     'render.c',
     'utils.c',
     'player.c',

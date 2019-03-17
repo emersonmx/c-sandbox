@@ -31,13 +31,11 @@ double calc_height(double base, double angle)
 
 void player_default_input_velocity_func(int player_id, vec3 dest)
 {
-    Pong* game = pong_instance();
-
     int action_up = player_id == PLAYER1 ? PLAYER1_ACTION_UP : PLAYER2_ACTION_UP;
     int action_down = player_id == PLAYER1
         ? PLAYER1_ACTION_DOWN : PLAYER2_ACTION_DOWN;
 
-    dest[1] = game->actions[action_down] - game->actions[action_up];
+    dest[1] = action_is_pressed(action_down) - action_is_pressed(action_up);
 }
 
 void player_ia_input_velocity_func(int player_id, vec3 dest)

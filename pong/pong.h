@@ -3,6 +3,7 @@
 
 #include <sdl2/engine.h>
 
+#include "action.h"
 #include "player.h"
 #include "ball.h"
 #include "wall.h"
@@ -14,12 +15,6 @@ extern "C" {
 typedef enum {
     BALL_OUT_OF_BOUNDS_SIGNAL, PLAY_BALL_SIGNAL, SIGNALS_SIZE
 } Signals;
-
-typedef enum {
-    PLAYER1_ACTION_UP, PLAYER1_ACTION_DOWN,
-    PLAYER2_ACTION_UP, PLAYER2_ACTION_DOWN,
-    ACTIONS_SIZE
-} Actions;
 
 typedef struct Pong {
     EngineSettings settings;

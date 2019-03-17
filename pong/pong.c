@@ -80,46 +80,22 @@ void pong_process_events(SDL_Event* event)
     if (event->type == SDL_QUIT) {
         engine_quit_loop();
     }
-
     if (event->type == SDL_KEYDOWN) {
         if (event->key.keysym.sym == SDLK_ESCAPE) {
             engine_quit_loop();
         }
-        if (event->key.keysym.sym == SDLK_w) {
-            game.actions[PLAYER1_ACTION_UP] = true;
-        }
-        if (event->key.keysym.sym == SDLK_s) {
-            game.actions[PLAYER1_ACTION_DOWN] = true;
-        }
-        if (event->key.keysym.sym == SDLK_UP) {
-            game.actions[PLAYER2_ACTION_UP] = true;
-        }
-        if (event->key.keysym.sym == SDLK_DOWN) {
-            game.actions[PLAYER2_ACTION_DOWN] = true;
-        }
     }
 
-    if (event->type == SDL_KEYUP) {
-        if (event->key.keysym.sym == SDLK_w) {
-            game.actions[PLAYER1_ACTION_UP] = false;
-        }
-        if (event->key.keysym.sym == SDLK_s) {
-            game.actions[PLAYER1_ACTION_DOWN] = false;
-        }
-        if (event->key.keysym.sym == SDLK_UP) {
-            game.actions[PLAYER2_ACTION_UP] = false;
-        }
-        if (event->key.keysym.sym == SDLK_DOWN) {
-            game.actions[PLAYER2_ACTION_DOWN] = false;
-        }
+    action_process_events(event);
 
 #ifdef DEBUG
+    if (event->type == SDL_KEYUP) {
         if (event->key.keysym.sym == SDLK_r) {
             ball_reset(&game.ball);
             ball_play(&game.ball);
         }
-#endif
     }
+#endif
 
     if (event->type == game.event_id) {
         if (event->user.code == BALL_OUT_OF_BOUNDS_SIGNAL) {
