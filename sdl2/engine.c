@@ -72,7 +72,7 @@ static void fixed_update(void);
 static void update(double delta);
 static void render(void);
 
-int engine_main_loop(EngineSettings settings)
+int engine_main(EngineSettings settings)
 {
     engine.settings = settings;
 
