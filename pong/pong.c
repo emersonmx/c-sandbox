@@ -128,12 +128,15 @@ void pong_process_event(SDL_Event* event)
 #endif
             int player_side = (intptr_t) event->user.data1;
             if (player_side == PLAYER1) {
-                game.player1.score += 1;
-            } else if (player_side == PLAYER2) {
                 game.player2.score += 1;
+            } else if (player_side == PLAYER2) {
+                game.player1.score += 1;
             } else {
                 SDL_Log("Schrodinger ball? O.o\n");
             }
+            printf("Player1 %d x %d Player2\n",
+                game.player1.score, game.player2.score);
+
             ball_reset(&game.ball);
             ball_play_with_delay(&game.ball);
         }
