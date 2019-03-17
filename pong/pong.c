@@ -75,7 +75,7 @@ void pong_initialize(void)
     game.play_area = (SDL_Rect){0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
 }
 
-void pong_process_event(SDL_Event* event)
+void pong_process_events(SDL_Event* event)
 {
     if (event->type == SDL_QUIT) {
         engine_quit_loop();

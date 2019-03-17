@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 typedef enum {
-    BALL_OUT_OF_BOUNDS_SIGNAL, PLAY_BALL_SIGNAL, SIGNAL_SIZE
+    BALL_OUT_OF_BOUNDS_SIGNAL, PLAY_BALL_SIGNAL, SIGNALS_SIZE
 } Signals;
 
 typedef enum {
@@ -39,7 +39,7 @@ typedef struct Pong {
 Pong* pong_instance(void);
 
 void pong_initialize(void);
-void pong_process_event(SDL_Event* event);
+void pong_process_events(SDL_Event* event);
 void pong_fixed_update(double delta);
 void pong_render(void);
 
