@@ -9,6 +9,7 @@
 #include "ball.h"
 #include "wall.h"
 #include "midfield.h"
+#include "score.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,6 +22,7 @@ typedef enum {
 typedef struct Pong {
     EngineSettings settings;
 
+    TTF_Font* score_font;
     Uint32 event_id;
 
     Player player1;
@@ -29,6 +31,8 @@ typedef struct Pong {
     Wall top_wall;
     Wall bottom_wall;
     MidField midfield;
+    Score player1_score;
+    Score player2_score;
 
     SDL_Rect play_area;
 } Pong;

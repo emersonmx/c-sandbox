@@ -1,5 +1,7 @@
 #include "pong.h"
 
+#include <utils/macros.h>
+
 #include "utils.h"
 
 #define WINDOW_WIDTH game.settings.window.width
@@ -17,6 +19,11 @@ Pong* pong_instance(void)
 void pong_initialize(void)
 {
     sdl2_ttf_initialize();
+
+    game.score_font = TTF_OpenFont("assets/PressStart2P-Regular.ttf", 32);
+    if (game.score_font == NULL) {
+        SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "%s\n", TTF_GetError());
+    }
 
     game.event_id = SDL_RegisterEvents(1);
     if (game.event_id == (Uint32)-1) {
@@ -78,11 +85,29 @@ void pong_initialize(void)
         .position = {WINDOW_CENTER_X, WINDOW_CENTER_Y},
     };
 
+    score_reset(&game.player1_score);
+    score_reset(&game.player2_score);
+    game.player1_score = (Score){
+        .color = COLOR_WHITE,
+        .position = {WINDOW_CENTER_X - 27, 35},
+        .origin = {1, 0, 0},
+    };
+    game.player2_score = (Score){
+        .color = COLOR_WHITE,
+        .position = {WINDOW_CENTER_X + 27, 35},
+        .origin = {0, 0, 0},
+    };
+    score_update_score(&game.player1_score, 0);
+    score_update_score(&game.player2_score, 0);
+
     game.play_area = (SDL_Rect){0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
 }
 
 void pong_finalize(void)
 {
+    TTF_CloseFont(game.score_font);
+    game.score_font = NULL;
+
     sdl2_ttf_finalize();
 }
 
@@ -115,14 +140,16 @@ void pong_process_events(SDL_Event* event)
 #endif
             int player_side = (intptr_t) event->user.data1;
             if (player_side == PLAYER1) {
-                game.player2.score += 1;
+                score_update_score(
+                    &game.player2_score, game.player2_score.value + 1
+                );
             } else if (player_side == PLAYER2) {
-                game.player1.score += 1;
+                score_update_score(
+                    &game.player1_score, game.player1_score.value + 1
+                );
             } else {
                 SDL_Log("Schrodinger ball? O.o\n");
             }
-            printf("Player1 %d x %d Player2\n",
-                game.player1.score, game.player2.score);
 
             ball_reset(&game.ball);
             ball_play_with_delay(&game.ball);
@@ -146,6 +173,8 @@ void pong_fixed_update(double delta)
 void pong_render(void)
 {
     midfield_render(&game.midfield);
+    score_render(&game.player1_score);
+    score_render(&game.player2_score);
     player_render(&game.player1);
     player_render(&game.player2);
     ball_render(&game.ball);
