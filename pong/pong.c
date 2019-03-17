@@ -16,6 +16,8 @@ Pong* pong_instance(void)
 
 void pong_initialize(void)
 {
+    sdl2_ttf_initialize();
+
     game.event_id = SDL_RegisterEvents(1);
     if (game.event_id == (Uint32)-1) {
         SDL_Log("Can't register game event\n\tError: %s\n", SDL_GetError());
@@ -77,6 +79,11 @@ void pong_initialize(void)
     };
 
     game.play_area = (SDL_Rect){0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
+}
+
+void pong_finalize(void)
+{
+    sdl2_ttf_finalize();
 }
 
 void pong_process_events(SDL_Event* event)

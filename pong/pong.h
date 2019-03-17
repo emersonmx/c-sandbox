@@ -2,6 +2,7 @@
 #define CSB_GAMES_PONG_PONG_H
 
 #include <sdl2/engine.h>
+#include <sdl2/sdl2_ttf.h>
 
 #include "action.h"
 #include "player.h"
@@ -36,6 +37,7 @@ typedef struct Pong {
 Pong* pong_instance(void);
 
 void pong_initialize(void);
+void pong_finalize(void);
 void pong_process_events(SDL_Event* event);
 void pong_fixed_update(double delta);
 void pong_render(void);

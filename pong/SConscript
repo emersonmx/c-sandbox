@@ -1,7 +1,7 @@
 Import('env')
 env = env.Clone()
 env.Append(CPPPATH=['#libs/cglm/include'])
-env.ParseConfig('pkg-config sdl2 --cflags --libs')
+env.ParseConfig('pkg-config sdl2 SDL2_ttf --cflags --libs')
 
 conf = env.Configure()
 if not conf.CheckLib('m'):
@@ -12,6 +12,7 @@ env = conf.Finish()
 env.Program('pong', [
     env.Object('pong-random', '#utils/random.cpp'),
     env.Object('pong-sdl2', '#sdl2/sdl2.c'),
+    env.Object('pong-sdl2-ttf', '#sdl2/sdl2_ttf.c'),
     env.Object('pong-sdl2-engine', '#sdl2/engine.c'),
     'main.c',
     'pong.c',
