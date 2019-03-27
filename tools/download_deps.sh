@@ -1,8 +1,8 @@
 #!/bin/bash
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-LIBDIR="$SCRIPT_DIR/../libs"
+EXTERNALDIR="$SCRIPT_DIR/../external"
 
-cd $LIBDIR
+cd $EXTERNALDIR
 rm -rf cglm
 git clone https://github.com/recp/cglm.git
