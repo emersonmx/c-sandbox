@@ -1,0 +1,22 @@
+include_directories(${CMAKE_SOURCE_DIR}/libs/cglm/include)
+
+add_executable(pong
+    ${CMAKE_SOURCE_DIR}/utils/random.cpp
+    ${CMAKE_SOURCE_DIR}/sdl2/sdl2.c
+    ${CMAKE_SOURCE_DIR}/sdl2/sdl2_ttf.c
+    ${CMAKE_SOURCE_DIR}/sdl2/engine.c
+    main.c
+    pong.c
+    action.c
+    render.c
+    utils.c
+    player.c
+    ball.c
+    wall.c
+    midfield.c
+    score.c
+)
+target_link_libraries(pong
+    ${SDL2_LIBRARIES}
+    ${SDL2_TTF_LIBRARIES}
+)
