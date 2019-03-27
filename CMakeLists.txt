@@ -41,4 +41,6 @@ include(FindPkgConfig)
 # Build settings
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
+add_subdirectory(default)
+add_subdirectory(sdl2)
 add_subdirectory(pong)

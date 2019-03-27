@@ -8,4 +8,4 @@ if [[ ! -d "$build_path" ]]; then
     CC=clang CXX=clang++ cmake -S "$project_path" -B "$build_path"
 fi
 
-make -C "$build_path" -j
+make -C "$build_path" $@
