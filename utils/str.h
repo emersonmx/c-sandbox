@@ -1,6 +1,7 @@
 #ifndef CSB_UTILS_STR_H
 #define CSB_UTILS_STR_H
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
@@ -9,6 +10,7 @@
 extern "C" {
 #endif
 
+__attribute__((__format__ (__printf__, 1, 0)))
 char* str_format(const char* format, ...)
 {
     va_list args1;

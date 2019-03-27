@@ -44,7 +44,6 @@ static const EngineSettings default_settings = {
 };
 
 static Engine engine = {
-    .settings = default_settings,
     .window = NULL,
     .renderer = NULL,
 
@@ -74,6 +73,7 @@ static void render(void);
 
 int engine_main(EngineSettings settings)
 {
+    engine.settings = engine_default_settings();
     engine.settings = settings;
 
     atexit(finalize_engine);
