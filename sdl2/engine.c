@@ -29,20 +29,6 @@ struct Engine {
     EngineRenderFunc render_func;
 };
 
-static const EngineSettings default_settings = {
-    .window = {
-        "engine.Window",
-        800, 600
-    },
-    .renderer = {
-        .clear_color = {0, 0, 0, SDL_ALPHA_OPAQUE},
-        .vsync = true
-    },
-    .physics = {
-        .fps = 60.0
-    }
-};
-
 static Engine engine = {
     .window = NULL,
     .renderer = NULL,
@@ -105,7 +91,19 @@ void engine_quit_loop(void)
 
 EngineSettings engine_default_settings(void)
 {
-    return default_settings;
+    return (EngineSettings){
+        .window = {
+            "engine.Window",
+            800, 600
+        },
+            .renderer = {
+                .clear_color = {0, 0, 0, SDL_ALPHA_OPAQUE},
+                .vsync = true
+            },
+            .physics = {
+                .fps = 60.0
+            }
+    };
 }
 
 EngineSettings engine_settings(void)
