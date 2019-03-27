@@ -5,7 +5,7 @@ include_directories(
     ${SDL2_INCLUDE_DIRS}
     ${SDL2_TTF_INCLUDE_DIRS}
 )
-include_directories(${CMAKE_SOURCE_DIR}/libs/cglm/include)
+include_directories(${CMAKE_SOURCE_DIR}/external/cglm/include)
 
 add_executable(pong
     ${CMAKE_SOURCE_DIR}/utils/random.cpp
