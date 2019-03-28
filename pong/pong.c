@@ -33,7 +33,9 @@ void pong_initialize(void)
     }
 
     PlayerInputVelocityFunc player_controls[2];
-    player_controls[PLAYER1] = player_ia_input_velocity_func;
+    player_controls[PLAYER1] = player_default_input_velocity_func;
+    // player_controls[PLAYER2] = player_default_input_velocity_func;
+    // player_controls[PLAYER1] = player_ia_input_velocity_func;
     player_controls[PLAYER2] = player_ia_input_velocity_func;
 
     game.player1 = (Player){
@@ -44,6 +46,7 @@ void pong_initialize(void)
         .speed = PLAYER_MAX_SPEED,
         .hit_force = PLAYER_DEFAULT_HIT_FORCE,
         .damp_force = PLAYER_DEFAULT_DAMP_FORCE,
+        .is_strong_hit = false,
         .score = 0,
         .input_velocity_func = player_controls[PLAYER1],
     };
@@ -55,6 +58,7 @@ void pong_initialize(void)
         .speed = PLAYER_MAX_SPEED,
         .hit_force = PLAYER_DEFAULT_HIT_FORCE,
         .damp_force = PLAYER_DEFAULT_DAMP_FORCE,
+        .is_strong_hit = false,
         .score = 0,
         .input_velocity_func = player_controls[PLAYER2],
     };

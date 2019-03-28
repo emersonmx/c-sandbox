@@ -56,7 +56,6 @@ void player_ia_input_velocity_func(int player_id, vec3 dest)
     int inside_of_bounds = 0 < ball_x && ball_x < window_width;
     int offset = 10;
 
-    printf("player %d: %d\n", player_id + 1, diff_x);
     if (diff_x < area && inside_of_bounds) {
         if (player_y - offset > ball_y) {
             dest[1] = -1;
@@ -80,6 +79,8 @@ void player_fixed_update(Player* player, double delta)
     glm_vec3_zero(velocity);
 
     player->input_velocity_func(player->id, velocity);
+
+    player->is_strong_hit = fabsf(velocity[1]) > 0;
 
     vec3 tmp = {0};
     glm_vec3_normalize_to(velocity, tmp);

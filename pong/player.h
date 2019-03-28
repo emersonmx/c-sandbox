@@ -27,6 +27,7 @@ typedef struct Player {
     double speed;
     double hit_force;
     double damp_force;
+    bool is_strong_hit;
 
     int score;
 

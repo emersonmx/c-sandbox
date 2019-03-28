@@ -87,9 +87,7 @@ void ball_fixed_update(Ball* ball, double delta)
     SDL_Rect par = game->play_area;
 
     if (SDL_HasIntersection(&br, &p1r)) {
-        bool is_moving = action_is_pressed(PLAYER1_ACTION_UP)
-            || action_is_pressed(PLAYER1_ACTION_DOWN);
-        if (is_moving) {
+        if (p1->is_strong_hit) {
             ball->speed = fmax(p1->speed*p1->hit_force, ball->speed);
         } else {
             decrease_speed(ball, ball->speed * p2->damp_force);
@@ -101,9 +99,7 @@ void ball_fixed_update(Ball* ball, double delta)
     }
 
     if (SDL_HasIntersection(&br, &p2r)) {
-        bool is_moving = action_is_pressed(PLAYER2_ACTION_UP)
-            || action_is_pressed(PLAYER2_ACTION_DOWN);
-        if (is_moving) {
+        if (p2->is_strong_hit) {
             ball->speed = fmax(p2->speed*p1->hit_force, ball->speed);
         } else {
             decrease_speed(ball, ball->speed * p2->damp_force);
