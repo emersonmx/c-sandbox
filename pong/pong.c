@@ -33,8 +33,8 @@ void pong_initialize(void)
     }
 
     PlayerInputVelocityFunc player_controls[2];
-    player_controls[PLAYER1] = player_default_input_velocity_func;
-    player_controls[PLAYER2] = player_default_input_velocity_func;
+    player_controls[PLAYER1] = player_ia_input_velocity_func;
+    player_controls[PLAYER2] = player_ia_input_velocity_func;
 
     game.player1 = (Player){
         .id = PLAYER1,

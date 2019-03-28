@@ -40,6 +40,36 @@ void player_default_input_velocity_func(int player_id, vec3 dest)
 
 void player_ia_input_velocity_func(int player_id, vec3 dest)
 {
+    Pong* pong = pong_instance();
+    int window_width = pong->settings.window.width;
+    int center_y = pong->settings.window.height / 2.0f;
+
+    Ball* ball = &pong->ball;
+    Player* player = player_id == PLAYER1 ? &pong->player1 : &pong->player2;
+
+    int area = window_width * 0.8f;
+    int player_x = player->position[0];
+    int player_y = player->position[1];
+    int ball_x = ball->position[0];
+    int ball_y = ball->position[1];
+    int diff_x = abs(ball_x - player_x);
+    int inside_of_bounds = 0 < ball_x && ball_x < window_width;
+    int offset = 10;
+
+    printf("player %d: %d\n", player_id + 1, diff_x);
+    if (diff_x < area && inside_of_bounds) {
+        if (player_y - offset > ball_y) {
+            dest[1] = -1;
+        } else if (player_y + offset < ball_y) {
+            dest[1] = 1;
+        }
+    } else {
+        if (player_y - offset > center_y) {
+            dest[1] = -1;
+        } else if (player_y + offset < center_y) {
+            dest[1] = 1;
+        }
+    }
 }
 
 void player_fixed_update(Player* player, double delta)
