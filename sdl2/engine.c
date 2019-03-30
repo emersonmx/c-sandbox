@@ -34,7 +34,7 @@ static Engine engine = {
     .renderer = NULL,
 
     .running = true,
-    .error_code = 0,
+    .error_code = EXIT_SUCCESS,
     .physics_tick_count = 0.0,
 
     .init_func = default_init_func,
