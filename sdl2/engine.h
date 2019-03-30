@@ -7,12 +7,12 @@
 extern "C" {
 #endif
 
-typedef void (*EngineInitFunc)(void);
-typedef void (*EngineQuitFunc)(void);
-typedef void (*EngineProcessEvents)(SDL_Event* event);
-typedef void (*EngineFixedUpdateFunc)(double delta);
-typedef void (*EngineUpdateFunc)(double delta);
-typedef void (*EngineRenderFunc)(void);
+typedef void EngineInitFunc(void);
+typedef void EngineQuitFunc(void);
+typedef void EngineProcessEvents(SDL_Event* event);
+typedef void EngineFixedUpdateFunc(double delta);
+typedef void EngineUpdateFunc(double delta);
+typedef void EngineRenderFunc(void);
 
 typedef struct EngineSettings {
     struct {

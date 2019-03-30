@@ -17,7 +17,7 @@
 extern "C" {
 #endif
 
-typedef void (*PlayerInputVelocityFunc)(int player_id, vec3 dest);
+typedef void PlayerInputVelocityFunc(int player_id, vec3 dest);
 
 typedef struct Player {
     int id;
@@ -31,7 +31,7 @@ typedef struct Player {
 
     int score;
 
-    PlayerInputVelocityFunc input_velocity_func;
+    PlayerInputVelocityFunc* input_velocity_func;
 } Player;
 
 

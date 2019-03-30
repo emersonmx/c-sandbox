@@ -19,12 +19,12 @@ struct Engine {
     int error_code;
     double physics_tick_count;
 
-    EngineInitFunc init_func;
-    EngineQuitFunc quit_func;
-    EngineProcessEvents process_events_func;
-    EngineFixedUpdateFunc fixed_update_func;
-    EngineUpdateFunc update_func;
-    EngineRenderFunc render_func;
+    EngineInitFunc* init_func;
+    EngineQuitFunc* quit_func;
+    EngineProcessEvents* process_events_func;
+    EngineFixedUpdateFunc* fixed_update_func;
+    EngineUpdateFunc* update_func;
+    EngineRenderFunc* render_func;
 };
 
 static Engine engine = {
