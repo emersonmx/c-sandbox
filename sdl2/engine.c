@@ -5,9 +5,7 @@
 
 void default_init_func(void) {}
 void default_quit_func(void) {}
-void default_process_events_func(SDL_Event* event) {
-    printf("PROCESS_EVENTS\n");
-}
+void default_process_events_func(SDL_Event* event) {}
 void default_fixed_update_func(double delta) {}
 void default_update_func(double delta) {}
 void default_render_func(void) {}
