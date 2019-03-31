@@ -4,17 +4,7 @@
 
 static Uint32 user_event;
 
-Uint32 my_timer_callback(Uint32 interval, void* param)
-{
-    SDL_Event myevent;
-    SDL_memset(&myevent, 0, sizeof(myevent));
-    myevent.type = user_event;
-    myevent.user.code = TIMEOUT_EVENT;
-
-    SDL_PushEvent(&myevent);
-
-    return 0;
-}
+Uint32 my_timer_callback(Uint32 interval, void* param);
 
 int main(int argc, char* argv[])
 {
@@ -57,5 +47,17 @@ int main(int argc, char* argv[])
     sdl2_destroy_window(window);
 
     sdl2_finalize();
+    return 0;
+}
+
+Uint32 my_timer_callback(Uint32 interval, void* param)
+{
+    SDL_Event myevent;
+    SDL_memset(&myevent, 0, sizeof(myevent));
+    myevent.type = user_event;
+    myevent.user.code = TIMEOUT_EVENT;
+
+    SDL_PushEvent(&myevent);
+
     return 0;
 }

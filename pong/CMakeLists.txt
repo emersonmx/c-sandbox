@@ -12,6 +12,7 @@ add_executable(pong
     ${CMAKE_SOURCE_DIR}/sdl2/sdl2.c
     ${CMAKE_SOURCE_DIR}/sdl2/sdl2_ttf.c
     ${CMAKE_SOURCE_DIR}/sdl2/engine.c
+    ${CMAKE_SOURCE_DIR}/sdl2/timer.c
     main.c
     pong.c
     action.c

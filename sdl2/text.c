@@ -4,22 +4,7 @@
 
 #include <utils/macros.h>
 
-SDL_Texture* create_text(Text* text)
-{
-    SDL_Surface* surface = TTF_RenderUTF8_Blended(
-        text->font,
-        text->value,
-        text->color
-    );
-    RETURN_NULL_IF_NULL(surface);
-
-    SDL_Texture* texture =
-        SDL_CreateTextureFromSurface(text->renderer, surface);
-    SDL_FreeSurface(surface);
-    RETURN_NULL_IF_NULL(texture);
-
-    return texture;
-}
+SDL_Texture* create_text(Text* text);
 
 Text* text_new(void)
 {
@@ -59,4 +44,21 @@ void text_clear(Text* text)
     if (text->texture != NULL) {
         SDL_DestroyTexture(text->texture);
     }
+}
+
+SDL_Texture* create_text(Text* text)
+{
+    SDL_Surface* surface = TTF_RenderUTF8_Blended(
+        text->font,
+        text->value,
+        text->color
+    );
+    RETURN_NULL_IF_NULL(surface);
+
+    SDL_Texture* texture =
+        SDL_CreateTextureFromSurface(text->renderer, surface);
+    SDL_FreeSurface(surface);
+    RETURN_NULL_IF_NULL(texture);
+
+    return texture;
 }
