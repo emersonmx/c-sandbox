@@ -16,7 +16,6 @@ struct Engine {
     SDL_Renderer* renderer;
 
     bool running;
-    int error_code;
     double physics_tick_count;
 
     EngineInitFunc* init_func;
@@ -32,7 +31,6 @@ static Engine engine = {
     .renderer = NULL,
 
     .running = true,
-    .error_code = EXIT_SUCCESS,
     .physics_tick_count = 0.0,
 
     .init_func = default_init_func,
@@ -55,7 +53,7 @@ static void fixed_update(void);
 static void update(double delta);
 static void render(void);
 
-int engine_main(EngineSettings settings)
+void engine_main(EngineSettings settings)
 {
     engine.settings = engine_default_settings();
     engine.settings = settings;
@@ -78,8 +76,6 @@ int engine_main(EngineSettings settings)
         update(delta);
         render();
     }
-
-    return engine.error_code;
 }
 
 void engine_quit_loop(void)

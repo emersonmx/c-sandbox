@@ -33,7 +33,7 @@ struct EngineSettings {
 typedef struct Engine Engine;
 
 
-int engine_main(EngineSettings settings);
+void engine_main(EngineSettings settings);
 void engine_quit_loop(void);
 
 EngineSettings engine_default_settings(void);
