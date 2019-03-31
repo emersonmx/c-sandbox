@@ -9,11 +9,11 @@
 extern "C" {
 #endif
 
-typedef enum {
+enum {
     PLAYER1_ACTION_UP, PLAYER1_ACTION_DOWN,
     PLAYER2_ACTION_UP, PLAYER2_ACTION_DOWN,
     ACTIONS_SIZE
-} Actions;
+};
 
 
 void action_process_events(SDL_Event* event);

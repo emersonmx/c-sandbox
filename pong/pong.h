@@ -15,9 +15,9 @@
 extern "C" {
 #endif
 
-typedef enum {
+enum {
     BALL_OUT_OF_BOUNDS_SIGNAL, PLAY_BALL_SIGNAL, SIGNALS_SIZE
-} Signals;
+};
 
 typedef struct Pong {
     EngineSettings settings;
