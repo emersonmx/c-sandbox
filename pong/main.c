@@ -18,6 +18,4 @@ int main(void)
     engine_set_render_func(pong_render);
 
     engine_main(game->settings);
-
-    return EXIT_SUCCESS;
 }

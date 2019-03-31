@@ -25,6 +25,4 @@ int main(void)
     printf("%f\n", random_number(0, 10));
     printf("%f\n", random_number(0, 10));
     printf("%f\n", random_number(0, 10));
-
-    return 0;
 }

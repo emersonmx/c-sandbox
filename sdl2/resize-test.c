@@ -81,8 +81,6 @@ int main(void)
     text_free(text);
 
     quit();
-
-    return 0;
 }
 
 void init(void)

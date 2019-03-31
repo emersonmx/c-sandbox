@@ -47,7 +47,6 @@ int main(int argc, char* argv[])
     sdl2_destroy_window(window);
 
     sdl2_finalize();
-    return 0;
 }
 
 Uint32 my_timer_callback(Uint32 interval, void* param)

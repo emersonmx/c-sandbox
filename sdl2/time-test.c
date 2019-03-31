@@ -26,8 +26,6 @@ int main(void) {
 
     printf("%u\n", end_low - start_low);
     printf("%f\n", (end_high - start_high) / (double)SDL_GetPerformanceFrequency());
-
-    return 0;
 }
 
 bool init(void)
