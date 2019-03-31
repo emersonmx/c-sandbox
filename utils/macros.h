@@ -7,8 +7,8 @@
 #define IS_NOT_NULL(X) X != NULL
 
 #define RETURN_VALUE_IF_TRUE(X, R) \
-    if (X) { \
-        return R; \
+    if (X) {                       \
+        return R;                  \
     }
 
 #define RETURN_VALUE_IF_NULL(X, R) RETURN_VALUE_IF_TRUE(IS_NULL(X), R)
