@@ -11,11 +11,12 @@
 extern "C" {
 #endif
 
-typedef struct Wall {
+typedef struct Wall Wall;
+struct Wall {
     SDL_Color color;
     SDL_Rect rect;
     vec3 position;
-} Wall;
+};
 
 
 SDL_Rect wall_rect(Wall* wall);

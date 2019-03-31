@@ -19,7 +19,8 @@ enum {
     BALL_OUT_OF_BOUNDS_SIGNAL, PLAY_BALL_SIGNAL, SIGNALS_SIZE
 };
 
-typedef struct Pong {
+typedef struct Pong Pong;
+struct Pong {
     EngineSettings settings;
 
     TTF_Font* score_font;
@@ -35,7 +36,7 @@ typedef struct Pong {
     Score player2_score;
 
     SDL_Rect play_area;
-} Pong;
+};
 
 
 Pong* pong_instance(void);
