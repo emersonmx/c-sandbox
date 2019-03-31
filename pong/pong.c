@@ -21,7 +21,7 @@ void pong_initialize(void)
     sdl2_ttf_initialize();
 
     game.score_font = TTF_OpenFont("assets/PressStart2P-Regular.ttf", 32);
-    if (game.score_font == NULL) {
+    if (!game.score_font) {
         SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "%s\n", TTF_GetError());
     }
 

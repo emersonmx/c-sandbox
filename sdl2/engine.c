@@ -173,7 +173,7 @@ bool setup_window(void)
         engine.settings.window.title,
         engine.settings.window.width, engine.settings.window.height
     );
-    if (engine.window == NULL) {
+    if (!engine.window) {
         SDL_LogError(SDL_LOG_CATEGORY_VIDEO,
             "Couldn't create SDL Window\n\tError: %s\n", SDL_GetError());
         return false;
@@ -190,7 +190,7 @@ bool setup_renderer(void)
     }
 
     engine.renderer = sdl2_create_renderer_with_flags(engine.window, flags);
-    if (engine.renderer == NULL) {
+    if (!engine.renderer) {
         SDL_LogError(SDL_LOG_CATEGORY_VIDEO,
             "Couldn't create SDL Renderer\n\tError: %s\n", SDL_GetError());
         return false;

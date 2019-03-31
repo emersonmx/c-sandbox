@@ -39,7 +39,7 @@ bool init(void)
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         800, 600, SDL_WINDOW_SHOWN
     );
-    if (window == NULL) {
+    if (!window) {
         return false;
     }
 
