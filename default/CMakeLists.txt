@@ -6,4 +6,3 @@ add_executable(random-test
 )
 
 add_executable(syntax-tests syntax-tests.c)
-

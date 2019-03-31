@@ -20,7 +20,7 @@ struct Text {
 
 
 Text* text_new(void);
-void text_free(Text* text);
+void text_delete(Text* text);
 
 void text_update_texture(Text* text);
 void text_clear(Text* text);

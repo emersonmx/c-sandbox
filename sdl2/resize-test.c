@@ -78,7 +78,7 @@ int main(void)
         SDL_RenderPresent(engine->renderer);
     }
 
-    text_free(text);
+    text_delete(text);
 
     quit();
 }

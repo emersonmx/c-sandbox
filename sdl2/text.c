@@ -16,7 +16,7 @@ Text* text_new(void)
     return text;
 }
 
-void text_free(Text* text)
+void text_delete(Text* text)
 {
     RETURN_IF_NULL(text);
     text_clear(text);
