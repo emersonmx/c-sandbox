@@ -8,16 +8,14 @@
 extern "C" {
 #endif
 
-typedef struct Text Text;
-struct Text {
+typedef struct Text {
     char* value;
     SDL_Color color;
     TTF_Font* font;
     SDL_Rect offset;
     SDL_Renderer* renderer;
     SDL_Texture* texture;
-};
-
+} Text;
 
 Text* text_new(void);
 void text_delete(Text* text);

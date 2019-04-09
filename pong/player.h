@@ -19,8 +19,7 @@ extern "C" {
 
 typedef void PlayerInputVelocityFunc(int player_id, vec3 dest);
 
-typedef struct Player Player;
-struct Player {
+typedef struct Player {
     int id;
     SDL_Color color;
     SDL_Rect rect;
@@ -33,7 +32,7 @@ struct Player {
     int score;
 
     PlayerInputVelocityFunc* input_velocity_func;
-};
+} Player;
 
 
 SDL_Rect player_rect(Player* player);

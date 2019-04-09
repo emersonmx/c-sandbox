@@ -12,8 +12,7 @@
 extern "C" {
 #endif
 
-typedef struct Score Score;
-struct Score {
+typedef struct Score {
     SDL_Color color;
     SDL_Rect rect;
     vec3 position;
@@ -21,7 +20,7 @@ struct Score {
     int value;
 
     SDL_Texture* texture;
-};
+} Score;
 
 
 void score_update_score(Score* score, int value);

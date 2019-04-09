@@ -14,8 +14,7 @@ typedef void EngineFixedUpdateFunc(double delta);
 typedef void EngineUpdateFunc(double delta);
 typedef void EngineRenderFunc(void);
 
-typedef struct EngineSettings EngineSettings;
-struct EngineSettings {
+typedef struct EngineSettings {
     struct {
         const char* title;
         int width;
@@ -28,7 +27,7 @@ struct EngineSettings {
     struct {
         double fps;
     } physics;
-};
+} EngineSettings;
 
 typedef struct Engine Engine;
 

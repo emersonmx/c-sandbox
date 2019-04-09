@@ -8,13 +8,11 @@
 #include <sdl2/text.h>
 #include <utils/str.h>
 
-typedef struct Engine Engine;
-struct Engine {
+typedef struct Engine {
     SDL_Window* window;
     SDL_Renderer* renderer;
     TTF_Font* font;
-};
-
+} Engine;
 
 static Engine* engine = NULL;
 

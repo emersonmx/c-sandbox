@@ -11,12 +11,11 @@
 extern "C" {
 #endif
 
-typedef struct MidField MidField;
-struct MidField {
+typedef struct MidField {
     SDL_Color color;
     SDL_Rect rect;
     vec3 position;
-};
+} MidField;
 
 
 void midfield_render(MidField* midfield);

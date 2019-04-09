@@ -15,8 +15,7 @@
 extern "C" {
 #endif
 
-typedef struct Ball Ball;
-struct Ball {
+typedef struct Ball {
     SDL_Color color;
     SDL_Rect rect;
     vec3 position;
@@ -25,7 +24,7 @@ struct Ball {
     double min_speed;
     double max_speed;
     Uint32 play_delay;
-};
+} Ball;
 
 
 SDL_Rect ball_rect(Ball* ball);
