@@ -142,7 +142,7 @@ void pong_process_events(SDL_Event* event)
 #ifdef DEBUG
             printf("Ball out of bounds\n");
 #endif
-            int player_side = (intptr_t) event->user.data1;
+            int player_side = (uintptr_t) event->user.data1;
             if (player_side == PLAYER1) {
                 score_update_score(
                     &game.player2_score, game.player2_score.value + 1
@@ -152,7 +152,7 @@ void pong_process_events(SDL_Event* event)
                     &game.player1_score, game.player1_score.value + 1
                 );
             } else {
-                SDL_Log("Schrodinger ball? O.o\n");
+                SDL_Log("WAT?! O.o\n");
             }
 
             ball_reset(&game.ball);

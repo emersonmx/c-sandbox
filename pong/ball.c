@@ -125,7 +125,7 @@ void ball_fixed_update(Ball* ball, double delta)
             int out_from_side = ball->position[0] < p1->position[0]
                 ? PLAYER1 : PLAYER2;
             ball_out_of_bounds_tid = SDL_AddTimer(
-                1000, ball_out_of_bounds, (void*) (intptr_t) out_from_side
+                1000, ball_out_of_bounds, (void*) (uintptr_t) out_from_side
             );
         }
     }
