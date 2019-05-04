@@ -17,10 +17,10 @@
 extern "C" {
 #endif
 
-typedef void PlayerInputVelocityFunc(int player_id, vec3 dest);
+typedef void PlayerInputVelocityFunc(uint8_t player_id, vec3 dest);
 
 typedef struct Player {
-    int id;
+    uint8_t id;
     SDL_Color color;
     SDL_Rect rect;
     vec3 position;
@@ -29,8 +29,6 @@ typedef struct Player {
     double damp_force;
     bool is_strong_hit;
 
-    int score;
-
     PlayerInputVelocityFunc* input_velocity_func;
 } Player;
 
@@ -38,8 +36,8 @@ typedef struct Player {
 SDL_Rect player_rect(Player* player);
 void player_anchor(Player* player, vec3 dest);
 
-void player_default_input_velocity_func(int player_id, vec3 dest);
-void player_ia_input_velocity_func(int player_id, vec3 dest);
+void player_default_input_velocity_func(uint8_t player_id, vec3 dest);
+void player_ia_input_velocity_func(uint8_t player_id, vec3 dest);
 
 void player_fixed_update(Player* player, double delta);
 void player_render(Player* player);

@@ -17,13 +17,13 @@ typedef struct Score {
     SDL_Rect rect;
     vec3 position;
     vec3 origin;
-    int value;
+    uint32_t value;
 
     SDL_Texture* texture;
 } Score;
 
 
-void score_update_score(Score* score, int value);
+void score_update_score(Score* score, uint32_t value);
 void score_reset(Score* score);
 void score_render(Score* score);
 

@@ -15,7 +15,7 @@ SDL_Rect player_rect(Player* player)
 
 void player_anchor(Player* player, vec3 dest)
 {
-    int direction = player->id == PLAYER1 ? -1 : 1;
+    uint8_t direction = player->id == PLAYER1 ? -1 : 1;
     double offset = calc_height(
         player->rect.h,
         DEFAULT_ANGLE
@@ -29,16 +29,17 @@ double calc_height(double base, double angle)
     return (base/2.0) * tan(glm_rad(angle));
 }
 
-void player_default_input_velocity_func(int player_id, vec3 dest)
+void player_default_input_velocity_func(uint8_t player_id, vec3 dest)
 {
-    int action_up = player_id == PLAYER1 ? PLAYER1_ACTION_UP : PLAYER2_ACTION_UP;
-    int action_down = player_id == PLAYER1
+    uint8_t action_up = player_id == PLAYER1
+        ? PLAYER1_ACTION_UP : PLAYER2_ACTION_UP;
+    uint8_t action_down = player_id == PLAYER1
         ? PLAYER1_ACTION_DOWN : PLAYER2_ACTION_DOWN;
 
     dest[1] = action_is_pressed(action_down) - action_is_pressed(action_up);
 }
 
-void player_ia_input_velocity_func(int player_id, vec3 dest)
+void player_ia_input_velocity_func(uint8_t player_id, vec3 dest)
 {
     Pong* pong = pong_instance();
     int window_width = pong->settings.window.width;

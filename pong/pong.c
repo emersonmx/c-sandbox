@@ -47,7 +47,6 @@ void pong_initialize(void)
         .hit_force = PLAYER_DEFAULT_HIT_FORCE,
         .damp_force = PLAYER_DEFAULT_DAMP_FORCE,
         .is_strong_hit = false,
-        .score = 0,
         .input_velocity_func = player_controls[PLAYER1],
     };
     game.player2 = (Player){
@@ -59,7 +58,6 @@ void pong_initialize(void)
         .hit_force = PLAYER_DEFAULT_HIT_FORCE,
         .damp_force = PLAYER_DEFAULT_DAMP_FORCE,
         .is_strong_hit = false,
-        .score = 0,
         .input_velocity_func = player_controls[PLAYER2],
     };
 
@@ -142,7 +140,7 @@ void pong_process_events(SDL_Event* event)
 #ifdef DEBUG
             printf("Ball out of bounds\n");
 #endif
-            int player_side = (uintptr_t) event->user.data1;
+            uint8_t player_side = (uintptr_t) event->user.data1;
             if (player_side == PLAYER1) {
                 score_update_score(
                     &game.player2_score, game.player2_score.value + 1

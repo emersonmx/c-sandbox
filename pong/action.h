@@ -18,8 +18,8 @@ enum {
 
 void action_process_events(SDL_Event* event);
 
-bool action_is_pressed(int action);
-bool action_is_released(int action);
+bool action_is_pressed(uint8_t action);
+bool action_is_released(uint8_t action);
 
 #ifdef __cplusplus
 }

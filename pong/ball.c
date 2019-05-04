@@ -5,7 +5,7 @@
 #include "pong.h"
 #include "object.h"
 
-static int ball_out_of_bounds_tid = -1;
+static int8_t ball_out_of_bounds_tid = -1;
 
 static void change_direction(Ball* ball, vec3 anchor);
 static void increate_min_speed(Ball* ball, double delta);
@@ -122,7 +122,7 @@ void ball_fixed_update(Ball* ball, double delta)
 
     if (!SDL_HasIntersection(&br, &par)) {
         if (ball_out_of_bounds_tid == -1) {
-            int out_from_side = ball->position[0] < p1->position[0]
+            uint8_t out_from_side = ball->position[0] < p1->position[0]
                 ? PLAYER1 : PLAYER2;
             ball_out_of_bounds_tid = SDL_AddTimer(
                 1000, ball_out_of_bounds, (void*) (uintptr_t) out_from_side

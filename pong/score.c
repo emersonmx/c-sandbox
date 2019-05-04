@@ -31,7 +31,7 @@ static void update_texture(Score* score)
     );
 }
 
-void score_update_score(Score* score, int value)
+void score_update_score(Score* score, uint32_t value)
 {
     score->value = value;
     update_texture(score);
