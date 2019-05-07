@@ -1,5 +1,5 @@
-#ifndef CSB_GAMES_PONG_OBJECT_H
-#define CSB_GAMES_PONG_OBJECT_H
+#ifndef PONG_OBJECT_H
+#define PONG_OBJECT_H
 
 #define object_rect(OBJ)  			 \
     (SDL_Rect){                                  \
@@ -17,4 +17,4 @@
         renderer_draw_rect(rect, color);           \
     }
 
-#endif /* CSB_GAMES_PONG_OBJECT_H */
+#endif /* PONG_OBJECT_H */

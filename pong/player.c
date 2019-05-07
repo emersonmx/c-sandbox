@@ -1,6 +1,6 @@
 #include "player.h"
 
-#include "pong.h"
+#include "game.h"
 #include "utils.h"
 #include "object.h"
 
@@ -41,12 +41,12 @@ void player_default_input_velocity_func(uint8_t player_id, vec3 dest)
 
 void player_ia_input_velocity_func(uint8_t player_id, vec3 dest)
 {
-    Pong* pong = pong_instance();
-    int window_width = pong->settings.window.width;
-    int center_y = pong->settings.window.height / 2.0f;
+    Game* game = game_instance();
+    int window_width = game->settings.window.width;
+    int center_y = game->settings.window.height / 2.0f;
 
-    Ball* ball = &pong->ball;
-    Player* player = player_id == PLAYER1 ? &pong->player1 : &pong->player2;
+    Ball* ball = &game->ball;
+    Player* player = player_id == PLAYER1 ? &game->player1 : &game->player2;
 
     int area = window_width * 0.8f;
     int player_x = player->position[0];
@@ -74,7 +74,7 @@ void player_ia_input_velocity_func(uint8_t player_id, vec3 dest)
 
 void player_fixed_update(Player* player, double delta)
 {
-    Pong* game = pong_instance();
+    Game* game = game_instance();
 
     vec3 velocity;
     glm_vec3_zero(velocity);

@@ -1,21 +1,21 @@
 #include <utils/random.h>
 
-#include "pong.h"
+#include "game.h"
 
 int main(void)
 {
     randomize();
 
-    Pong* game = pong_instance();
+    Game* game = game_instance();
 
     game->settings = engine_default_settings();
-    game->settings.window.title = "Pong";
+    game->settings.window.title = "Game";
 
-    engine_set_init_func(pong_initialize);
-    engine_set_quit_func(pong_finalize);
-    engine_set_process_events_func(pong_process_events);
-    engine_set_fixed_update_func(pong_fixed_update);
-    engine_set_render_func(pong_render);
+    engine_set_init_func(game_initialize);
+    engine_set_quit_func(game_finalize);
+    engine_set_process_events_func(game_process_events);
+    engine_set_fixed_update_func(game_fixed_update);
+    engine_set_render_func(game_render);
 
     engine_main(game->settings);
 }

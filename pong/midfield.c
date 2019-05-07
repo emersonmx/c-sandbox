@@ -1,11 +1,11 @@
 #include "midfield.h"
 
-#include "pong.h"
+#include "game.h"
 
 void midfield_render(MidField* midfield)
 {
-    Pong* pong = pong_instance();
-    int window_height = pong->settings.window.height;
+    Game* game = game_instance();
+    int window_height = game->settings.window.height;
     int window_half_height = window_height/2.0f;
 
     int position_x = midfield->position[0] - midfield->rect.w/2.0f;

@@ -1,5 +1,5 @@
-#ifndef CSB_GAME_PONG_UTILS_H
-#define CSB_GAME_PONG_UTILS_H
+#ifndef PONG_UTILS_H
+#define PONG_UTILS_H
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -19,4 +19,4 @@ bool in_array(int needle, int* array, size_t size);
 }
 #endif
 
-#endif /* CSB_GAME_PONG_UTILS_H */
+#endif /* PONG_UTILS_H */

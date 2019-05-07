@@ -1,5 +1,5 @@
-#ifndef CSB_GAMES_PONG_WALL_H
-#define CSB_GAMES_PONG_WALL_H
+#ifndef PONG_WALL_H
+#define PONG_WALL_H
 
 #include <cglm/vec3.h>
 
@@ -25,4 +25,4 @@ void wall_render(Wall* wall);
 }
 #endif
 
-#endif /* CSB_GAMES_PONG_WALL_H */
+#endif /* PONG_WALL_H */

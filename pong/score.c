@@ -3,15 +3,15 @@
 #include <utils/str.h>
 #include <utils/macros.h>
 
-#include "pong.h"
+#include "game.h"
 
 static void update_texture(Score* score)
 {
-    Pong* pong = pong_instance();
+    Game* game = game_instance();
 
     char* text = str_format("%d", score->value);
     SDL_Surface* surface = TTF_RenderUTF8_Blended(
-        pong->score_font,
+        game->score_font,
         text,
         score->color
     );

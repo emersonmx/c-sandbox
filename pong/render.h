@@ -1,5 +1,5 @@
-#ifndef CSB_GAMES_PONG_RENDER_H
-#define CSB_GAMES_PONG_RENDER_H
+#ifndef PONG_RENDER_H
+#define PONG_RENDER_H
 
 #include <sdl2/sdl2.h>
 
@@ -13,4 +13,4 @@ void renderer_draw_rect(SDL_Rect rect, SDL_Color color);
 }
 #endif
 
-#endif /* CSB_GAMES_PONG_RENDER_H */
+#endif /* PONG_RENDER_H */

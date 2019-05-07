@@ -1,4 +1,4 @@
-#include "pong.h"
+#include "game.h"
 
 #include <utils/macros.h>
 
@@ -9,14 +9,14 @@
 #define WINDOW_CENTER_X WINDOW_WIDTH/2.0
 #define WINDOW_CENTER_Y WINDOW_HEIGHT/2.0
 
-static Pong game;
+static Game game;
 
-Pong* pong_instance(void)
+Game* game_instance(void)
 {
     return &game;
 }
 
-void pong_initialize(void)
+void game_initialize(void)
 {
     sdl2_ttf_initialize();
 
@@ -105,7 +105,7 @@ void pong_initialize(void)
     game.play_area = (SDL_Rect){0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
 }
 
-void pong_finalize(void)
+void game_finalize(void)
 {
     TTF_CloseFont(game.score_font);
     game.score_font = NULL;
@@ -113,7 +113,7 @@ void pong_finalize(void)
     sdl2_ttf_finalize();
 }
 
-void pong_process_events(SDL_Event* event)
+void game_process_events(SDL_Event* event)
 {
     if (event->type == SDL_QUIT) {
         engine_quit_loop();
@@ -165,14 +165,14 @@ void pong_process_events(SDL_Event* event)
     }
 }
 
-void pong_fixed_update(double delta)
+void game_fixed_update(double delta)
 {
     player_fixed_update(&game.player1, delta);
     player_fixed_update(&game.player2, delta);
     ball_fixed_update(&game.ball, delta);
 }
 
-void pong_render(void)
+void game_render(void)
 {
     midfield_render(&game.midfield);
     score_render(&game.player1_score);

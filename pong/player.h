@@ -1,5 +1,5 @@
-#ifndef CSB_GAMES_PONG_PLAYER_H
-#define CSB_GAMES_PONG_PLAYER_H
+#ifndef PONG_PLAYER_H
+#define PONG_PLAYER_H
 
 #include <cglm/vec3.h>
 
@@ -46,4 +46,4 @@ void player_render(Player* player);
 }
 #endif
 
-#endif /* CSB_GAMES_PONG_PLAYER_H */
+#endif /* PONG_PLAYER_H */

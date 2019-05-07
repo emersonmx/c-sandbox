@@ -1,5 +1,5 @@
-#ifndef CSB_GAMES_PONG_PONG_H
-#define CSB_GAMES_PONG_PONG_H
+#ifndef PONG_GAME_H
+#define PONG_GAME_H
 
 #include <sdl2/engine.h>
 #include <sdl2/sdl2_ttf.h>
@@ -19,7 +19,7 @@ enum {
     BALL_OUT_OF_BOUNDS_SIGNAL, PLAY_BALL_SIGNAL, SIGNALS_SIZE
 };
 
-typedef struct Pong {
+typedef struct Game {
     EngineSettings settings;
 
     TTF_Font* score_font;
@@ -35,19 +35,19 @@ typedef struct Pong {
     Score player2_score;
 
     SDL_Rect play_area;
-} Pong;
+} Game;
 
 
-Pong* pong_instance(void);
+Game* game_instance(void);
 
-void pong_initialize(void);
-void pong_finalize(void);
-void pong_process_events(SDL_Event* event);
-void pong_fixed_update(double delta);
-void pong_render(void);
+void game_initialize(void);
+void game_finalize(void);
+void game_process_events(SDL_Event* event);
+void game_fixed_update(double delta);
+void game_render(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* CSB_GAMES_PONG_PONG_H */
+#endif /* PONG_GAME_H */
