@@ -15,7 +15,7 @@ SDL_Rect player_rect(Player* player)
 
 void player_anchor(Player* player, vec3 dest)
 {
-    uint8_t direction = player->id == PLAYER1 ? -1 : 1;
+    int direction = player->id == PLAYER1 ? -1 : 1;
     double offset = calc_height(
         player->rect.h,
         DEFAULT_ANGLE
