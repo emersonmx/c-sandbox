@@ -20,6 +20,8 @@ void game_initialize(void)
 {
     sdl2_ttf_initialize();
 
+    game.paused = false;
+
     game.score_font = TTF_OpenFont("assets/PressStart2P-Regular.ttf", 32);
     if (!game.score_font) {
         SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "%s\n", TTF_GetError());
@@ -102,6 +104,8 @@ void game_initialize(void)
     score_update_score(&game.player1_score, 0);
     score_update_score(&game.player2_score, 0);
 
+    shade_init(&game.shade);
+
     game.play_area = (SDL_Rect){0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
 }
 
@@ -120,7 +124,11 @@ void game_process_events(SDL_Event* event)
     }
     if (event->type == SDL_KEYDOWN) {
         if (event->key.keysym.sym == SDLK_ESCAPE) {
-            engine_quit_loop();
+            if (game.paused) {
+                game_unpause();
+            } else {
+                game_pause();
+            }
         }
     }
 
@@ -167,9 +175,22 @@ void game_process_events(SDL_Event* event)
 
 void game_fixed_update(double delta)
 {
+    if (game.paused) {
+        return;
+    }
+
     player_fixed_update(&game.player1, delta);
     player_fixed_update(&game.player2, delta);
     ball_fixed_update(&game.ball, delta);
+}
+
+void game_update(double delta)
+{
+    if (game.paused) {
+        return;
+    }
+
+    shade_update(&game.shade, delta);
 }
 
 void game_render(void)
@@ -182,4 +203,17 @@ void game_render(void)
     ball_render(&game.ball);
     wall_render(&game.top_wall);
     wall_render(&game.bottom_wall);
+    shade_render(&game.shade);
+}
+
+void game_pause(void)
+{
+    game.paused = true;
+    shade_show(&game.shade);
+}
+
+void game_unpause(void)
+{
+    game.paused = false;
+    shade_hide(&game.shade);
 }

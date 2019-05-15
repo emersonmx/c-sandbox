@@ -23,6 +23,7 @@ add_executable(pong
     wall.c
     midfield.c
     score.c
+    shade.c
 )
 target_link_libraries(pong
     ${SDL2_LIBRARIES}

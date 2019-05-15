@@ -45,7 +45,9 @@ SDL_Renderer* sdl2_create_renderer(SDL_Window* window)
 SDL_Renderer* sdl2_create_renderer_with_flags(SDL_Window* window, Uint32 flags)
 {
     RETURN_VALUE_IF_NULL(window, NULL);
-    return SDL_CreateRenderer(window, -1, flags);
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, flags);
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    return renderer;
 }
 
 void sdl2_destroy_renderer(SDL_Renderer* renderer)

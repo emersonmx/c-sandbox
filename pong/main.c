@@ -15,6 +15,7 @@ int main(void)
     engine_set_quit_func(game_finalize);
     engine_set_process_events_func(game_process_events);
     engine_set_fixed_update_func(game_fixed_update);
+    engine_set_update_func(game_update);
     engine_set_render_func(game_render);
 
     engine_main(game->settings);

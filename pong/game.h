@@ -10,6 +10,7 @@
 #include "wall.h"
 #include "midfield.h"
 #include "score.h"
+#include "shade.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,6 +22,7 @@ enum {
 
 typedef struct Game {
     EngineSettings settings;
+    bool paused;
 
     TTF_Font* score_font;
     Uint32 event_id;
@@ -33,6 +35,7 @@ typedef struct Game {
     MidField midfield;
     Score player1_score;
     Score player2_score;
+    Shade shade;
 
     SDL_Rect play_area;
 } Game;
@@ -44,7 +47,11 @@ void game_initialize(void);
 void game_finalize(void);
 void game_process_events(SDL_Event* event);
 void game_fixed_update(double delta);
+void game_update(double delta);
 void game_render(void);
+
+void game_pause(void);
+void game_unpause(void);
 
 #ifdef __cplusplus
 }
