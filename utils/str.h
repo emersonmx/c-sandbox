@@ -20,7 +20,7 @@ char* str_format(const char* format, ...)
     int size = vsnprintf(NULL, 0, format, args1);
     va_end(args1);
     int total_size = size + 1;
-    char* buffer = calloc(total_size, sizeof(char));
+    char* buffer = (char*) calloc(total_size, sizeof(char));
     vsnprintf(buffer, total_size, format, args2);
     va_end(args2);
 
