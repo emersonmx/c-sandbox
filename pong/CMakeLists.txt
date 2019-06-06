@@ -14,7 +14,7 @@ add_executable(pong
     ${CMAKE_SOURCE_DIR}/sdl2/engine.c
     ${CMAKE_SOURCE_DIR}/sdl2/timer.c
     main.c
-    game.c
+    app.c
     action.c
     render.c
     utils.c

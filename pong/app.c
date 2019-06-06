@@ -1,35 +1,35 @@
-#include "game.h"
+#include "app.h"
 
 #include <utils/macros.h>
 
 #include "utils.h"
 
-#define WINDOW_WIDTH game.settings.window.width
-#define WINDOW_HEIGHT game.settings.window.height
+#define WINDOW_WIDTH app.settings.window.width
+#define WINDOW_HEIGHT app.settings.window.height
 #define WINDOW_CENTER_X WINDOW_WIDTH/2.0
 #define WINDOW_CENTER_Y WINDOW_HEIGHT/2.0
 
-static Game game;
+static App app;
 
-Game* game_instance(void)
+App* app_instance(void)
 {
-    return &game;
+    return &app;
 }
 
-void game_initialize(void)
+void app_initialize(void)
 {
     sdl2_ttf_initialize();
 
-    game.paused = false;
+    app.paused = false;
 
-    game.score_font = TTF_OpenFont("assets/PressStart2P-Regular.ttf", 32);
-    if (!game.score_font) {
+    app.score_font = TTF_OpenFont("assets/PressStart2P-Regular.ttf", 32);
+    if (!app.score_font) {
         SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "%s\n", TTF_GetError());
     }
 
-    game.event_id = SDL_RegisterEvents(1);
-    if (game.event_id == (Uint32)-1) {
-        SDL_Log("Can't register game event\n\tError: %s\n", SDL_GetError());
+    app.event_id = SDL_RegisterEvents(1);
+    if (app.event_id == (Uint32)-1) {
+        SDL_Log("Can't register app event\n\tError: %s\n", SDL_GetError());
         engine_quit_loop();
         return;
     }
@@ -40,7 +40,7 @@ void game_initialize(void)
     // player_controls[PLAYER1] = player_ia_input_velocity_func;
     player_controls[PLAYER2] = player_ia_input_velocity_func;
 
-    game.player1 = (Player){
+    app.player1 = (Player){
         .id = PLAYER1,
         .color = COLOR_WHITE,
         .rect = {0, 0, 20, 80},
@@ -51,7 +51,7 @@ void game_initialize(void)
         .is_strong_hit = false,
         .input_velocity_func = player_controls[PLAYER1],
     };
-    game.player2 = (Player){
+    app.player2 = (Player){
         .id = PLAYER2,
         .color = COLOR_WHITE,
         .rect = {200, 0, 20, 80},
@@ -63,71 +63,71 @@ void game_initialize(void)
         .input_velocity_func = player_controls[PLAYER2],
     };
 
-    game.ball = (Ball){
+    app.ball = (Ball){
         .color = COLOR_WHITE,
         .rect = {WINDOW_CENTER_X, WINDOW_CENTER_Y, 10, 10},
         .position = {0},
         .play_delay = 1000,
     };
-    ball_reset(&game.ball);
-    ball_play_with_delay(&game.ball);
+    ball_reset(&app.ball);
+    ball_play_with_delay(&app.ball);
 
-    game.top_wall = (Wall){
+    app.top_wall = (Wall){
         .color = COLOR_WHITE,
         .rect = {0, 0, WINDOW_WIDTH, 10},
         .position = {WINDOW_CENTER_X, 5},
     };
-    game.bottom_wall = (Wall){
+    app.bottom_wall = (Wall){
         .color = COLOR_WHITE,
         .rect = {0, 0, WINDOW_WIDTH, 10},
         .position = {WINDOW_CENTER_X, WINDOW_HEIGHT - 5},
     };
 
-    game.midfield = (MidField){
+    app.midfield = (MidField){
         .color = COLOR_WHITE,
         .rect = {0, 0, 4, 4},
         .position = {WINDOW_CENTER_X, WINDOW_CENTER_Y},
     };
 
-    score_reset(&game.player1_score);
-    score_reset(&game.player2_score);
-    game.player1_score = (Score){
+    score_reset(&app.player1_score);
+    score_reset(&app.player2_score);
+    app.player1_score = (Score){
         .color = COLOR_WHITE,
         .position = {WINDOW_CENTER_X - 27, 35},
         .origin = {1, 0, 0},
     };
-    game.player2_score = (Score){
+    app.player2_score = (Score){
         .color = COLOR_WHITE,
         .position = {WINDOW_CENTER_X + 27, 35},
         .origin = {0, 0, 0},
     };
-    score_update_score(&game.player1_score, 0);
-    score_update_score(&game.player2_score, 0);
+    score_update_score(&app.player1_score, 0);
+    score_update_score(&app.player2_score, 0);
 
-    shade_init(&game.shade);
+    shade_init(&app.shade);
 
-    game.play_area = (SDL_Rect){0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
+    app.play_area = (SDL_Rect){0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
 }
 
-void game_finalize(void)
+void app_finalize(void)
 {
-    TTF_CloseFont(game.score_font);
-    game.score_font = NULL;
+    TTF_CloseFont(app.score_font);
+    app.score_font = NULL;
 
     sdl2_ttf_finalize();
 }
 
-void game_process_events(SDL_Event* event)
+void app_process_events(SDL_Event* event)
 {
     if (event->type == SDL_QUIT) {
         engine_quit_loop();
     }
     if (event->type == SDL_KEYDOWN) {
         if (event->key.keysym.sym == SDLK_ESCAPE) {
-            if (game.paused) {
-                game_unpause();
+            if (app.paused) {
+                app_unpause();
             } else {
-                game_pause();
+                app_pause();
             }
         }
     }
@@ -137,13 +137,13 @@ void game_process_events(SDL_Event* event)
 #ifdef DEBUG
     if (event->type == SDL_KEYUP) {
         if (event->key.keysym.sym == SDLK_r) {
-            ball_reset(&game.ball);
-            ball_play(&game.ball);
+            ball_reset(&app.ball);
+            ball_play(&app.ball);
         }
     }
 #endif
 
-    if (event->type == game.event_id) {
+    if (event->type == app.event_id) {
         if (event->user.code == BALL_OUT_OF_BOUNDS_SIGNAL) {
 #ifdef DEBUG
             printf("Ball out of bounds\n");
@@ -151,69 +151,69 @@ void game_process_events(SDL_Event* event)
             uint8_t player_side = (uintptr_t) event->user.data1;
             if (player_side == PLAYER1) {
                 score_update_score(
-                    &game.player2_score, game.player2_score.value + 1
+                    &app.player2_score, app.player2_score.value + 1
                 );
             } else if (player_side == PLAYER2) {
                 score_update_score(
-                    &game.player1_score, game.player1_score.value + 1
+                    &app.player1_score, app.player1_score.value + 1
                 );
             } else {
                 SDL_Log("WAT?! O.o\n");
             }
 
-            ball_reset(&game.ball);
-            ball_play_with_delay(&game.ball);
+            ball_reset(&app.ball);
+            ball_play_with_delay(&app.ball);
         }
         if (event->user.code == PLAY_BALL_SIGNAL) {
 #ifdef DEBUG
             printf("Play ball\n");
 #endif
-            ball_play(&game.ball);
+            ball_play(&app.ball);
         }
     }
 }
 
-void game_fixed_update(double delta)
+void app_fixed_update(double delta)
 {
-    if (game.paused) {
+    if (app.paused) {
         return;
     }
 
-    player_fixed_update(&game.player1, delta);
-    player_fixed_update(&game.player2, delta);
-    ball_fixed_update(&game.ball, delta);
+    player_fixed_update(&app.player1, delta);
+    player_fixed_update(&app.player2, delta);
+    ball_fixed_update(&app.ball, delta);
 }
 
-void game_update(double delta)
+void app_update(double delta)
 {
-    if (game.paused) {
+    if (app.paused) {
         return;
     }
 
-    shade_update(&game.shade, delta);
+    shade_update(&app.shade, delta);
 }
 
-void game_render(void)
+void app_render(void)
 {
-    midfield_render(&game.midfield);
-    score_render(&game.player1_score);
-    score_render(&game.player2_score);
-    player_render(&game.player1);
-    player_render(&game.player2);
-    ball_render(&game.ball);
-    wall_render(&game.top_wall);
-    wall_render(&game.bottom_wall);
-    shade_render(&game.shade);
+    midfield_render(&app.midfield);
+    score_render(&app.player1_score);
+    score_render(&app.player2_score);
+    player_render(&app.player1);
+    player_render(&app.player2);
+    ball_render(&app.ball);
+    wall_render(&app.top_wall);
+    wall_render(&app.bottom_wall);
+    shade_render(&app.shade);
 }
 
-void game_pause(void)
+void app_pause(void)
 {
-    game.paused = true;
-    shade_show(&game.shade);
+    app.paused = true;
+    shade_show(&app.shade);
 }
 
-void game_unpause(void)
+void app_unpause(void)
 {
-    game.paused = false;
-    shade_hide(&game.shade);
+    app.paused = false;
+    shade_hide(&app.shade);
 }

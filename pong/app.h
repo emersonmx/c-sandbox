@@ -1,5 +1,5 @@
-#ifndef PONG_GAME_H
-#define PONG_GAME_H
+#ifndef PONG_APP_H
+#define PONG_APP_H
 
 #include <sdl2/engine.h>
 #include <sdl2/sdl2_ttf.h>
@@ -20,7 +20,7 @@ enum {
     BALL_OUT_OF_BOUNDS_SIGNAL, PLAY_BALL_SIGNAL, SIGNALS_SIZE
 };
 
-typedef struct Game {
+typedef struct App {
     EngineSettings settings;
     bool paused;
 
@@ -38,23 +38,23 @@ typedef struct Game {
     Shade shade;
 
     SDL_Rect play_area;
-} Game;
+} App;
 
 
-Game* game_instance(void);
+App* app_instance(void);
 
-void game_initialize(void);
-void game_finalize(void);
-void game_process_events(SDL_Event* event);
-void game_fixed_update(double delta);
-void game_update(double delta);
-void game_render(void);
+void app_initialize(void);
+void app_finalize(void);
+void app_process_events(SDL_Event* event);
+void app_fixed_update(double delta);
+void app_update(double delta);
+void app_render(void);
 
-void game_pause(void);
-void game_unpause(void);
+void app_pause(void);
+void app_unpause(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* PONG_GAME_H */
+#endif /* PONG_APP_H */

@@ -1,11 +1,11 @@
 #include "shade.h"
 
-#include "game.h"
+#include "app.h"
 #include "object.h"
 
 void shade_init(Shade* shade)
 {
-    EngineSettings settings = game_instance()->settings;
+    EngineSettings settings = app_instance()->settings;
     int width = settings.window.width;
     int height = settings.window.height;
 

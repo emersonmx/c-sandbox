@@ -2,7 +2,7 @@
 
 #include <utils/random.h>
 
-#include "game.h"
+#include "app.h"
 #include "object.h"
 
 static int8_t ball_out_of_bounds_tid = -1;
@@ -16,7 +16,7 @@ static Uint32 ball_out_of_bounds(Uint32 interval, void* param)
 {
     SDL_Event event;
     SDL_zero(event);
-    event.type = game_instance()->event_id;
+    event.type = app_instance()->event_id;
     event.user.code = BALL_OUT_OF_BOUNDS_SIGNAL;
     event.user.data1 = param;
     SDL_PushEvent(&event);
@@ -30,7 +30,7 @@ static Uint32 ball_delay_timeout(Uint32 interval, void* param)
 {
     SDL_Event event;
     SDL_zero(event);
-    event.type = game_instance()->event_id;
+    event.type = app_instance()->event_id;
     event.user.code = PLAY_BALL_SIGNAL;
     SDL_PushEvent(&event);
     return 0;
@@ -43,11 +43,11 @@ SDL_Rect ball_rect(Ball* ball)
 
 void ball_reset(Ball* ball)
 {
-    Game* game = game_instance();
+    App* app = app_instance();
 
     glm_vec3_copy((vec3){
-        game->settings.window.width / 2.0f,
-        game->settings.window.height / 2.0f,
+        app->settings.window.width / 2.0f,
+        app->settings.window.height / 2.0f,
         0
     }, ball->position);
     ball->speed = BALL_DEFAULT_MIN_SPEED;
@@ -76,15 +76,15 @@ void ball_play_with_delay(Ball* ball)
 void ball_fixed_update(Ball* ball, double delta)
 {
     vec3 tmp;
-    Game* game = game_instance();
-    Player* p1 = &game->player1;
-    Player* p2 = &game->player2;
+    App* app = app_instance();
+    Player* p1 = &app->player1;
+    Player* p2 = &app->player2;
     SDL_Rect br = ball_rect(ball);
     SDL_Rect p1r = player_rect(p1);
     SDL_Rect p2r = player_rect(p2);
-    SDL_Rect twr = wall_rect(&game->top_wall);
-    SDL_Rect bwr = wall_rect(&game->bottom_wall);
-    SDL_Rect par = game->play_area;
+    SDL_Rect twr = wall_rect(&app->top_wall);
+    SDL_Rect bwr = wall_rect(&app->bottom_wall);
+    SDL_Rect par = app->play_area;
 
     if (SDL_HasIntersection(&br, &p1r)) {
         if (p1->is_strong_hit) {
