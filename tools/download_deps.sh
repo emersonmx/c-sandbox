@@ -11,3 +11,6 @@ function shallow_clone()
 cd $EXTERNALDIR
 rm -rf cglm
 shallow_clone https://github.com/recp/cglm.git
+
+rm -rf Unity
+shallow_clone https://github.com/ThrowTheSwitch/Unity.git

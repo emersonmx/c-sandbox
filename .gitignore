@@ -5,3 +5,4 @@
 *.log
 *.o
 compile_commands.json
+.clang-format
