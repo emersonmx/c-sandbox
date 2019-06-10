@@ -5,8 +5,6 @@
 
 #include <sdl2/sdl2.h>
 
-#include "render.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -1,6 +1,7 @@
 #include "midfield.h"
 
 #include "app.h"
+#include "render.h"
 
 void midfield_render(MidField* midfield)
 {

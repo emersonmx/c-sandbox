@@ -18,6 +18,7 @@ add_executable(pong
     action.c
     render.c
     utils.c
+    game.c
     player.c
     ball.c
     wall.c

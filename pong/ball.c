@@ -3,6 +3,7 @@
 #include <utils/random.h>
 
 #include "app.h"
+#include "render.h"
 #include "object.h"
 
 static int8_t ball_out_of_bounds_tid = -1;
@@ -77,14 +78,14 @@ void ball_fixed_update(Ball* ball, double delta)
 {
     vec3 tmp;
     App* app = app_instance();
-    Player* p1 = &app->player1;
-    Player* p2 = &app->player2;
+    Player* p1 = &app->game.player1;
+    Player* p2 = &app->game.player2;
     SDL_Rect br = ball_rect(ball);
     SDL_Rect p1r = player_rect(p1);
     SDL_Rect p2r = player_rect(p2);
-    SDL_Rect twr = wall_rect(&app->top_wall);
-    SDL_Rect bwr = wall_rect(&app->bottom_wall);
-    SDL_Rect par = app->play_area;
+    SDL_Rect twr = wall_rect(&app->game.top_wall);
+    SDL_Rect bwr = wall_rect(&app->game.bottom_wall);
+    SDL_Rect par = app->game.play_area;
 
     if (SDL_HasIntersection(&br, &p1r)) {
         if (p1->is_strong_hit) {

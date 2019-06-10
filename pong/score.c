@@ -4,6 +4,7 @@
 #include <utils/macros.h>
 
 #include "app.h"
+#include "render.h"
 
 static void update_texture(Score* score)
 {

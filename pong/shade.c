@@ -1,6 +1,7 @@
 #include "shade.h"
 
 #include "app.h"
+#include "render.h"
 #include "object.h"
 
 void shade_init(Shade* shade)

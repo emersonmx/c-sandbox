@@ -5,8 +5,6 @@
 
 #include <sdl2/sdl2.h>
 
-#include "render.h"
-
 #define PLAYER1 0
 #define PLAYER2 1
 #define PLAYER_MAX_SPEED 300

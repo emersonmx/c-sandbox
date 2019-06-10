@@ -4,9 +4,6 @@
 #include <cglm/vec3.h>
 
 #include <sdl2/sdl2.h>
-#include <sdl2/sdl2_ttf.h>
-
-#include "render.h"
 
 #ifdef __cplusplus
 extern "C" {

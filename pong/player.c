@@ -1,5 +1,6 @@
 #include "player.h"
 
+#include "render.h"
 #include "app.h"
 #include "utils.h"
 #include "object.h"
@@ -45,8 +46,9 @@ void player_ia_input_velocity_func(uint8_t player_id, vec3 dest)
     int window_width = app->settings.window.width;
     int center_y = app->settings.window.height / 2.0f;
 
-    Ball* ball = &app->ball;
-    Player* player = player_id == PLAYER1 ? &app->player1 : &app->player2;
+    Ball* ball = &app->game.ball;
+    Player* player = player_id == PLAYER1
+        ? &app->game.player1 : &app->game.player2;
 
     int area = window_width * 0.8f;
     int player_x = player->position[0];
@@ -90,8 +92,8 @@ void player_fixed_update(Player* player, double delta)
     glm_vec3_add(player->position, tmp, player->position);
 
     SDL_Rect pr = player_rect(player);
-    SDL_Rect twr = wall_rect(&app->top_wall);
-    SDL_Rect bwr = wall_rect(&app->bottom_wall);
+    SDL_Rect twr = wall_rect(&app->game.top_wall);
+    SDL_Rect bwr = wall_rect(&app->game.bottom_wall);
 
     if (SDL_HasIntersection(&pr, &twr)) {
         player->position[1] = twr.y+twr.h + player->rect.h/2.0f;

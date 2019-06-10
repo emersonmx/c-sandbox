@@ -4,13 +4,7 @@
 #include <sdl2/engine.h>
 #include <sdl2/sdl2_ttf.h>
 
-#include "action.h"
-#include "player.h"
-#include "ball.h"
-#include "wall.h"
-#include "midfield.h"
-#include "score.h"
-#include "shade.h"
+#include "game.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,17 +21,7 @@ typedef struct App {
     TTF_Font* score_font;
     Uint32 event_id;
 
-    Player player1;
-    Player player2;
-    Ball ball;
-    Wall top_wall;
-    Wall bottom_wall;
-    MidField midfield;
-    Score player1_score;
-    Score player2_score;
-    Shade shade;
-
-    SDL_Rect play_area;
+    Game game;
 } App;
 
 

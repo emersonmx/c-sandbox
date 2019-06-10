@@ -1,5 +1,6 @@
 #include "wall.h"
 
+#include "render.h"
 #include "object.h"
 
 SDL_Rect wall_rect(Wall* wall)
