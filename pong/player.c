@@ -1,5 +1,7 @@
 #include "player.h"
 
+#include <stdint.h>
+
 #include "render.h"
 #include "app.h"
 #include "utils.h"
@@ -17,7 +19,7 @@ SDL_Rect player_rect(Player* player)
 
 void player_anchor(Player* player, vec3 dest)
 {
-    int direction = player->id == PLAYER1 ? -1 : 1;
+    int8_t direction = player->id == PLAYER1 ? -1 : 1;
     double offset = calc_height(
         player->rect.h,
         DEFAULT_ANGLE
@@ -44,21 +46,21 @@ void player_default_input_velocity_func(uint8_t player_id, vec3 dest)
 void player_ia_input_velocity_func(uint8_t player_id, vec3 dest)
 {
     App* app = app_instance();
-    int window_width = app->settings.window.width;
-    int center_y = app->settings.window.height / 2.0f;
+    int32_t window_width = app->settings.window.width;
+    int32_t center_y = app->settings.window.height / 2.0f;
 
     Ball* ball = &app->game.ball;
     Player* player = player_id == PLAYER1
         ? &app->game.player1 : &app->game.player2;
 
-    int area = window_width * 0.8f;
-    int player_x = player->position[0];
-    int player_y = player->position[1];
-    int ball_x = ball->position[0];
-    int ball_y = ball->position[1];
-    int diff_x = abs(ball_x - player_x);
-    int inside_of_bounds = 0 < ball_x && ball_x < window_width;
-    int offset = 10;
+    int32_t area = window_width * 0.8f;
+    int32_t player_x = player->position[0];
+    int32_t player_y = player->position[1];
+    int32_t ball_x = ball->position[0];
+    int32_t ball_y = ball->position[1];
+    int32_t diff_x = abs(ball_x - player_x);
+    int32_t inside_of_bounds = 0 < ball_x && ball_x < window_width;
+    int32_t offset = 10;
 
     if (diff_x < area && inside_of_bounds) {
         if (player_y - offset > ball_y) {

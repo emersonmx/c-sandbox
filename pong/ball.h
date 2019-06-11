@@ -21,7 +21,7 @@ typedef struct Ball {
     double speed;
     double min_speed;
     double max_speed;
-    Uint32 play_delay;
+    uint32_t play_delay;
 } Ball;
 
 

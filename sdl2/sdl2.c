@@ -14,11 +14,13 @@ void sdl2_finalize(void)
 
 SDL_Window* sdl2_create_window(const char* title, int width, int height)
 {
-    return sdl2_create_window_with_flags(title, width, height, SDL_WINDOW_SHOWN);
+    return sdl2_create_window_with_flags(
+        title, width, height, SDL_WINDOW_SHOWN
+    );
 }
 
 SDL_Window* sdl2_create_window_with_flags(
-    const char* title, int width, int height, Uint32 flags
+    const char* title, int width, int height, uint32_t flags
 ) {
     return SDL_CreateWindow(
         title,
@@ -38,11 +40,13 @@ SDL_Renderer* sdl2_create_renderer(SDL_Window* window)
 {
     RETURN_VALUE_IF_NULL(window, NULL);
 
-    Uint32 flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
+    uint32_t flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
     return sdl2_create_renderer_with_flags(window, flags);
 }
 
-SDL_Renderer* sdl2_create_renderer_with_flags(SDL_Window* window, Uint32 flags)
+SDL_Renderer* sdl2_create_renderer_with_flags(
+    SDL_Window* window, uint32_t flags
+)
 {
     RETURN_VALUE_IF_NULL(window, NULL);
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, flags);

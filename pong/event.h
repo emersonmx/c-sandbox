@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-#include <SDL_stdinc.h>
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,7 +16,7 @@ enum {
 
 bool event_init(void);
 void event_quit(void);
-Uint32 event_get_id(void);
+uint32_t event_get_id(void);
 
 #ifdef __cplusplus
 }

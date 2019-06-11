@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 
 #define COLOR_WHITE \
     (SDL_Color){255, 255, 255, SDL_ALPHA_OPAQUE}
@@ -13,7 +14,7 @@
 extern "C" {
 #endif
 
-bool in_array(int needle, int* array, size_t size);
+bool in_array(int32_t needle, int32_t* array, size_t size);
 
 #ifdef __cplusplus
 }

@@ -7,8 +7,8 @@
 void shade_init(Shade* shade)
 {
     EngineSettings settings = app_instance()->settings;
-    int width = settings.window.width;
-    int height = settings.window.height;
+    int32_t width = settings.window.width;
+    int32_t height = settings.window.height;
 
     *shade = (Shade){
         .color = {0, 0, 0, 200},

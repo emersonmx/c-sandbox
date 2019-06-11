@@ -14,12 +14,14 @@ void sdl2_finalize(void);
 
 SDL_Window* sdl2_create_window(const char* title, int width, int height);
 SDL_Window* sdl2_create_window_with_flags(
-    const char* title, int width, int height, Uint32 flags
+    const char* title, int width, int height, uint32_t flags
 );
 void sdl2_destroy_window(SDL_Window* window);
 
 SDL_Renderer* sdl2_create_renderer(SDL_Window* window);
-SDL_Renderer* sdl2_create_renderer_with_flags(SDL_Window* window, Uint32 flags);
+SDL_Renderer* sdl2_create_renderer_with_flags(
+    SDL_Window* window, uint32_t flags
+);
 void sdl2_destroy_renderer(SDL_Renderer* renderer);
 
 #ifdef __cplusplus

@@ -2,9 +2,9 @@
 
 #define TIMEOUT_EVENT 1
 
-static Uint32 user_event;
+static uint32_t user_event;
 
-Uint32 my_timer_callback(Uint32 interval, void* param);
+uint32_t my_timer_callback(uint32_t interval, void* param);
 
 int main(int argc, char* argv[])
 {
@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 
     SDL_Event event;
     user_event = SDL_RegisterEvents(1);
-    if (user_event == (Uint32)-1) {
+    if (user_event == (uint32_t)-1) {
         SDL_Log("Can't register user event.\n\tError: %s\n", SDL_GetError());
         return -1;
     }
@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
     sdl2_finalize();
 }
 
-Uint32 my_timer_callback(Uint32 interval, void* param)
+uint32_t my_timer_callback(uint32_t interval, void* param)
 {
     SDL_Event myevent;
     SDL_memset(&myevent, 0, sizeof(myevent));

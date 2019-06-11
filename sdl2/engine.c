@@ -184,7 +184,7 @@ bool setup_window(void)
 
 bool setup_renderer(void)
 {
-    Uint32 flags = SDL_RENDERER_ACCELERATED;
+    uint32_t flags = SDL_RENDERER_ACCELERATED;
     if (engine.settings.renderer.vsync) {
         flags |= SDL_RENDERER_PRESENTVSYNC;
     }

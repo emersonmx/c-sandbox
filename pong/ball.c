@@ -14,7 +14,7 @@ static void increate_min_speed(Ball* ball, double delta);
 static void decrease_speed_defaut(Ball* ball, double delta);
 static void decrease_speed(Ball* ball, double slowdown);
 
-static Uint32 ball_out_of_bounds(Uint32 interval, void* param)
+static uint32_t ball_out_of_bounds(uint32_t interval, void* param)
 {
     SDL_Event event;
     SDL_zero(event);
@@ -28,7 +28,7 @@ static Uint32 ball_out_of_bounds(Uint32 interval, void* param)
     return 0;
 }
 
-static Uint32 ball_delay_timeout(Uint32 interval, void* param)
+static uint32_t ball_delay_timeout(uint32_t interval, void* param)
 {
     SDL_Event event;
     SDL_zero(event);

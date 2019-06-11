@@ -2,12 +2,12 @@
 
 #include <sdl2/engine.h>
 
-static Uint32 event_id;
+static uint32_t event_id;
 
 bool event_init(void)
 {
     event_id = SDL_RegisterEvents(1);
-    if (event_id == (Uint32)-1) {
+    if (event_id == (uint32_t)-1) {
         return false;
     }
 
@@ -16,10 +16,10 @@ bool event_init(void)
 
 void event_quit(void)
 {
-    event_id = (Uint32) -1;
+    event_id = (uint32_t) -1;
 }
 
-Uint32 event_get_id(void)
+uint32_t event_get_id(void)
 {
     return event_id;
 }
