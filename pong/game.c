@@ -5,7 +5,7 @@
 #include "utils.h"
 #include "app.h"
 #include "action.h"
-#include "events.h"
+#include "event.h"
 
 #define WINDOW_WIDTH app->settings.window.width
 #define WINDOW_HEIGHT app->settings.window.height
@@ -123,7 +123,7 @@ void game_process_events(Game* game, SDL_Event* event)
     }
 #endif
 
-    if (event->type == events_get_id()) {
+    if (event->type == event_get_id()) {
         if (event->user.code == BALL_OUT_OF_BOUNDS_EVENT) {
 #ifdef DEBUG
             printf("Ball out of bounds\n");

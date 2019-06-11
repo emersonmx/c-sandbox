@@ -16,7 +16,7 @@ add_executable(pong
     main.c
     app.c
     action.c
-    events.c
+    event.c
     render.c
     utils.c
     game.c

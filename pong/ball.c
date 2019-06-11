@@ -5,7 +5,7 @@
 #include "app.h"
 #include "render.h"
 #include "object.h"
-#include "events.h"
+#include "event.h"
 
 static int8_t ball_out_of_bounds_tid = -1;
 
@@ -18,7 +18,7 @@ static Uint32 ball_out_of_bounds(Uint32 interval, void* param)
 {
     SDL_Event event;
     SDL_zero(event);
-    event.type = events_get_id();
+    event.type = event_get_id();
     event.user.code = BALL_OUT_OF_BOUNDS_EVENT;
     event.user.data1 = param;
     SDL_PushEvent(&event);
@@ -32,7 +32,7 @@ static Uint32 ball_delay_timeout(Uint32 interval, void* param)
 {
     SDL_Event event;
     SDL_zero(event);
-    event.type = events_get_id();
+    event.type = event_get_id();
     event.user.code = PLAY_BALL_EVENT;
     SDL_PushEvent(&event);
     return 0;

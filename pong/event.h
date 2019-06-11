@@ -1,5 +1,5 @@
-#ifndef PONG_EVENTS_H
-#define PONG_EVENTS_H
+#ifndef PONG_EVENT_H
+#define PONG_EVENT_H
 
 #include <stdbool.h>
 
@@ -14,12 +14,12 @@ enum {
 };
 
 
-bool events_init(void);
-void events_quit(void);
-Uint32 events_get_id(void);
+bool event_init(void);
+void event_quit(void);
+Uint32 event_get_id(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* PONG_EVENTS_H */
+#endif /* PONG_EVENT_H */

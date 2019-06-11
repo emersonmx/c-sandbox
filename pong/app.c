@@ -1,6 +1,6 @@
 #include "app.h"
 
-#include "events.h"
+#include "event.h"
 
 static App app;
 
@@ -18,7 +18,7 @@ void app_init(void)
         SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "%s\n", TTF_GetError());
     }
 
-    if (!events_init()) {
+    if (!event_init()) {
         SDL_Log("Can't register app event\n\tError: %s\n", SDL_GetError());
         engine_quit_loop();
         return;
@@ -31,7 +31,7 @@ void app_quit(void)
 {
     game_quit(&app.game);
 
-    events_quit();
+    event_quit();
 
     TTF_CloseFont(app.score_font);
     app.score_font = NULL;
