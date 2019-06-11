@@ -4,6 +4,8 @@
 
 #include "utils.h"
 #include "app.h"
+#include "action.h"
+#include "events.h"
 
 #define WINDOW_WIDTH app->settings.window.width
 #define WINDOW_HEIGHT app->settings.window.height
@@ -97,8 +99,6 @@ void game_quit(Game* game)
 
 void game_process_events(Game* game, SDL_Event* event)
 {
-    App* app = app_instance();
-
     if (event->type == SDL_QUIT) {
         engine_quit_loop();
     }
@@ -123,8 +123,8 @@ void game_process_events(Game* game, SDL_Event* event)
     }
 #endif
 
-    if (event->type == app->event_id) {
-        if (event->user.code == BALL_OUT_OF_BOUNDS_SIGNAL) {
+    if (event->type == events_get_id()) {
+        if (event->user.code == BALL_OUT_OF_BOUNDS_EVENT) {
 #ifdef DEBUG
             printf("Ball out of bounds\n");
 #endif
@@ -144,7 +144,7 @@ void game_process_events(Game* game, SDL_Event* event)
             ball_reset(&game->ball);
             ball_play_with_delay(&game->ball);
         }
-        if (event->user.code == PLAY_BALL_SIGNAL) {
+        if (event->user.code == PLAY_BALL_EVENT) {
 #ifdef DEBUG
             printf("Play ball\n");
 #endif

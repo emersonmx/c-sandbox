@@ -9,10 +9,10 @@ int main(void)
     App* app = app_instance();
 
     app->settings = engine_default_settings();
-    app->settings.window.title = "App";
+    app->settings.window.title = "Pong";
 
-    engine_set_init_func(app_initialize);
-    engine_set_quit_func(app_finalize);
+    engine_set_init_func(app_init);
+    engine_set_quit_func(app_quit);
     engine_set_process_events_func(app_process_events);
     engine_set_fixed_update_func(app_fixed_update);
     engine_set_update_func(app_update);

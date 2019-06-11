@@ -1,6 +1,6 @@
 #include "app.h"
 
-#include "shade.h"
+#include "events.h"
 
 static App app;
 
@@ -9,7 +9,7 @@ App* app_instance(void)
     return &app;
 }
 
-void app_initialize(void)
+void app_init(void)
 {
     sdl2_ttf_initialize();
 
@@ -18,8 +18,7 @@ void app_initialize(void)
         SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "%s\n", TTF_GetError());
     }
 
-    app.event_id = SDL_RegisterEvents(1);
-    if (app.event_id == (Uint32)-1) {
+    if (!events_init()) {
         SDL_Log("Can't register app event\n\tError: %s\n", SDL_GetError());
         engine_quit_loop();
         return;
@@ -28,9 +27,11 @@ void app_initialize(void)
     game_init(&app.game);
 }
 
-void app_finalize(void)
+void app_quit(void)
 {
     game_quit(&app.game);
+
+    events_quit();
 
     TTF_CloseFont(app.score_font);
     app.score_font = NULL;

@@ -3,7 +3,6 @@
 
 #include <sdl2/sdl2.h>
 
-#include "action.h"
 #include "player.h"
 #include "ball.h"
 #include "wall.h"

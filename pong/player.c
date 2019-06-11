@@ -4,6 +4,7 @@
 #include "app.h"
 #include "utils.h"
 #include "object.h"
+#include "action.h"
 
 #define DEFAULT_ANGLE 30
 
