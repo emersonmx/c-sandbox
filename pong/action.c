@@ -6,31 +6,31 @@ void action_process_events(SDL_Event* event)
 {
     if (event->type == SDL_KEYDOWN) {
         if (event->key.keysym.sym == SDLK_w) {
-            actions[PLAYER1_ACTION_UP] = true;
+            actions[PLAYER1_UP_ACTION] = true;
         }
         if (event->key.keysym.sym == SDLK_s) {
-            actions[PLAYER1_ACTION_DOWN] = true;
+            actions[PLAYER1_DOWN_ACTION] = true;
         }
         if (event->key.keysym.sym == SDLK_UP) {
-            actions[PLAYER2_ACTION_UP] = true;
+            actions[PLAYER2_UP_ACTION] = true;
         }
         if (event->key.keysym.sym == SDLK_DOWN) {
-            actions[PLAYER2_ACTION_DOWN] = true;
+            actions[PLAYER2_DOWN_ACTION] = true;
         }
     }
 
     if (event->type == SDL_KEYUP) {
         if (event->key.keysym.sym == SDLK_w) {
-            actions[PLAYER1_ACTION_UP] = false;
+            actions[PLAYER1_UP_ACTION] = false;
         }
         if (event->key.keysym.sym == SDLK_s) {
-            actions[PLAYER1_ACTION_DOWN] = false;
+            actions[PLAYER1_DOWN_ACTION] = false;
         }
         if (event->key.keysym.sym == SDLK_UP) {
-            actions[PLAYER2_ACTION_UP] = false;
+            actions[PLAYER2_UP_ACTION] = false;
         }
         if (event->key.keysym.sym == SDLK_DOWN) {
-            actions[PLAYER2_ACTION_DOWN] = false;
+            actions[PLAYER2_DOWN_ACTION] = false;
         }
     }
 }

@@ -13,6 +13,7 @@ enum {
     BALL_OUT_OF_BOUNDS_EVENT, PLAY_BALL_EVENT, EVENTS_SIZE
 };
 
+
 bool events_init(void);
 void events_quit(void);
 Uint32 events_get_id(void);
