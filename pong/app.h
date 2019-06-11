@@ -16,7 +16,6 @@ enum {
 
 typedef struct App {
     EngineSettings settings;
-    bool paused;
 
     TTF_Font* score_font;
     Uint32 event_id;

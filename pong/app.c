@@ -13,8 +13,6 @@ void app_initialize(void)
 {
     sdl2_ttf_initialize();
 
-    app.paused = false;
-
     app.score_font = TTF_OpenFont("assets/PressStart2P-Regular.ttf", 32);
     if (!app.score_font) {
         SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "%s\n", TTF_GetError());
@@ -47,35 +45,15 @@ void app_process_events(SDL_Event* event)
 
 void app_fixed_update(double delta)
 {
-    if (app.paused) {
-        return;
-    }
-
     game_fixed_update(&app.game, delta);
 }
 
 void app_update(double delta)
 {
-    if (app.paused) {
-        return;
-    }
-
     game_update(&app.game, delta);
 }
 
 void app_render(void)
 {
     game_render(&app.game);
-}
-
-void app_pause(void)
-{
-    app.paused = true;
-    shade_show(&app.game.shade);
-}
-
-void app_unpause(void)
-{
-    app.paused = false;
-    shade_hide(&app.game.shade);
 }

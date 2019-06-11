@@ -27,6 +27,7 @@ typedef struct Game {
     Shade shade;
 
     SDL_Rect play_area;
+    bool paused;
 } Game;
 
 
@@ -36,6 +37,9 @@ void game_process_events(Game* game, SDL_Event* event);
 void game_fixed_update(Game* game, double delta);
 void game_update(Game* game, double delta);
 void game_render(Game* game);
+
+void game_pause(Game* game);
+void game_unpause(Game* game);
 
 #ifdef __cplusplus
 }

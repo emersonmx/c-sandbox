@@ -14,6 +14,8 @@ void game_init(Game* game)
 {
     App* app = app_instance();
 
+    game->paused = false;
+
     PlayerInputVelocityFunc* player_controls[2];
     player_controls[PLAYER1] = player_default_input_velocity_func;
     // player_controls[PLAYER2] = player_default_input_velocity_func;
@@ -102,10 +104,10 @@ void game_process_events(Game* game, SDL_Event* event)
     }
     if (event->type == SDL_KEYDOWN) {
         if (event->key.keysym.sym == SDLK_ESCAPE) {
-            if (app->paused) {
-                app_unpause();
+            if (game->paused) {
+                game_unpause(game);
             } else {
-                app_pause();
+                game_pause(game);
             }
         }
     }
@@ -153,6 +155,10 @@ void game_process_events(Game* game, SDL_Event* event)
 
 void game_fixed_update(Game* game, double delta)
 {
+    if (game->paused) {
+        return;
+    }
+
     player_fixed_update(&game->player1, delta);
     player_fixed_update(&game->player2, delta);
     ball_fixed_update(&game->ball, delta);
@@ -160,6 +166,10 @@ void game_fixed_update(Game* game, double delta)
 
 void game_update(Game* game, double delta)
 {
+    if (game->paused) {
+        return;
+    }
+
     shade_update(&game->shade, delta);
 }
 
@@ -174,4 +184,16 @@ void game_render(Game* game)
     wall_render(&game->top_wall);
     wall_render(&game->bottom_wall);
     shade_render(&game->shade);
+}
+
+void game_pause(Game* game)
+{
+    game->paused = true;
+    shade_show(&game->shade);
+}
+
+void game_unpause(Game* game)
+{
+    game->paused = false;
+    shade_hide(&game->shade);
 }
