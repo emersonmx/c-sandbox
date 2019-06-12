@@ -9,7 +9,7 @@ extern "C" {
 
 typedef void EngineInitFunc(void);
 typedef void EngineQuitFunc(void);
-typedef void EngineProcessEvents(SDL_Event* event);
+typedef void EngineProcessEventsFunc(SDL_Event* event);
 typedef void EngineFixedUpdateFunc(double delta);
 typedef void EngineUpdateFunc(double delta);
 typedef void EngineRenderFunc(void);
@@ -40,12 +40,12 @@ EngineSettings engine_settings(void);
 SDL_Window* engine_window(void);
 SDL_Renderer* engine_renderer(void);
 
-void engine_set_init_func(EngineInitFunc func);
-void engine_set_quit_func(EngineQuitFunc func);
-void engine_set_process_events_func(EngineProcessEvents func);
-void engine_set_fixed_update_func(EngineFixedUpdateFunc func);
-void engine_set_update_func(EngineUpdateFunc func);
-void engine_set_render_func(EngineRenderFunc func);
+void engine_set_init_func(EngineInitFunc* func);
+void engine_set_quit_func(EngineQuitFunc* func);
+void engine_set_process_events_func(EngineProcessEventsFunc* func);
+void engine_set_fixed_update_func(EngineFixedUpdateFunc* func);
+void engine_set_update_func(EngineUpdateFunc* func);
+void engine_set_render_func(EngineRenderFunc* func);
 
 #ifdef __cplusplus
 }

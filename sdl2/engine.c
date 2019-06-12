@@ -20,7 +20,7 @@ struct Engine {
 
     EngineInitFunc* init_func;
     EngineQuitFunc* quit_func;
-    EngineProcessEvents* process_events_func;
+    EngineProcessEventsFunc* process_events_func;
     EngineFixedUpdateFunc* fixed_update_func;
     EngineUpdateFunc* update_func;
     EngineRenderFunc* render_func;
@@ -115,37 +115,37 @@ SDL_Renderer* engine_renderer(void)
     return engine.renderer;
 }
 
-void engine_set_init_func(EngineInitFunc func)
+void engine_set_init_func(EngineInitFunc* func)
 {
     ASSERT_VALID_OBJECT(func);
     engine.init_func = func;
 }
 
-void engine_set_quit_func(EngineQuitFunc func)
+void engine_set_quit_func(EngineQuitFunc* func)
 {
     ASSERT_VALID_OBJECT(func);
     engine.quit_func = func;
 }
 
-void engine_set_process_events_func(EngineProcessEvents func)
+void engine_set_process_events_func(EngineProcessEventsFunc* func)
 {
     ASSERT_VALID_OBJECT(func);
     engine.process_events_func = func;
 }
 
-void engine_set_fixed_update_func(EngineFixedUpdateFunc func)
+void engine_set_fixed_update_func(EngineFixedUpdateFunc* func)
 {
     ASSERT_VALID_OBJECT(func);
     engine.fixed_update_func = func;
 }
 
-void engine_set_update_func(EngineUpdateFunc func)
+void engine_set_update_func(EngineUpdateFunc* func)
 {
     ASSERT_VALID_OBJECT(func);
     engine.update_func = func;
 }
 
-void engine_set_render_func(EngineRenderFunc func)
+void engine_set_render_func(EngineRenderFunc* func)
 {
     ASSERT_VALID_OBJECT(func);
     engine.render_func = func;
