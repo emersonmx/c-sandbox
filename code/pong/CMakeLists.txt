@@ -1,8 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(csb)
-set(csb_VERSION_MAJOR 0)
-set(csb_VERSION_MINOR 1)
-set(csb_VERSION_REVISION 0)
+project(pong VERSION 0.1.0)
 
 # Configs
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -41,7 +38,16 @@ include(FindPkgConfig)
 # Build settings
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-add_subdirectory(default)
-add_subdirectory(sdl2)
-add_subdirectory(pong)
-add_subdirectory(utils)
+pkg_search_module(SDL2 REQUIRED sdl2>=2.0.0)
+pkg_search_module(SDL2_TTF REQUIRED SDL2_ttf>=2.0.0)
+
+include_directories(
+    ${SDL2_INCLUDE_DIRS}
+    ${SDL2_TTF_INCLUDE_DIRS}
+)
+include_directories(
+    ${CMAKE_SOURCE_DIR}/external
+    ${CMAKE_SOURCE_DIR}/external/cglm/include
+)
+
+add_subdirectory(src/pong)

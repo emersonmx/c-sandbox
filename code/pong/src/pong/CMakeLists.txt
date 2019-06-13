@@ -1,0 +1,25 @@
+
+add_executable(pong
+    ${CMAKE_SOURCE_DIR}/external/utils/random.cpp
+    ${CMAKE_SOURCE_DIR}/external/sdl2/sdl2.c
+    ${CMAKE_SOURCE_DIR}/external/sdl2/sdl2_ttf.c
+    ${CMAKE_SOURCE_DIR}/external/sdl2/engine.c
+    ${CMAKE_SOURCE_DIR}/external/sdl2/timer.c
+    main.c
+    app.c
+    action.c
+    event.c
+    render.c
+    utils.c
+    game.c
+    player.c
+    ball.c
+    wall.c
+    midfield.c
+    score.c
+    shade.c
+)
+target_link_libraries(pong
+    ${SDL2_LIBRARIES}
+    ${SDL2_TTF_LIBRARIES}
+)
