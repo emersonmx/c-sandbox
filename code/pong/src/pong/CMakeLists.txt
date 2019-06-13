@@ -1,10 +1,10 @@
 
 add_executable(pong
-    ${CMAKE_SOURCE_DIR}/external/utils/random.cpp
-    ${CMAKE_SOURCE_DIR}/external/sdl2/sdl2.c
-    ${CMAKE_SOURCE_DIR}/external/sdl2/sdl2_ttf.c
-    ${CMAKE_SOURCE_DIR}/external/sdl2/engine.c
-    ${CMAKE_SOURCE_DIR}/external/sdl2/timer.c
+    ${CMAKE_SOURCE_DIR}/external/utils/src/utils/random.cpp
+    ${CMAKE_SOURCE_DIR}/external/sdl2/src/sdl2/sdl2.c
+    ${CMAKE_SOURCE_DIR}/external/sdl2/src/sdl2/sdl2_ttf.c
+    ${CMAKE_SOURCE_DIR}/external/sdl2/src/sdl2/engine.c
+    ${CMAKE_SOURCE_DIR}/external/sdl2/src/sdl2/timer.c
     main.c
     app.c
     action.c

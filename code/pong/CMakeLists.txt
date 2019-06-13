@@ -36,7 +36,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} \
 include(FindPkgConfig)
 
 # Build settings
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories()
 
 pkg_search_module(SDL2 REQUIRED sdl2>=2.0.0)
 pkg_search_module(SDL2_TTF REQUIRED SDL2_ttf>=2.0.0)
@@ -44,9 +44,9 @@ pkg_search_module(SDL2_TTF REQUIRED SDL2_ttf>=2.0.0)
 include_directories(
     ${SDL2_INCLUDE_DIRS}
     ${SDL2_TTF_INCLUDE_DIRS}
-)
-include_directories(
-    ${CMAKE_SOURCE_DIR}/external
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/external/sdl2/src
+    ${CMAKE_SOURCE_DIR}/external/utils/src
     ${CMAKE_SOURCE_DIR}/external/cglm/include
 )
 
