@@ -1,38 +1,50 @@
+cmake_minimum_required(VERSION 3.14)
+project(sdl2 VERSION 0.1.0)
+
+# Configs
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# Compiler settings
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_C_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING
+        "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
+        FORCE)
+endif(NOT CMAKE_BUILD_TYPE)
+
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} \
+    -g -Wall -Wextra -Wpedantic \
+    -Wformat=2 -Wno-unused-parameter -Wshadow \
+    -Wwrite-strings -Wstrict-prototypes -Wold-style-definition \
+    -Wredundant-decls -Wnested-externs -Wmissing-include-dirs \
+    -DDEBUG \
+")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} \
+    -g -Wall -Wextra -Wpedantic \
+    -Wformat=2 -Wno-unused-parameter -Wshadow \
+    -Wwrite-strings -Wredundant-decls -Wmissing-include-dirs \
+    -DDEBUG \
+")
+
+# Libs
+include(FindPkgConfig)
+
+# Build settings
 pkg_search_module(SDL2 REQUIRED sdl2>=2.0.0)
-pkg_search_module(SDL2_IMAGE REQUIRED SDL2_image>=2.0.0)
 pkg_search_module(SDL2_TTF REQUIRED SDL2_ttf>=2.0.0)
 
 include_directories(
     ${SDL2_INCLUDE_DIRS}
-    ${SDL2_IMAGE_INCLUDE_DIRS}
     ${SDL2_TTF_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/external/utils/src
+    ${CMAKE_SOURCE_DIR}/external/cglm/include
 )
 
-add_executable(time-test time-test.c)
-target_link_libraries(time-test
-    ${SDL2_LIBRARIES}
-    ${SDL2_IMAGE_LIBRARIES}
-    ${SDL2_TTF_LIBRARIES}
-)
-
-add_executable(resize-test
-    resize-test.c
-    sdl2.c
-    sdl2_ttf.c
-    text.c
-)
-target_link_libraries(resize-test
-    ${SDL2_LIBRARIES}
-    ${SDL2_IMAGE_LIBRARIES}
-    ${SDL2_TTF_LIBRARIES}
-)
-
-add_executable(events
-    sdl2.c
-    events.c
-)
-target_link_libraries(events
-    ${SDL2_LIBRARIES}
-    ${SDL2_IMAGE_LIBRARIES}
-    ${SDL2_TTF_LIBRARIES}
-)
+add_subdirectory(src/sdl2)
