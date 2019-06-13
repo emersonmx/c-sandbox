@@ -36,8 +36,6 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} \
 include(FindPkgConfig)
 
 # Build settings
-include_directories()
-
 pkg_search_module(SDL2 REQUIRED sdl2>=2.0.0)
 pkg_search_module(SDL2_TTF REQUIRED SDL2_ttf>=2.0.0)
 
