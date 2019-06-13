@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include <utils/random.h>
+#include "random.h"
 
 int main(void)
 {
