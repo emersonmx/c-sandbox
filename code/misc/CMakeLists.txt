@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(default VERSION 0.1.0)
+project(misc VERSION 0.1.0)
 
 # Configs
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -32,4 +32,4 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} \
     -DDEBUG \
 ")
 
-add_subdirectory(src/default)
+add_subdirectory(src/misc)
