@@ -19,7 +19,7 @@ if (NOT CMAKE_BUILD_TYPE)
 endif(NOT CMAKE_BUILD_TYPE)
 
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} \
-    -g -Wall -Wextra -Wpedantic 
+    -Wall -Wextra -Wpedantic \
     -Wformat=2 -Wno-unused-parameter -Werror -Wshadow \
     -Wwrite-strings -Wstrict-prototypes -Wold-style-definition \
     -Wstrict-overflow -fno-strict-aliasing \
@@ -28,8 +28,8 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} \
     -DDEBUG \
 ")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} \
-    -g -Wall -Wextra -Wpedantic \
-    -Wformat=2 -Wno-unused-parameter -Wshadow \
+    -Wall -Wextra -Wpedantic \
+    -Wformat=2 -Wno-unused-parameter -Wshadow -Werror \
     -Wwrite-strings -Wredundant-decls -Wmissing-include-dirs \
     -DDEBUG \
 ")
