@@ -1,7 +1,6 @@
 #include "score.h"
 
 #include <utils/str.h>
-#include <utils/macros.h>
 
 #include "app.h"
 #include "render.h"
@@ -17,13 +16,17 @@ static void update_texture(Score* score)
         score->color
     );
     free(text);
-    RETURN_IF_NULL(surface);
+    if (!surface) {
+        return;
+    }
 
     SDL_Texture* texture = SDL_CreateTextureFromSurface(
         engine_renderer(), surface
     );
     SDL_FreeSurface(surface);
-    RETURN_IF_NULL(texture);
+    if (!texture) {
+        return;
+    }
 
     score->texture = texture;
     SDL_zero(score->rect);

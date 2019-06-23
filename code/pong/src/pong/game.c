@@ -1,7 +1,5 @@
 #include "game.h"
 
-#include <utils/macros.h>
-
 #include "utils.h"
 #include "app.h"
 #include "action.h"

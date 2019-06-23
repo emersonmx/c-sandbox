@@ -1,7 +1,5 @@
 #include "sdl2.h"
 
-#include <utils/macros.h>
-
 bool sdl2_initialize(void)
 {
     return SDL_Init(SDL_INIT_EVERYTHING) == 0;
@@ -32,13 +30,18 @@ SDL_Window* sdl2_create_window_with_flags(
 
 void sdl2_destroy_window(SDL_Window* window)
 {
-    RETURN_IF_NULL(window);
+    if (!window) {
+        return;
+    }
+
     SDL_DestroyWindow(window);
 }
 
 SDL_Renderer* sdl2_create_renderer(SDL_Window* window)
 {
-    RETURN_VALUE_IF_NULL(window, NULL);
+    if (!window) {
+        return NULL;
+    }
 
     uint32_t flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
     return sdl2_create_renderer_with_flags(window, flags);
@@ -48,7 +51,10 @@ SDL_Renderer* sdl2_create_renderer_with_flags(
     SDL_Window* window, uint32_t flags
 )
 {
-    RETURN_VALUE_IF_NULL(window, NULL);
+    if (!window) {
+        return NULL;
+    }
+
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, flags);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     return renderer;
@@ -56,7 +62,10 @@ SDL_Renderer* sdl2_create_renderer_with_flags(
 
 void sdl2_destroy_renderer(SDL_Renderer* renderer)
 {
-    RETURN_IF_NULL(renderer);
+    if (!renderer) {
+        return;
+    }
+
     SDL_DestroyRenderer(renderer);
 }
 

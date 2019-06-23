@@ -1,15 +1,17 @@
 #include "text.h"
 
-#include <SDL_ttf.h>
+#include <assert.h>
 
-#include <utils/macros.h>
+#include <SDL_ttf.h>
 
 SDL_Texture* create_text(Text* text);
 
 Text* text_new(void)
 {
     Text* text = malloc(sizeof(Text));
-    RETURN_NULL_IF_NULL(text);
+    if (!text) {
+        return NULL;
+    }
 
     *text = (const Text){0};
 
@@ -18,14 +20,16 @@ Text* text_new(void)
 
 void text_delete(Text* text)
 {
-    RETURN_IF_NULL(text);
+    if (!text) {
+        return;
+    }
     text_clear(text);
     free(text);
 }
 
 void text_update_texture(Text* text)
 {
-    ASSERT_VALID_OBJECT(text);
+    assert(text);
 
     text->texture = create_text(text);
     SDL_QueryTexture(
@@ -35,7 +39,7 @@ void text_update_texture(Text* text)
 
 void text_clear(Text* text)
 {
-    ASSERT_VALID_OBJECT(text);
+    assert(text);
 
     if (text->value != NULL) {
         free(text->value);
@@ -53,12 +57,16 @@ SDL_Texture* create_text(Text* text)
         text->value,
         text->color
     );
-    RETURN_NULL_IF_NULL(surface);
+    if (!surface) {
+        return NULL;
+    }
 
     SDL_Texture* texture =
         SDL_CreateTextureFromSurface(text->renderer, surface);
     SDL_FreeSurface(surface);
-    RETURN_NULL_IF_NULL(texture);
+    if (!texture) {
+        return NULL;
+    }
 
     return texture;
 }

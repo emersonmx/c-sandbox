@@ -4,7 +4,6 @@
 
 #include <sdl2/sdl2.h>
 #include <sdl2/sdl2_ttf.h>
-#include <sdl2/macros.h>
 #include <sdl2/text.h>
 #include <utils/str.h>
 
@@ -84,29 +83,36 @@ int main(void)
 void init(void)
 {
     engine = malloc(sizeof(Engine));
-    RETURN_WITH_LOG_IF_NULL(engine, SDL_Log("Couldn't create app engine."));
+    if (!engine) {
+        SDL_Log("Couldn't create app engine.");
+        return;
+    }
 
     *engine = (const Engine){0};
 
-    RETURN_WITH_LOG_IF_FALSE(sdl2_initialize(),
-        SDL_Log("Couldn't start SDL.\n\tError: %s", SDL_GetError())
-    );
+    if (!sdl2_initialize()) {
+        SDL_Log("Couldn't start SDL.\n\tError: %s", SDL_GetError());
+        return;
+    }
 
     engine->window = sdl2_create_window_with_flags(
         "Resize Test", 800, 600, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
     );
-    RETURN_WITH_LOG_IF_NULL(engine->window,
-        SDL_Log("Couldn't create window.\n\tError: %s", SDL_GetError())
-    );
+    if (!engine->window) {
+        SDL_Log("Couldn't create window.\n\tError: %s", SDL_GetError());
+        return;
+    }
 
     engine->renderer = sdl2_create_renderer(engine->window);
-    RETURN_WITH_LOG_IF_NULL(engine->renderer,
-        SDL_Log("Couldn't create renderer.\n\tError: %s", SDL_GetError())
-    );
+    if (!engine->renderer) {
+        SDL_Log("Couldn't create renderer.\n\tError: %s", SDL_GetError());
+        return;
+    }
 
-    RETURN_WITH_LOG_IF_FALSE(sdl2_ttf_initialize(),
-        SDL_Log("Couldn't initialize SDL TTF.\n\tError: %s", TTF_GetError())
-    );
+    if (!sdl2_ttf_initialize()) {
+        SDL_Log("Couldn't initialize SDL TTF.\n\tError: %s", TTF_GetError());
+        return;
+    }
 
     load_assets();
 }
@@ -124,14 +130,17 @@ void quit(void)
 void load_assets(void)
 {
     engine->font = TTF_OpenFont("./assets/fonts/Quicksand-Bold.ttf", 40);
-    RETURN_WITH_LOG_IF_NULL(engine->font,
-        SDL_Log("Couldn't load font.\n\tError: %s", TTF_GetError())
-    );
+    if (!engine->font) {
+        SDL_Log("Couldn't load font.\n\tError: %s", TTF_GetError());
+        return;
+    }
 }
 
 void destroy_assets(void)
 {
-    RETURN_IF_NULL(engine);
+    if (!engine) {
+        return;
+    }
 
     TTF_CloseFont(engine->font);
     sdl2_destroy_renderer(engine->renderer);

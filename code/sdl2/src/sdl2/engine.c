@@ -1,7 +1,8 @@
 #include "engine.h"
 
+#include <assert.h>
+
 #include <sdl2/timer.h>
-#include <utils/macros.h>
 
 void default_init_func(void) {}
 void default_quit_func(void) {}
@@ -117,37 +118,37 @@ SDL_Renderer* engine_renderer(void)
 
 void engine_set_init_func(EngineInitFunc* func)
 {
-    ASSERT_VALID_OBJECT(func);
+    assert(func);
     engine.init_func = func;
 }
 
 void engine_set_quit_func(EngineQuitFunc* func)
 {
-    ASSERT_VALID_OBJECT(func);
+    assert(func);
     engine.quit_func = func;
 }
 
 void engine_set_process_events_func(EngineProcessEventsFunc* func)
 {
-    ASSERT_VALID_OBJECT(func);
+    assert(func);
     engine.process_events_func = func;
 }
 
 void engine_set_fixed_update_func(EngineFixedUpdateFunc* func)
 {
-    ASSERT_VALID_OBJECT(func);
+    assert(func);
     engine.fixed_update_func = func;
 }
 
 void engine_set_update_func(EngineUpdateFunc* func)
 {
-    ASSERT_VALID_OBJECT(func);
+    assert(func);
     engine.update_func = func;
 }
 
 void engine_set_render_func(EngineRenderFunc* func)
 {
-    ASSERT_VALID_OBJECT(func);
+    assert(func);
     engine.render_func = func;
 }
 
